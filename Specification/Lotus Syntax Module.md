@@ -24,8 +24,6 @@ Lotus is an open-source language created to facilitate the work of web designers
 
 ## Table Of Contents
 
-
-
 1. **[Introduction](#1.-introduction)**
    
    - [x] [Visual and Writing Conventions](1.1-visual-and-writing-conventions)
@@ -75,8 +73,6 @@ Lotus is an open-source language created to facilitate the work of web designers
    - [ ] [Consume a from directive](4.17-consume-a-from-directive)
    - [ ] [Consume a namespace declaration](4.18-consume-a-namespace-declaration)
    - [ ] [Consume an extends directive](4.19-consume-an-extends-directive)
-
-
 
 ## 1. Introduction
 
@@ -324,21 +320,23 @@ Implementations should use the algorithms described in [section 4](tokenization)
 
 ### 2.7 Parsing Errors
 
-
-
 ## 3. Tokenization
 
 *This section is informal*
 
 Tokenization is a process by which an algorithm will convert a sequence of [code points](code-point) to a list of tokens. 
 
+A token is an object representing zero or more [code points](code-point) and optionally metadata associated with it. 
 
+> Example: A [`<number-token>`](number-token) represents a number.
+> 
+> It holds a sequence of [code points](code-point), as well as the numeric value of this sequence.
+> 
+> The sequence of [code points](code-point) is its reprensetation, and the numeric value is its metadata
 
-A token is an object representing zero or more [code points](code-point) and optionally metadata associated with it. For example, a [`<number-token>`](number-token) holds a sequence of code points (i.e. its representation), as well as the numeric value of this sequence. 
+The following algorithms describes how to transform a stream of [code points](code-point), designated as the [input stream](input-stream), into a stream of tokens. 
 
-
-
-The following algorithms describes how to transform a stream of [code points](code-point), designated as the [input stream](input-stream), into a stream of tokens. Implementations should act as if they used those algorithms (i.e. the resulting token stream should be contain the same information as if it implemented the following algorithms. See [the Lotus tokenizer reference implementation]() for more information).
+Implementations should act as if they used those algorithms (i.e. the resulting token stream should be contain the same information as if it implemented the following algorithms. See [the Lotus tokenizer reference implementation]() for more information).
 
 ### 3.1 Preprocessing the input stream
 
@@ -352,17 +350,15 @@ Before sending the [input stream](input-stream) to the tokenizer, it needs to be
 
 This section describes ***how to consume a token*** from a stream of [code points](code-point).
 
-
-
 [Consume the next code point](consume-the-next-code-point).
 
 If it is a **whitespace** :
 
-     Consume as much [whitespace](whitespace) as possible and return nothing.
+   Consume as much [whitespace](whitespace) as possible and return nothing.
 
 If it is a **U+0022 QUOTATION MARK (`"`)** :
 
-     [Consume a string token](consume-a-string-token) with the ending delimiter set to U+0022 QUOTATION MARK (`"`). Return the resulting [`<string-token>`](string-token).
+   [Consume a string token](consume-a-string-token) with the ending delimiter set to U+0022 QUOTATION MARK (`"`). Return the resulting [`<string-token>`](string-token).
 
 ### 3.3 Consume a string token
 
@@ -381,8 +377,6 @@ If it is a **U+0022 QUOTATION MARK (`"`)** :
 ### 3.10 Check if two code points are a valid escape
 
 ### 3.11 Check if two code points would start a number
-
-
 
 ## 4. Parsing
 
@@ -423,7 +417,3 @@ If it is a **U+0022 QUOTATION MARK (`"`)** :
 ### 4.18 Consume a namespace declaration
 
 ### 4.19 Consume an extends directive
-
-
-
-
