@@ -22,63 +22,67 @@ This document describes the basic structure and syntax of Lotus source code. It 
 
 Lotus is an open-source language created to facilitate the work of web designers and web developpers. This document describes its syntax as well as the way it should be interpreted by a compiler to conform to the Lotus specification.
 
-## Table of Contents
+## Table Of Contents
 
-1. **[Introduction](#introduction)**
-   
-   - [x] [Visual and Writing Conventions](visual-and-writing-conventions)
 
-2. **[Tokenizing and Parsing Lotus](tokenizing-and-parsing-lotus)**
-   
-   - [x] [Definitions](definitions)
-   - [x] [Token types](token-types)
-   - [ ] [Tokens Railroad Diagrams](tokens-railroad-diagrams)
-   - [ ] [Tokenization Errors](tokenization-errors)
-   - [ ] [Parser Railroad Diagrams](parser-railroad-diagrams)
-   - [ ] [Parsing Errors](parsing-errors)
-   - [ ] [Parse Tree Model](parse-tree-model)
-   - [ ] [Preprocessing the input stream](preprocessing-the-input-stream)
 
-3. **[Tokenization](tokenization)**
+1. **[Introduction](#1.-introduction)**
    
-   - [ ] [Consume a token](consume-a-token)
-   - [ ] [Consume a string token](consume-a-string-token)
-   - [ ] [Consume a number token](consume-a-number-token)
-   - [ ] [Consume an escaped code point](consume-an-escaped-code-point)
-   - [ ] [Consume a name](consume-a-name)
-   - [ ] [Consume a ident-like token](consume-a-ident-like-token)
-   - [ ] [Consume an identifier token](consume-an-identifier-token)
-   - [ ] [Consume a function token](consume-a-function-token)
-   - [ ] [Check if a code point would start an identifier](check-if-a-code-point-would-start-an-identifier)
-   - [ ] [Check if two code points are a valid escape](check-if-two-code-points-are-a-valid-escape)
-   - [ ] [Check if two code points would start a number](check-if-two-code-points-would-start-a-number)
+   - [x] [Visual and Writing Conventions](1.1-visual-and-writing-conventions)
 
-4. **[Parsing](parsing)**
+2. **[Tokenizing and Parsing Lotus](2.-tokenizing-and-parsing-lotus)**
    
-   - [ ] [Consume a list of tokens](consume-a-list-of-tokens)
-   - [ ] [Consume a code block](consume-a-code-block)
-   - [ ] [Consume an assignement](consume-an-assignement)
-   - [ ] [Consume an operation](consume-an-operation)
-   - [ ] [Consume a function call](consume-a-function-call)
-   - [ ] [Consume a function declaration](consume-a-function-declaration)
-   - [ ] [Consume an if clause](consume-an-if-clause)
-   - [ ] [Consume an else clause](consume-an-else-clause)
-   - [ ] [Consume a for loop declaration](consume-a-for-loop-declaration)
-   - [ ] [Consume a foreach loop declaration](consume-a-foreach-loop-declaration)
-   - [ ] [Consume a while loop declaration](consume-a-while-loop-declaration)
-   - [ ] [Consume a do-while loop declaration](consume-a-do-while-loop-declaration)
-   - [ ] [Consume a class declaration](consume-a-class-declaration)
-   - [ ] [Consume an interface declaration](consume-an-interface-declaration)
-   - [ ] [Consume an import directive](consume-an-import-directive)
-   - [ ] [Consume a from directive](consume-a-from-directive)
-   - [ ] [Consume a namespace directive](consume-a-namespace-directive)
-   - [ ] [Consume an extends directive](consume-an-extends-directive)
+   - [x] [Definitions](2.1-definitions)
+   - [x] [Token types](2.2-token-types)
+   - [ ] [Tokens Railroad Diagrams](2.3-tokens-railroad-diagrams)
+   - [ ] [Tokenization Errors](2.4-tokenization-errors)
+   - [ ] [Parse Tree Model](2.5-parse-tree-model)
+   - [ ] [Parse Tree Node Railroad Diagrams](2.6-parse-tree-node-railroad-diagrams)
+   - [ ] [Parsing Errors](2.7-parsing-errors)
+
+3. **[Tokenization](3.-tokenization)**
+   
+   - [ ] [Preprocessing the input stream](3.1-preprocessing-the-input-stream)
+   - [ ] [Consume a token](3.2-consume-a-token)
+   - [ ] [Consume a string token](3.3-consume-a-string-token)
+   - [ ] [Consume a number token](3.4-consume-a-number-token)
+   - [ ] [Consume an escaped code point](3.5-consume-an-escaped-code-point)
+   - [ ] [Consume a name](3.6-consume-a-name)
+   - [ ] [Consume an ident-like token](3.7-consume-an-ident-like-token)
+   - [ ] [Consume an identifier token](3.8-consume-an-identifier-token)
+   - [ ] [Check if a code point would start an identifier](3.9-check-if-a-code-point-would-start-an-identifier)
+   - [ ] [Check if two code points are a valid escape](3.10-check-if-two-code-points-are-a-valid-escape)
+   - [ ] [Check if two code points would start a number](3.11-check-if-two-code-points-would-start-a-number)
+
+4. **[Parsing](4.-parsing)**
+   
+   - [ ] [Consume a token](4.1-consume-a-token)
+   - [ ] [Consume a simple block](4.2-consume-a-simple-block)
+   - [ ] [Consume an assignement](4.3-consume-an-assignement)
+   - [ ] [Consume an operation](4.4-consume-an-operation)
+   - [ ] [Consume a function call](4.5-consume-a-function-call)
+   - [ ] [Consume a function declaration](4.6-consume-a-function-declaration)
+   - [ ] [Consume an if clause](4.7-consume-an-if-clause)
+   - [ ] [Consume an else clause](4.8-consume-an-else-clause)
+   - [ ] [Consume a for loop declaration](4.9-consume-a-for-loop-declaration)
+   - [ ] [Consume a foreach loop declaration](4.10-consume-a-foreach-loop-declaration)
+   - [ ] [Consume a while loop declaration](4.11-consume-a-while-loop-declaration)
+   - [ ] [Consume a do-while loop declaration](4.12-consume-a-do-while-loop-declaration)
+   - [ ] [Consume a class declaration](4.13-consume-a-class-declaration)
+   - [ ] [Consume an interface declaration](4.14-consume-an-interface-declaration)
+   - [ ] [Consume an enum declaration](4.15-consume-an-enum-declaration)
+   - [ ] [Consume an import directive](4.16-consume-an-import-directive)
+   - [ ] [Consume a from directive](4.17-consume-a-from-directive)
+   - [ ] [Consume a namespace declaration](4.18-consume-a-namespace-declaration)
+   - [ ] [Consume an extends directive](4.19-consume-an-extends-directive)
+
+
 
 ## 1. Introduction
 
 This document describes the syntax of Lotus source code.
 
-It also defines algorithms to convert text into a list of tokens, and then transform it into an abstract syntax tree, that can be further interpreted and translated into HTML, CSS and Javascript.
+It also defines algorithms to convert text into a list of tokens, and then transform it into an abstract syntax tree, that can be analysed, verified, and used for interpretation or translation purposes, for example to HTML, CSS, and JavaScript as does [LotusJS](https://github.com/lotuslang/lotusjs).
 
 ### 1.1 Visual and Writing Conventions
 
@@ -108,9 +112,7 @@ Code segment
 
 ## 2. Tokenizing and Parsing Lotus
 
-*This section is informal*
-
-Compiler and interpreter must use the parsing rules described in this specification to generate an *Abstract Syntax Tree* (AST) that can then be used to analyze, optimize or translate Lotus source code. 
+Compilers and interpreters must use the parsing rules described in this specification to generate an *Abstract Syntax Tree* (AST) that can then be used to analyze, optimize or translate Lotus source code. 
 
 ### 2.1 Definitions
 
@@ -151,6 +153,10 @@ This section defines terms used throughout this
 ###### hex digit
 
 *A [digit](digit), or a [code point](code-point) between U+0041 LATIN CAPITAL LETTER A (A) and U+0046 LATIN CAPITAL LETTER F (F), or a [code point](https://www.w3.org/TR/css-syntax-3/#code-point "code point") between U+0061 LATIN SMALL LETTER A (a) and U+0066 LATIN SMALL LETTER F (f).*
+
+###### number
+
+*A sequence of [digit](digit), optionally followed by a single full stop (i.e. U+002E FULLSTOP `.`) and a sequence of digit, and/or optionally followed by a U+0045 LATIN CAPITAL LETTER E (`E`) or U+0065 LATIN SMALL LETTER E (`e`), a U+002B PLUS SIGN (`+`) or a U+002D HYPHEN MINUS (`-`), and a sequence of [digit](digit).*
 
 ###### uppercase letter
 
@@ -232,13 +238,17 @@ Implementations should use the algorithms described in [section 4](tokenization)
 
 *A token representing a closing/right square bracket (`]`). It doesn't hold any specific value.*
 
+###### `<point-token>`
+
+*A token representing a point (`.`). It doesn't hold any specific value.*
+
 ###### `<comma-token>`
 
-*A token representing a comma (`.`). It doesn't hold any specific value.*
+*A token representing a comma (`,`). It doesn't hold any specific value.*
 
 ###### `<colon-token>`
 
-*A token representing a colon (`,`). It doesn't hold any specific value.*
+*A token representing a colon (`:`). It doesn't hold any specific value.*
 
 ###### `<semicolon-token>`
 
@@ -274,16 +284,146 @@ Implementations should use the algorithms described in [section 4](tokenization)
 
 ###### `<number-token>`
 
-*A token representing a number. It holds a value composed of one or more [code points](code-point), and a numeric value.*
+*A token representing a [number](number). It holds a value composed of one or more [code points](code-point), and a numeric value.*
 
 ###### `<ident-token>`
 
 *A token representing an [identifier](identifier). It holds a value composed of one or more [code points](code-point).*
 
+###### `<string-token>`
+
+*A token representing a string (i.e. a sequence of [code points](code-point), delimited by a delimiting code point, either U+0022 QUOTATION MARK (`"`) or U+0027 APOSTOPHE (`'`)). It holds a value composed of zero or more code points*
+
 ###### `<assign-token>`
 
-*A token representing a single equals sign (`=`) [code point](code-point). It doesn't hold any specific value.*
+*A token representing a single equals sign (i.e. U+003D EQUALS SIGN `=`) [code point](code-point). It doesn't hold any specific value.*
 
-###### `<addition-token>`
+###### `<plus-sign-token>`
 
-*A token representing a single plus sign (`+`) [code point](code-point). It doesn't hold any specific value.*
+*A token representing a single plus sign (i.e. U+002B PLUS SIGN `+`) [code point](code-point). It doesn't hold any specific value.*
+
+###### `<minus-sign-token>`
+
+*A token representing a single minus sign (i.e. U+002D HYPHEn MINUS `-`) [code point](code-point). It doesn't hold any specific value.*
+
+###### `<multiply-sign-token>`
+
+*A token respresenting a single multiply sign (i.e. U+002A ASTERISK `*`) [code point](code-point). It doesn't hold any specific value.*
+
+###### `<divide-sign-token>`
+
+*A token representing a single divide sign (i.e. U+002F SOLIDUS `/`) [code point](code-point). It doesn't hold any specific value.*
+
+### 2.3 Tokens Railroad Diagrams
+
+### 2.4 Tokenization Errors
+
+### 2.5 Parse Tree Model
+
+### 2.6 Parse Tree Node Railroad Diagrams
+
+### 2.7 Parsing Errors
+
+
+
+## 3. Tokenization
+
+*This section is informal*
+
+Tokenization is a process by which an algorithm will convert a sequence of [code points](code-point) to a list of tokens. 
+
+
+
+A token is an object representing zero or more [code points](code-point) and optionally metadata associated with it. For example, a [`<number-token>`](number-token) holds a sequence of code points (i.e. its representation), as well as the numeric value of this sequence. 
+
+
+
+The following algorithms describes how to transform a stream of [code points](code-point), designated as the [input stream](input-stream), into a stream of tokens. Implementations should act as if they used those algorithms (i.e. the resulting token stream should be contain the same information as if it implemented the following algorithms. See [the Lotus tokenizer reference implementation]() for more information).
+
+### 3.1 Preprocessing the input stream
+
+Before sending the [input stream](input-stream) to the tokenizer, it needs to be processed as following :
+
+- Replace any U+0000 NULL [code point](code-point) with U+FFFD REPLACEMENT CHARACTER
+
+- Replace any U+000D CARRIAGE RETURN [code point](code-point), U+000C FORM FEED [code point](code point), or pair of U+000D CARRIAGE RETURN U+000A LINE FEED [code points](code-point) by a single U+000A LINE FEED [code point](code-point).
+
+### 3.2 Consume a token
+
+This section describes ***how to consume a token*** from a stream of [code points](code-point).
+
+
+
+[Consume the next code point](consume-the-next-code-point).
+
+If it is a **whitespace** :
+
+     Consume as much [whitespace](whitespace) as possible and return nothing.
+
+If it is a **U+0022 QUOTATION MARK (`"`)** :
+
+     [Consume a string token](consume-a-string-token) with the ending delimiter set to U+0022 QUOTATION MARK (`"`). Return the resulting [`<string-token>`](string-token).
+
+### 3.3 Consume a string token
+
+### 3.4 Consume a number token
+
+### 3.5 Consume an escaped code point
+
+### 3.6 Consume a name
+
+### 3.7 Consume an ident-like token
+
+### 3.8 Consume an identifier token
+
+### 3.9 Check if a code point would start an identifier
+
+### 3.10 Check if two code points are a valid escape
+
+### 3.11 Check if two code points would start a number
+
+
+
+## 4. Parsing
+
+### 4.1 Consume a token
+
+### 4.2 Consume a simple block
+
+### 4.3 Consume an assignement
+
+### 4.4 Consume an operation
+
+### 4.5 Consume a function call
+
+### 4.6 Consume a function declaration
+
+### 4.7 Consume an if clause
+
+### 4.8 Consume an else clause
+
+### 4.9 Consume a for loop declaration
+
+### 4.10 Consume a foreach loop declaration
+
+### 4.11 Consume a while loop declaration
+
+### 4.12 Consume a do-while loop declaration
+
+### 4.13 Consume a class declaration
+
+### 4.14 Consume an interface declaration
+
+### 4.15 Consume an enum declaration
+
+### 4.16 Consume an import directive
+
+### 4.17 Consume a from directive
+
+### 4.18 Consume a namespace declaration
+
+### 4.19 Consume an extends directive
+
+
+
+
