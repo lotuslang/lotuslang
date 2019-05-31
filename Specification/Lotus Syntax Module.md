@@ -258,11 +258,11 @@ Implementations should use the algorithms described in [section 4](tokenization)
 
 *A token representing a multi-line comment delimitor (i.e. U+0023 NUMBER SIGN U+0023 NUMBER SIGN U+0023 NUMBER SIGN (`###`)). It doesn't hold any specific value.*
 
-###### `<DCO-token>`
+###### `<EDO-token>`
 
 *A token representing a opening delimiter of an embedded documentation (`=begin`). It doesn't hold any specific value.*
 
-###### `<DCC-token>`
+###### `<EDC-token>`
 
 *A token representing a closing delimiter of an embedded documentation (`=end`). It doesn't hold any specific value.*
 
@@ -289,26 +289,6 @@ Implementations should use the algorithms described in [section 4](tokenization)
 ###### `<string-token>`
 
 *A token representing a string (i.e. a sequence of [code points](code-point), delimited by a delimiting code point, either U+0022 QUOTATION MARK (`"`) or U+0027 APOSTOPHE (`'`)). It holds a value composed of zero or more code points*
-
-###### `<assign-token>`
-
-*A token representing a single equals sign (i.e. U+003D EQUALS SIGN `=`) [code point](code-point). It doesn't hold any specific value.*
-
-###### `<plus-sign-token>`
-
-*A token representing a single plus sign (i.e. U+002B PLUS SIGN `+`) [code point](code-point). It doesn't hold any specific value.*
-
-###### `<minus-sign-token>`
-
-*A token representing a single minus sign (i.e. U+002D HYPHEn MINUS `-`) [code point](code-point). It doesn't hold any specific value.*
-
-###### `<multiply-sign-token>`
-
-*A token respresenting a single multiply sign (i.e. U+002A ASTERISK `*`) [code point](code-point). It doesn't hold any specific value.*
-
-###### `<divide-sign-token>`
-
-*A token representing a single divide sign (i.e. U+002F SOLIDUS `/`) [code point](code-point). It doesn't hold any specific value.*
 
 ### 2.3 Tokens Railroad Diagrams
 
@@ -359,6 +339,10 @@ If it is a **whitespace** :
 If it is a **U+0022 QUOTATION MARK (`"`)** :
 
    [Consume a string token](consume-a-string-token) with the ending delimiter set to U+0022 QUOTATION MARK (`"`). Return the resulting [`<string-token>`](string-token).
+
+if it is a **U+0027 APOSTROPHE (`'`)** :
+
+   [Consume a string token](consume-a-string-token) with the ending delimiter set to the [current token](current-token). Return the resulting [`<string-token>`](<string-token>).
 
 ### 3.3 Consume a string token
 
