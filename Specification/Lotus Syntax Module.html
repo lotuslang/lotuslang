@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <style>
+    svg.railroad-diagram {
+      background-color: hsl(30, 20%, 95%);
+    }
+
+    svg.railroad-diagram path {
+      stroke-width: 3;
+      stroke: black;
+      fill: rgba(0, 0, 0, 0);
+    }
+
+    svg.railroad-diagram text {
+      font: bold 14px monospace;
+      text-anchor: middle;
+    }
+
+    svg.railroad-diagram text.label {
+      text-anchor: start;
+    }
+
+    svg.railroad-diagram text.comment {
+      font: italic 12px monospace;
+    }
+
+    svg.railroad-diagram rect {
+      stroke-width: 3;
+      stroke: black;
+      fill: hsl(120, 100%, 90%);
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+
+  <!-- Header -->
+  <h1 id="lotus-syntax-module">Lotus Syntax Module</h1>
+  <p>Last updated : <em>11th of June, 2019</em></p>
+  <p><strong>Editors :</strong></p>
+  <ul>
+    <li>Blokyk</li>
+  </ul>
+  <hr>
+
+  <!-- Abstract -->
+
+  <h2 id="abstract">Abstract</h2>
+  <p>This document describes the basic structure and syntax of Lotus source code. It defines, in details, the
+    tokenizing, parsing, and translation of Lotus.</p>
+
+  <p>Lotus is an open-source language created to facilitate the work of web designers and web developpers. This document
+    describes its syntax as well as the way it should be interpreted by a compiler to conform to the Lotus
+    specification.</p>
+
+  <!-- Table of contents -->
+
+  <h2 id="toc">Table Of Contents</h2>
+  <ol class="toc">
+    <li>
+
+      <!-- Introduction -->
+
+      <p class="toc-title"><strong><a href="#intro">Introduction</a></strong></p>
+      <ul>
+        <li class="toc-item"><a href="#conventions">Visual and
+            Writing Conventions</a></li>
+      </ul>
+    </li> <!-- End of Introduction -->
+
+    <li>
+
+      <!-- Overview -->
+
+      <p class="toc-title"><strong><a href="#overview">Overview</a></strong>
+      </p>
+      <ul>
+        <li class="toc-item">
+          <a href="#general-defs">Definitions</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#tokens">Token types</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#tokens-diagrams">Tokens Railroad Diagrams</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#tokenization-errors">Tokenization Errors</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#parse-tree-model">Parse Tree Model</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#parse-node-diagrams">Parse Tree Node Railroad Diagrams</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#parsing-errors">Parsing Errors</a>
+        </li>
+      </ul>
+    </li> <!-- End of Overview -->
+
+    <li>
+
+      <!-- Tokenization -->
+
+      <p class="toc-title"><strong><a href="#tokenization">Tokenization</a></strong></p>
+      <ul>
+        <li class="toc-item">
+          <a href="#preprocessing">Preprocessing the input stream</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-token">Consume a token</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-string">Consume a string token</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-number">Consume a number token</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-escaped-code-point">Consume an escaped code point</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-name">Consume a name</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-identifier">Consume an identifier token</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#check-start-of-identifier">Check if a code point would start an identifier</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#check-valid-escape">Check if two code points are a valid escape</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#check-start-of-number">Check if two code points would start a number</a>
+        </li>
+      </ul>
+    </li> <!-- End of Tokenization -->
+
+    <li>
+
+      <!-- Parsing -->
+
+      <p class="toc-title"><strong><a href="parsing">Parsing</a></strong></p>
+      <ul>
+        <li class="toc-item"> <a href="4.1-consume-a-statement">Consume a statement</a>
+        </li>
+        <li class="toc-item"> <a href="4.2-consume-a-simple-block">Consume a
+            simple block</a></li>
+        <li class="toc-item"> <a href="4.3-consume-an-assignement">Consume an
+            assignement</a></li>
+        <li class="toc-item"> <a href="4.4-consume-an-operation">Consume an
+            operation</a></li>
+        <li class="toc-item"> <a href="4.5-consume-a-function-call">Consume a
+            function call</a></li>
+        <li class="toc-item"> <a href="4.6-consume-a-function-declaration">Consume a
+            function declaration</a></li>
+        <li class="toc-item"> <a href="4.7-consume-an-if-clause">Consume an if
+            clause</a></li>
+        <li class="toc-item"> <a href="4.8-consume-an-else-clause">Consume an
+            else clause</a></li>
+        <li class="toc-item"> <a href="4.9-consume-a-for-loop-declaration">Consume a
+            for loop declaration</a></li>
+        <li class="toc-item">
+          <a href="4.10-consume-a-foreach-loop-declaration">Consume a foreach loop declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="4.11-consume-a-while-loop-declaration">Consume a while loop declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="4.12-consume-a-do-while-loop-declaration">Consume a do-while loop declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="4.13-consume-a-class-declaration">Consume a class declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="4.14-consume-an-interface-declaration">Consume an interface declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="4.15-consume-an-enum-declaration">Consume an enum declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="4.16-consume-an-import-directive">Consume an import directive</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="4.17-consume-a-from-directive">Consume a from directive</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="4.18-consume-a-namespace-declaration">Consume a namespace declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="4.19-consume-an-extends-directive">Consume an extends directive</a>
+        </li>
+      </ul>
+    </li> <!-- End of Parsing -->
+  </ol>
+
+
+  <!-- Introduction -->
+
+  <div id="intro">
+    <h2>1. Introduction</h2>
+    <p>This document describes the syntax of Lotus source code.</p>
+    <p>It also defines algorithms to convert text into a list of tokens, and then transform it into an abstract syntax
+      tree, that can be analysed, verified, and used for interpretation or translation purposes, for example to HTML,
+      CSS,
+      and JavaScript as does <a href="https://github.com/lotuslang/lotusjs">LotusJS</a>.</p>
+
+    <!-- Conventions -->
+
+    <div id="conventions">
+      <h3 id="conventions">1.1 Visual and Writing Conventions</h3>
+
+      <p><strong>Notes:</strong> Notes and informative sections are presented as a quote block and starts with the word
+        "Note:".
+      </p>
+
+      <div class="note">
+        <p>Note: This is an example of an informative section</p>
+      </div>
+
+      <p>
+        <strong>Examples:</strong> Examples in this document are presented as a quote block and starts with the
+        word "Example".
+      </p>
+
+      <div class="example">
+        <p>Example: This is an example of an example section</p>
+      </div>
+
+      <p>
+        <strong>Short Code Segment :</strong> Short code segments, such as token names, are presented in
+        <code class="inline">&lt;code&gt;</code> tags.
+      </p>
+
+      <p>
+        <code class="inline">This is a short code segment</code>
+      </p>
+
+      <p>
+        <strong>Multi-line Code Segment:</strong> Long/Multi-line code segments, such as informal code examples, are
+        presented in <code class="inline">&lt;pre&gt;</code> tags.
+      </p>
+      <pre><code>This is
+A multiline
+Code section</code></pre>
+      <p>
+        <strong>Informal section:</strong> Informal sections are preceded by the words "<em>This section is
+          informative</em>" written in <em>italics</em>. Informal sections are portions of text that are here only
+        to clarify, give information, or give context. At most, they should only be treated as recommendations, not as
+        requirements of any sorts.
+      </p>
+      <p>
+        <strong>Terms/Definition:</strong> Terms defined are enclosed in HTML <code class="inline">&lt;dt&gt;</code>
+        tags,
+        and their definition are enclosed in HTML <code class="inline">&lt;dd&gt;</code> tags.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- Overview -->
+
+  <div id="overview">
+    <h2>2. Overview</h2>
+
+    <p>
+      Compilers and interpreters must use the parsing rules described in this specification to generate an <em>Abstract
+        Syntax Tree</em> (AST) that can then be used to analyze, optimize or translate Lotus source code.
+    </p>
+
+    <!-- Definitions -->
+
+    <div id="general-defs">
+      <h3>2.1 Definitions</h3>
+      <p>This section defines terms used throughout this document.</p>
+      <dl>
+        <dt id="code-point-def">
+          code point
+        </dt>
+        <dd>
+          A <a href="http://unicode.org/glossary/#code_point">Unicode code point</a>. A Unicode character with a value
+          between 0 (hexadecimal) and 10FFFF (hexadecimal).
+        </dd>
+
+        <dt id="input-stream-def">
+          input-stream
+        </dt>
+        <dd>
+          A Unicode stream (or list) of <a href="#code-point">code points</a>.
+        </dd>
+
+        <dt id="consume-next-def">
+          consume the next point
+        </dt>
+        <dd>
+          Pop a <a href="#code-point-def">code point</a> from the <a href="#input-stream-def">input stream</a> and
+          return
+          it.
+        </dd>
+
+        <dt id="next-code-point-def">
+          next input code point
+        </dt>
+        <dd>
+          The first <a href="#code-point-def">code point</a> in the <a href="#input-stream-def">input stream</a> that
+          has
+          not been consumed yet.
+        </dd>
+
+        <dt id="current-code-point-def">
+          current input code point
+        </dt>
+        <dd>
+          The last <a href="#code-point">code point</a> to have been consumed.
+        </dd>
+
+        <dt id="reconsume-code-point-def">
+          reconsume the current code point
+        </dt>
+        <dd>
+          Push the <a href="#current-code-point-def">current input code point</a> on top of the <a
+            href="#input-stream-def">input stream</a>,
+          so that the next time that you are instructed to consume the <a href="#next-code-point-def">next input code
+            point</a>, the
+          <a href="#current-code-point-def">current input code point</a> will be consumed instead.
+        </dd>
+
+        <dt id="eof-def">
+          EOF code point
+        </dt>
+        <dd>
+          A conceptual <a href="#code-point-def">code point</a> used to represent the end of the <a
+            href="#input-stream-def">input stream</a>.
+        </dd>
+
+        <dt id="digit-def">
+          digit
+        </dt>
+        <dd>
+          A <a href="#code-point-def">code point</a> between U+0030 DIGIT ZERO (0) and U+0039 DIGIT NINE (9).
+        </dd>
+
+        <dt id="hex-digit-def">
+          hex digit
+        </dt>
+        <dd>
+          A <a href="#digit-def">digit</a>, or a <a href="#code-point-def">code point</a> between U+0041 LATIN CAPITAL
+          LETTER A (A)
+          and U+0046 LATIN CAPITAL LETTER F (F), or a <a href="#code-point-def">code point</a> between U+0061 LATIN
+          SMALL
+          LETTER A (a)
+          and U+0066 LATIN SMALL LETTER F (f).
+        </dd>
+
+        <dt id="number-def">
+          number
+        </dt>
+        <dd>
+          An optional sequence of <a href="#digit-def">digits</a>, optionally followed by a U+002E FULLSTOP (.) and a
+          sequence of
+          <a href="#digit-def">digits</a>, optionally followed by a U+0045 LATIN CAPITAL LETTER E (E) or U+0065 LATIN
+          SMALL
+          LETTER E (e), a U+002B PLUS SIGN (+) or a U+002D HYPHEN MINUS (-), and an optional sequence of <a
+            href="#digit-def">digits</a>,
+          optionally followed by a U+002E FULLSTOP (.) and a sequence of <a href="#digit-def">digits</a>.
+        </dd>
+
+        <dt id="upper-letter-def">
+          uppercase letter
+        </dt>
+        <dd>
+          A <a href="#code-point-def">code point</a> between U+0041 LATIN CAPITAL LETTER A (A) and U+005A LATIN CAPITAL
+          LETTER Z (Z).
+        </dd>
+
+        <dt id="lower-letter-def">
+          lowercase letter
+        </dt>
+        <dd>
+          A <a href="#code-point-def">code point</a> between U+0061 LATIN SMALL LETTER A (a) and U+007A LATIN SMALL
+          LETTER
+          Z
+          (z).
+        </dd>
+
+        <dt id="letter-def">
+          letter
+        </dt>
+        <dd>
+          An <a href="#uper-letter-def">uppercase</a> or <a href="#lower-letter-def">lowercase</a> letter.
+        </dd>
+
+        <dt id="non-ascii-def">
+          non-ASCII code point
+        </dt>
+        <dd>
+          A <a href="#code-point-def">code point</a> with a value equal or greater than U+0080 CONTROL.
+        </dd>
+
+        <dt id="name-code-point-def">
+          name code point
+        </dt>
+        <dd>
+          A <a href="#letter-def">letter</a>, a <a href="#digit-def">digit</a>, a <a href="#non-ascii-def">non-ASCII
+            code
+            point</a>,
+          a U+002D HYPHEN MINUS (-), or a U+005F LOW LINE (_).
+        </dd>
+
+        <dt id="newline">
+          newline
+        </dt>
+        <dd>
+          A <a href="#code-point-def">code point</a> with a value of U+000A LINE FEED (represented as the escape
+          sequence
+          '\n'
+          in most programming languages).
+        </dd>
+
+        <dt id="whitespace">
+          whitespace
+        </dt>
+        <dd>
+          A <a href="#newline">newline</a>, a U+>0009 CHARACTER TABULATION, or a U+0020 SPACE.
+        </dd>
+
+        <dt id="max-code-point-def">
+          maximum allowed code point
+        </dt>
+        <dd>
+          The <a href="#code-point-def">code point</a> with the value U+10FFFF, maximum value defined by Unicode.
+        </dd>
+
+        <dt id="token-stream-def">
+          input token stream
+        </dt>
+        <dd>
+          The stream of token produced by the tokenizer.
+        </dd>
+
+        <dt id="current-token-def">
+          current input token
+        </dt>
+        <dd>
+          The last token from the <a href="#token-stream-def">input token stream</a> to have been consumed.
+        </dd>
+
+        <dt id="next-token-def">
+          next input token
+        </dt>
+        <dd>
+          The first token in the <a href="#token-stream">input token stream</a> that has not been consumed yet.
+        </dd>
+
+        <dt id="eof-token-def">
+          EOF token
+        </dt>
+        <dd>
+          A conceptual token used to represent the end of the <a href="#token-stream-def">input token stream</a>.
+        </dd>
+
+        <dt id="reconsume-token-def">
+          reconsume the current input token
+        </dt>
+        <dd>
+          Push the <a href="#current-token-def">current input token</a> will be consumed instead.
+        </dd>
+      </dl>
+    </div>
+
+    <!-- Token types -->
+
+    <div id="tokens">
+      <h3>2.2 Token types</h3>
+
+      <p>Implementations should use the algorithms described in <a href="#tokenization">section 4</a>, or act as they
+        use
+        them (i.e. the resulting token stream should be identical, no matter the underlying implementation). The <a
+          href="#tokenization">tokenization</a> phase should output a stream of zero or more of the following tokens.
+      </p>
+
+      <dl>
+        <dt id="open-curly-token">
+          <code class="inline">&lt;{-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing an opening curly bracket ({).
+        </dd>
+
+        <dt id="closing-curly-token">
+          <code class="inline">&lt;}-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a closing curly bracket (}).
+        </dd>
+
+        <dt id="open-paren-token">
+          <code class="inline">&lt;(-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing an opening parenthesis (().
+        </dd>
+
+        <dt id="close-paren-token">
+          <code class="inline">&lt;)-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a closing parenthesis ()).
+        </dd>
+
+        <dt id="open-square-token">
+          <code class="inline">&lt;[-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing an opening square bracket ([).
+        </dd>
+
+        <dt id="close-square-token">
+          <code class="inline">&lt;]-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a closing square bracket (]).
+        </dd>
+
+        <dt id="dot-token">
+          <code class="inline">&lt;dot-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a dot (.).
+        </dd>
+
+        <dt id="comma-token">
+          <code class="inline">&lt;comma-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a comma (,).
+        </dd>
+
+        <dt id="colon-token">
+          <code class="inline">&lt;colon-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a colon (:).
+        </dd>
+
+        <dt id="semicolon-token">
+          <code class="inline">&lt;semicolon-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a semicolon (;).
+        </dd>
+
+        <dt id="logicial-or-token">
+          <code class="inline">&lt;logical-or-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a logical OR operator (||).
+        </dd>
+
+        <dt id="logical-and-token">
+          <code class="inline">&lt;logical-and-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a logical AND operator (&&).
+        </dd>
+
+        <dt id="logical-xor-token">
+          <code class="inline">&lt;logical-xor-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a logical XOR operator (^^).
+        </dd>
+
+        <dt id="equality-token">
+          <code class="inline">&lt;equality-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing an equality operator (==).
+        </dd>
+
+        <dt id="less-than-token">
+          <code class="inline">&lt;less-than-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a less-than operator (&lt;).
+        </dd>
+
+        <dt id="greater-than-token">
+          <code class="inline">&lt;greater-than-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a greater-than operator (&gt;).
+        </dd>
+
+        <dt id="less-equal-token">
+          <code class="inline">&lt;less-equal-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a less-or-equal operator (&lt;=).
+        </dd>
+
+        <dt id="greater-equal-token">
+          <code class="inline">&lt;greater-equal-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a greater-or-equal operator (&gt;=).
+        </dd>
+
+        <dt id="not-equal-token">
+          <code class="inline">&lt;not-equal-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a not-equal operator (!=).
+        </dd>
+
+        <dt id="decrement-token">
+          <code class="inline">&lt;decrement-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a decrement operator (--).
+        </dd>
+
+        <dt id="incremement-token">
+          <code class="inline">&lt;increment-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing an increment operator (++).
+        </dd>
+
+        <dt id="number-token">
+          <code class="inline">&lt;number-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a <a href="#number-def">number</a>. It holds two value: the numeric value
+          stored as a string, and the numeric value stored as a number.
+        </dd>
+
+        <dt id="string-token">
+          <code class="inline">&lt;string-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing a string. It holds two value: the content of the string, and the
+          <a href="#code-point-def">code point</a> delimiting the string.
+        </dd>
+
+        <dt id="ident-token">
+          <code class="inline">&lt;ident-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing an identifier. It holds one value : the value of the identifier, stored as a string.
+        </dd>
+      </dl>
+    </div>
+
+    <!-- Tokens Diagrams -->
+
+    <div id="tokens-diagrams">
+      <h3>2.3 Tokens Railroad Diagrams</h3>
+    </div>
+
+    <!-- Tokenization Errors -->
+
+    <div id="tokenization-errors">
+      <h3>2.4 Tokenization Errors</h3>
+    </div>
+
+    <!-- Parse Tree Model -->
+
+    <div id="parse-tree-model">
+      <h3>2.5 Parse Tree Model</h3>
+    </div>
+
+    <!-- Parse Node Diagrams -->
+
+    <div id="parse-node-diagrams">
+      <h3>2.6 Parse Tree Node Railroad Diagrams</h3>
+    </div>
+
+    <!-- Parsing Errors -->
+
+    <div id="parsing-errors">
+      <h3>2.7 Parsing Errors</h3>
+    </div>
+
+  </div>
+
+
+  <!-- Tokenization -->
+
+  <div id="tokenization">
+    <h2>3. Tokenization</h2>
+
+    <p><em>This section is informal</em></p>
+
+    <p>Tokenization is a process by which an algorithm will convert a sequence of <a href="#code-point-def">code
+        points</a> to
+      a list of tokens. </p>
+
+    <p>A token is an object representing zero or more <a href="#code-point-def">code points</a> and optionally metadata
+      associated with it. </p>
+
+    <div class="example">
+      <p>Example: A <a href="#number-token"><code class="inline">&lt;number-token&gt;</code></a> represents a number.
+      </p>
+      <p>It holds a sequence of <a href="#code-point-def">code points</a>, as well as the numeric value of this
+        sequence.
+      </p>
+      <p>The sequence of <a href="#code-point-def">code points</a> is its reprensetation, and the numeric value is its
+        metadata.
+      </p>
+    </div>
+
+    <p>The following algorithms describes how to transform a stream of <a href="#code-point-def">code points</a>,
+      designated as
+      the <a href="#input-stream-def">input stream</a>, into a stream of tokens. </p>
+
+    <p>Implementations should act as if they used those algorithms (i.e. the resulting token stream should be contain
+      the
+      same information as if it implemented the following algorithms. See <a href="">the Lotus tokenizer reference
+        implementation</a> for more information).</p>
+
+    <!-- Preprocessing the input stream -->
+
+    <div id="preprocessing">
+      <h3>3.1 Preprocessing the input stream</h3>
+
+      <p>
+        Before sending the <a href="#input-stream-def">input stream</a> to the tokenizer, it needs to be processed as
+        following :
+      </p>
+
+      <ul>
+        <li>
+          <p>Replace any U+0000 NULL <a href="#code-point-def">code point</a> with U+FFFD REPLACEMENT CHARACTER</p>
+        </li>
+        <li>
+          <p>Replace any U+000D CARRIAGE RETURN <a href="#code-point-def">code point</a>, U+000C FORM FEED [code
+            point](code
+            point), or pair of U+000D CARRIAGE RETURN U+000A LINE FEED <a href="#code-point-def">code points</a> by a
+            single
+            U+000A LINE FEED <a href="#code-point-def">code point</a>.</p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Consume a token -->
+
+    <div id="consume-token">
+      <h3>3.2 Consume a token</h3>
+
+      <p>This section describes <strong><em>how to consume a token</em></strong> from a stream of <a
+          href="#code-point-def">code
+          points</a>.
+      </p>
+
+      <p>
+        Consume the next code point from the <a href="#input-stream-def">input
+          stream</a> :
+      </p>
+
+      <p>
+        If it is a <strong>whitespace</strong> :
+      </p>
+
+      <p>
+        Consume as much <a href="#whitespace-def">whitespace</a> as possible and return nothing.
+      </p>
+
+      <p>
+        If it is a <strong>U+0022 QUOTATION MARK (<code class="inline">"</code>)</strong> :
+      </p>
+
+      <p>
+        <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the <a
+          href="#current-token-def">current token</a>. Return the resulting <a href="#string-token"><code
+            class="inline">&lt;string-token&gt;</code></a>.
+      </p>
+
+      <p>
+        If it is a <strong>U+0027 APOSTROPHE (<code class="inline">'</code>)</strong> :
+      </p>
+
+      <p>
+        <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the [current input
+        code point](current-input-code point). Return the resulting <a href="#string-token"><code
+            class="inline">&lt;string-token&gt;</code></a>.
+      </p>
+
+    </div>
+
+
+    <div id="consume-string">
+      <h3>3.3 Consume a string token</h3>
+      <p>This section describes <strong><em>how to consume a string token</em></strong> from a stream of <a
+          href="#code-point-def">code points</a>.</p>
+      <p>This algorithms should be called with an <em>ending delimiter</em>, which denotes the <a
+          href="#code-point-def">code
+          point</a> that ends the string. If no <em>ending delimiter</em> is specified, use the <a
+          href="#current-code-point">current input code point</a> instead.</p>
+      <p>Create a <a href="#string-token"><code class="inline">&lt;string-token&gt;</code></a> with its value set to an
+        empty
+        string.</p>
+      <p>Repeatedly <a href="#consume-next-code-point-def">consume the next code point</a> from the <a
+          href="#input-stream-def">input stream</a> :</p>
+      <p>If it is an <strong>EOF</strong> :</p>
+      <p> This is a <a href="#tokenization-error">tokenization error</a>. Return the <a href="#string-token"><code
+            class="inline">&lt;string-token&gt;</code></a>.</p>
+      <p>If it is the <strong><em>ending delimiter</em></strong> :</p>
+      <p> Return the <a href="#string-token"><code class="inline">&lt;string-token&gt;</code></a>.</p>
+      <p>if it is <strong><em>U+005C REVERSE SOLIDUS (<code class="inline">\</code>)</em></strong> :</p>
+    </div>
+
+    <!-- Consume a number token -->
+
+    <div id="consume-number">
+      <h3>3.4 Consume a number token</h3>
+    </div>
+
+    <!-- Consume an escaped code point -->
+
+    <div id="consume-escaped-code-point">
+      <h3>3.5 Consume an escaped code point</h3>
+    </div>
+
+    <!-- Consume a name -->
+
+    <div id="consume-name">
+      <h3>3.6 Consume a name</h3>
+    </div>
+
+    <!-- Consume an identifier token -->
+
+    <div id="consume-identifier">
+      <h3>3.7 Consume an identifier token</h3>
+    </div>
+
+    <!-- Check start of an identifier -->
+
+    <div id="check-start-of-identifier">
+      <h3>3.8 Check if a code point would start an identifier</h3>
+    </div>
+
+    <!-- Check a valid escape -->
+
+    <div id="check-valid-escape">
+      <h3>3.9 Check if two code points are a valid escape</h3>
+    </div>
+
+    <!-- Check start of a number -->
+
+    <div id="check-start-of-number">
+      <h3>3.10 Check if two code points would start a number</h3>
+    </div>
+
+  </div>
+
+
+  <!-- Parsing -->
+
+  <div id="parsing">
+    <h2>4. Parsing</h2>
+
+    <!-- Consume a statement -->
+
+    <div id="consume-statement">
+      <h3>4.1 Consume a statement</h3>
+    </div>
+
+    <!-- Consume a simple block -->
+
+    <div id="consume-statement">
+      <h3>4.2 Consume a simple block</h3>
+    </div>
+
+    <!-- Consume an assignement -->
+
+    <div id="consume-assignement">
+      <h3>4.3 Consume an assignement</h3>
+    </div>
+
+    <!-- Consume an operation -->
+
+    <div id="consume-operation">
+      <h3>4.4 Consume an operation</h3>
+    </div>
+
+    <!-- Consume a function call -->
+
+    <div id="consume-function-call">
+      <h3>4.5 Consume a function call</h3>
+    </div>
+
+    <!-- Consume a function declaration -->
+
+    <div id="consume-function">
+      <h3>4.6 Consume a function declaration</h3>
+    </div>
+
+    <!-- Consume an if clause -->
+
+    <div id="consume-if-clause">
+      <h3>4.7 Consume an if clause</h3>
+    </div>
+
+    <!-- Consume an else clause -->
+
+    <div id="consume-else-clause">
+      <h3>4.8 Consume an else clause</h3>
+    </div>
+
+    <!-- Consume a for loop declaration -->
+
+    <div id="consume-for-loop">
+      <h3>4.9 Consume a for loop declaration</h3>
+    </div>
+
+    <!-- Consume a foreach loop declaration -->
+
+    <div id="consume-foreach-loop">
+      <h3>4.10 Consume a foreach loop declaration</h3>
+    </div>
+
+    <!-- Consume a while loop declaration -->
+
+    <div id="consume-while-loop">
+      <h3>4.11 Consume a while loop declaration</h3>
+    </div>
+
+    <!-- Consume a do-while loop declaration -->
+
+    <div id="consume-do-while-loop">
+      <h3>4.12 Consume a do-while loop declaration</h3>
+    </div>
+
+    <!-- Consume a class declaration -->
+
+    <div id="consume-class">
+      <h3>4.13 Consume a class declaration</h3>
+    </div>
+
+    <!-- Consume an interface declaration -->
+
+    <div id="consume-interface">
+      <h3>4.14 Consume an interface declaration</h3>
+    </div>
+
+    <!-- Consume an enum declaration -->
+
+    <div id="consume-enum">
+      <h3>4.15 Consume an enum declaration</h3>
+    </div>
+
+    <!-- Consume an import directive -->
+
+    <div id="consume-import">
+      <h3>4.16 Consume an import directive</h3>
+    </div>
+
+    <!-- Consume a from directive -->
+
+    <div id="consume-from">
+      <h3>4.17 Consume a from directive</h3>
+    </div>
+
+    <!-- Consume a namespace declaration -->
+
+    <div id="consume-namespace">
+      <h3>4.18 Consume a namespace declaration</h3>
+    </div>
+
+    <!-- Consume an extends directive -->
+
+    <div id="consume-extends">
+      <h3>4.19 Consume an extends directive</h3>
+    </div>
+
+  </div>
+</body>
+
+</html>

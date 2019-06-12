@@ -1,0 +1,112 @@
+body {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    color: hsl(210, 12%, 16%);
+    line-height: 1.5;
+    font-family: Roboto;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 1em;
+    justify-content: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: hsl(113, 67%, 34%);
+}
+
+h2 {
+    margin-top: 2em;
+}
+
+h3 {
+    margin-top: 2em;
+}
+
+p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    border-bottom: .05em solid lightblue;
+}
+
+a:visited {
+    border-bottom-color: hsl(0, 0%, 83%);
+}
+
+a:visited:hover {
+    background-color: hsl(120, 100%, 90%);
+}
+
+a:hover {
+    background-color: lightgreen;
+    border-bottom-color: black;
+}
+
+a:active {
+    color: blue;
+}
+
+.toc-item {
+    font-style: italic;
+}
+
+hr {
+    height: .25em;
+    background-color: hsl(0, 0%, 90%);
+    border: 0;
+}
+
+div.note {
+    border-left: .5em solid rgb(56, 132, 255);
+    background-color: hsl(0, 0%, 95%);
+}
+
+div.note p {
+    padding: .5em 1em;
+}
+
+div.example {
+    border-left: .5em solid hsl(135, 75%, 45%);
+    background-color: hsl(0, 0%, 95%);
+}
+
+div.example p {
+    padding: .5em 1em;
+}
+
+code.inline {
+    border: .5em;
+    background-color: hsl(0, 0%, 95%);
+    padding-left: .25em;
+    padding-right: .25em;
+}
+
+pre {
+    tab-size: 2;
+    margin: .25em 1em;
+    background-color: hsl(0, 0%, 95%);
+    padding: .5em 1em;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
+dt {
+    font-weight: bold;
+}
+
+dd {
+    margin: 0 0 1em 2em;
+}
