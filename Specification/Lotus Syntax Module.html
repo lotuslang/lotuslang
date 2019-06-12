@@ -327,8 +327,7 @@ Code section</code></pre>
         </dt>
         <dd>
           Pop a <a href="#code-point-def">code point</a> from the <a href="#input-stream-def">input stream</a> and
-          return
-          it.
+          return it.
         </dd>
 
         <dt id="next-code-point-def">
@@ -513,6 +512,13 @@ Code section</code></pre>
       </p>
 
       <dl>
+        <dt id="whitespace-token">
+          <code class="inline">&lt;whitespace-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing one or more <a href="#whitespace-def">whitespace</a>.
+        </dd>
+
         <dt id="open-curly-token">
           <code class="inline">&lt;{-token&gt;</code>
         </dt>
@@ -665,7 +671,7 @@ Code section</code></pre>
         </dt>
         <dd>
           A token representing a <a href="#number-def">number</a>. It holds two value: the numeric value
-          stored as a string, and the numeric value stored as a number.
+          stored as a sequence of <a href="#code-point-def">code points</a>, and the numeric value stored as a number.
         </dd>
 
         <dt id="string-token">
@@ -680,7 +686,8 @@ Code section</code></pre>
           <code class="inline">&lt;ident-token&gt;</code>
         </dt>
         <dd>
-          A token representing an identifier. It holds one value : the value of the identifier, stored as a string.
+          A token representing an identifier. It holds one value : the value of the identifier, stored as a
+          sequence of <a href="#code-point-def">code points</a>.
         </dd>
       </dl>
     </div>
@@ -725,32 +732,44 @@ Code section</code></pre>
 
     <p><em>This section is informal</em></p>
 
-    <p>Tokenization is a process by which an algorithm will convert a sequence of <a href="#code-point-def">code
-        points</a> to
-      a list of tokens. </p>
+    <p>
+      Tokenization is a process by which an algorithm converts a sequence of <a href="#code-point-def">code
+        points</a> into a list tokens.
+    </p>
 
-    <p>A token is an object representing zero or more <a href="#code-point-def">code points</a> and optionally metadata
-      associated with it. </p>
+    <p>
+      A token is an object representing zero or more <a href="#code-point-def">code points</a> and optionally metadata
+      associated with it.
+    </p>
 
     <div class="example">
-      <p>Example: A <a href="#number-token"><code class="inline">&lt;number-token&gt;</code></a> represents a number.
+      <p>
+        Example: A <a href="#number-token"><code class="inline">&lt;number-token&gt;</code></a> represents a
+        <a href="#number-def">number</a>.
       </p>
-      <p>It holds a sequence of <a href="#code-point-def">code points</a>, as well as the numeric value of this
+
+      <p>
+        It holds a sequence of <a href="#code-point-def">code points</a>, as well as the numeric value of this
         sequence.
       </p>
-      <p>The sequence of <a href="#code-point-def">code points</a> is its reprensetation, and the numeric value is its
+
+      <p>
+        The sequence of <a href="#code-point-def">code points</a> is its reprensetation, and the numeric value is its
         metadata.
       </p>
     </div>
 
-    <p>The following algorithms describes how to transform a stream of <a href="#code-point-def">code points</a>,
+    <p>
+      The following algorithms describes how to transform a stream of <a href="#code-point-def">code points</a>,
       designated as
-      the <a href="#input-stream-def">input stream</a>, into a stream of tokens. </p>
+      the <a href="#input-stream-def">input stream</a>, into a stream of tokens.
+    </p>
 
-    <p>Implementations should act as if they used those algorithms (i.e. the resulting token stream should be contain
-      the
-      same information as if it implemented the following algorithms. See <a href="">the Lotus tokenizer reference
-        implementation</a> for more information).</p>
+    <p>
+      Implementations should act as if they used those algorithms (i.e. the resulting token stream should be contain
+      at lest the same information as if it implemented the following algorithms. See <a href="">the Lotus tokenizer
+        reference implementation</a> for more information).
+    </p>
 
     <!-- Preprocessing the input stream -->
 
@@ -781,66 +800,102 @@ Code section</code></pre>
     <div id="consume-token">
       <h3>3.2 Consume a token</h3>
 
-      <p>This section describes <strong><em>how to consume a token</em></strong> from a stream of <a
-          href="#code-point-def">code
-          points</a>.
+      <p>
+        This section describes <strong><em>how to consume a token</em></strong> from a stream of
+        <a href="#code-point-def">code points</a>.
       </p>
 
       <p>
-        Consume the next code point from the <a href="#input-stream-def">input
-          stream</a> :
+        <a href="#consume-next-def">Consume the next input code point</a> from the <a href="#input-stream-def">input stream</a>.
       </p>
 
-      <p>
-        If it is a <strong>whitespace</strong> :
-      </p>
+      <dl>
+        <dt>
+          <a href="#whitespace-def">whitespace</a>
+        </dt>
+        <dd>
+          Consume as much <a href="#whitespace-def">whitespace</a> as possible and return a
+          <a href="#whitespace-token"><code class="inline">&lt;whitespace-token&gt;</code></a>.
+        </dd>
 
-      <p>
-        Consume as much <a href="#whitespace-def">whitespace</a> as possible and return nothing.
-      </p>
+        <dt>
+          U+0022 QUOTATION MARK (<code class="inline">"</code>)
+        </dt>
+        <dd>
+          <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the
+          <a href="#current-token-def">current token</a>. Return the resulting <a href="#string-token">
+          <code class="inline">&lt;string-token&gt;</code></a>.
+        </dd>
 
-      <p>
-        If it is a <strong>U+0022 QUOTATION MARK (<code class="inline">"</code>)</strong> :
-      </p>
-
-      <p>
-        <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the <a
-          href="#current-token-def">current token</a>. Return the resulting <a href="#string-token"><code
-            class="inline">&lt;string-token&gt;</code></a>.
-      </p>
-
-      <p>
-        If it is a <strong>U+0027 APOSTROPHE (<code class="inline">'</code>)</strong> :
-      </p>
-
-      <p>
-        <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the [current input
-        code point](current-input-code point). Return the resulting <a href="#string-token"><code
-            class="inline">&lt;string-token&gt;</code></a>.
-      </p>
-
+        <dt>
+          U+0027 APOSTROPHE (<code class="inline">'</code>)
+        </dt>
+        <dd>
+          <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the
+          <a href="#current-token-def">current token</a>. Return the resulting <a href="#string-token">
+          <code class="inline">&lt;string-token&gt;</code></a>.
+        </dd>
+      </dl>
     </div>
 
+    <!-- Cnsume a string token -->
 
     <div id="consume-string">
       <h3>3.3 Consume a string token</h3>
-      <p>This section describes <strong><em>how to consume a string token</em></strong> from a stream of <a
-          href="#code-point-def">code points</a>.</p>
-      <p>This algorithms should be called with an <em>ending delimiter</em>, which denotes the <a
-          href="#code-point-def">code
-          point</a> that ends the string. If no <em>ending delimiter</em> is specified, use the <a
-          href="#current-code-point">current input code point</a> instead.</p>
-      <p>Create a <a href="#string-token"><code class="inline">&lt;string-token&gt;</code></a> with its value set to an
-        empty
-        string.</p>
-      <p>Repeatedly <a href="#consume-next-code-point-def">consume the next code point</a> from the <a
-          href="#input-stream-def">input stream</a> :</p>
-      <p>If it is an <strong>EOF</strong> :</p>
-      <p> This is a <a href="#tokenization-error">tokenization error</a>. Return the <a href="#string-token"><code
-            class="inline">&lt;string-token&gt;</code></a>.</p>
-      <p>If it is the <strong><em>ending delimiter</em></strong> :</p>
-      <p> Return the <a href="#string-token"><code class="inline">&lt;string-token&gt;</code></a>.</p>
-      <p>if it is <strong><em>U+005C REVERSE SOLIDUS (<code class="inline">\</code>)</em></strong> :</p>
+
+      <p>
+        This section describes <strong><em>how to consume a string token</em></strong> from a stream of
+        <a href="#code-point-def">code points</a>.
+      </p>
+
+      <p>
+        This algorithms should be called with an <em>ending delimiter</em>, which denotes the
+        <a href="#code-point-def">code point</a> that ends the string. If no <em>ending delimiter</em>
+        is specified, use the <a href="#current-code-point">current input code point</a> instead.
+      </p>
+
+      <p>
+        Create a <a href="#string-token"><code class="inline">&lt;string-token&gt;</code></a> with its value
+        set to an empty string, and its delimiter set to the <em>ending delimiter</em>.
+      </p>
+
+      <p>
+        Repeatedly <a href="#consume-next-code-point-def">consume the next code point</a> from the
+        <a href="#input-stream-def">input stream</a>.
+      </p>
+
+      <dl>
+        <dt>
+          <a href="#eof-def">EOF</a>
+        </dt>
+        <dd>
+          This is a <a href="#tokenization-errors">tokenization error</a>.
+        </dd>
+
+        <dt>
+          <em>ending delimiter</em>
+        </dt>
+        <dd>
+          Return the <a href="#string-token">string token</a>.
+        </dd>
+
+        <dt>
+          U+005C REVERSE SOLIDUS (<code class="inline">\</code>)
+        </dt>
+        <dd>
+          <a href="#check-valid-escape">If the two next input code points form a valid escape</a>,
+          <a href="#consume-escape">consume an escaped code point</a> and append its value to the
+          <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code>'s value.
+        </dd>
+
+        <dt>
+          Anything else
+        </dt>
+        <dd>
+          Append the <a href="#current-code-point-def">current input code point</a> to the
+          <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code>'s value.
+        </dd>
+      </dl>
     </div>
 
     <!-- Consume a number token -->
@@ -851,7 +906,7 @@ Code section</code></pre>
 
     <!-- Consume an escaped code point -->
 
-    <div id="consume-escaped-code-point">
+    <div id="consume-escape">
       <h3>3.5 Consume an escaped code point</h3>
     </div>
 
