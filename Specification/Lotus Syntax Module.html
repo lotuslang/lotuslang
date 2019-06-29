@@ -64,7 +64,7 @@
 
   <h2 id="toc">Table Of Contents</h2>
   <ol class="toc">
-    <li>
+    <li class="toc-item">
 
       <!-- Introduction -->
 
@@ -75,12 +75,14 @@
       </ul>
     </li> <!-- End of Introduction -->
 
-    <li>
+    <li class="toc-item">
 
       <!-- Overview -->
 
-      <p class="toc-title"><strong><a href="#overview">Overview</a></strong>
+      <p class="toc-title">
+        <strong><a href="#overview">Overview</a></strong>
       </p>
+
       <ul>
         <li class="toc-item">
           <a href="#general-defs">Definitions</a>
@@ -111,6 +113,26 @@
         </li>
       </ul>
     </li> <!-- End of Overview -->
+
+    <li class="toc-item">
+
+      <!-- Formal Syntax Definition -->
+
+      <p class="toc-title">
+        <strong><a href="#syntax">Formal Syntax Definition</a></strong>
+      </p>
+
+      <ul>
+        <li class="toc-item">
+          <a href="#EBNF-syntax">Extended Backus-Naur Form syntax definition</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#syntax-diagrams">Railroad diagrams syntax definition</a>
+        </li>
+      </ul>
+
+    </li>
 
     <li>
 
@@ -155,7 +177,7 @@
         </li>
 
         <li class="toc-item">
-          <a href="#check-start-of-number">Check if two code points would start a number</a>
+          <a href="#check-start-of-number">Check if three code points would start a number</a>
         </li>
       </ul>
     </li> <!-- End of Tokenization -->
@@ -164,64 +186,81 @@
 
       <!-- Parsing -->
 
-      <p class="toc-title"><strong><a href="parsing">Parsing</a></strong></p>
+      <p class="toc-title"><strong><a href="#parsing">Parsing</a></strong></p>
       <ul>
-        <li class="toc-item"> <a href="4.1-consume-a-statement">Consume a statement</a>
-        </li>
-        <li class="toc-item"> <a href="4.2-consume-a-simple-block">Consume a
-            simple block</a></li>
-        <li class="toc-item"> <a href="4.3-consume-an-assignement">Consume an
-            assignement</a></li>
-        <li class="toc-item"> <a href="4.4-consume-an-operation">Consume an
-            operation</a></li>
-        <li class="toc-item"> <a href="4.5-consume-a-function-call">Consume a
-            function call</a></li>
-        <li class="toc-item"> <a href="4.6-consume-a-function-declaration">Consume a
-            function declaration</a></li>
-        <li class="toc-item"> <a href="4.7-consume-an-if-clause">Consume an if
-            clause</a></li>
-        <li class="toc-item"> <a href="4.8-consume-an-else-clause">Consume an
-            else clause</a></li>
-        <li class="toc-item"> <a href="4.9-consume-a-for-loop-declaration">Consume a
-            for loop declaration</a></li>
         <li class="toc-item">
-          <a href="4.10-consume-a-foreach-loop-declaration">Consume a foreach loop declaration</a>
+          <a href="#consume-statement">Consume a statement</a>
         </li>
 
         <li class="toc-item">
-          <a href="4.11-consume-a-while-loop-declaration">Consume a while loop declaration</a>
+          <a href="#consume-simple-block">Consume a simple block</a>
         </li>
 
         <li class="toc-item">
-          <a href="4.12-consume-a-do-while-loop-declaration">Consume a do-while loop declaration</a>
+          <a href="#consume-assignement">Consume an assignement</a>
         </li>
 
         <li class="toc-item">
-          <a href="4.13-consume-a-class-declaration">Consume a class declaration</a>
+          <a href="#consume-operation">Consume an operation</a>
         </li>
 
         <li class="toc-item">
-          <a href="4.14-consume-an-interface-declaration">Consume an interface declaration</a>
+          <a href="#consume-function-call">Consume a function call</a>
         </li>
 
         <li class="toc-item">
-          <a href="4.15-consume-an-enum-declaration">Consume an enum declaration</a>
+          <a href="#consume-function-def">Consume a function declaration</a>
         </li>
 
         <li class="toc-item">
-          <a href="4.16-consume-an-import-directive">Consume an import directive</a>
+          <a href="#consume-if-clause">Consume an if clause</a>
         </li>
 
         <li class="toc-item">
-          <a href="4.17-consume-a-from-directive">Consume a from directive</a>
+          <a href="#consume-else-clause">Consume an else clause</a>
         </li>
 
         <li class="toc-item">
-          <a href="4.18-consume-a-namespace-declaration">Consume a namespace declaration</a>
+          <a href="#consume-for-loop">Consume a for loop declaration</a>
+        </li>
+        <li class="toc-item">
+          <a href="#consume-foreach-loop">Consume a foreach loop declaration</a>
         </li>
 
         <li class="toc-item">
-          <a href="4.19-consume-an-extends-directive">Consume an extends directive</a>
+          <a href="#consume-while-loop">Consume a while loop declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-do-while-loop">Consume a do-while loop declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-class">Consume a class declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-interface">Consume an interface declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-enum">Consume an enum declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-import">Consume an import directive</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-from">Consume a from directive</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-namespace">Consume a namespace declaration</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-extends">Consume an extends directive</a>
         </li>
       </ul>
     </li> <!-- End of Parsing -->
@@ -233,10 +272,24 @@
   <div id="intro">
     <h2>1. Introduction</h2>
     <p>This document describes the syntax of Lotus source code.</p>
-    <p>It also defines algorithms to convert text into a list of tokens, and then transform it into an abstract syntax
+
+    <p>
+      It also defines algorithms to convert text into a list of tokens, and then transform it into an abstract syntax
       tree, that can be analysed, verified, and used for interpretation or translation purposes, for example to HTML,
-      CSS,
-      and JavaScript as does <a href="https://github.com/lotuslang/lotusjs">LotusJS</a>.</p>
+      CSS, and JavaScript as does <a href="https://github.com/lotuslang/lotusjs">LotusJS</a>.
+    </p>
+
+    <p>
+      It doesn't, however, describes how the resulting <a href="#token-stream-def">token stream</a> or
+      <a href="#parse-tree-model">Parse Tree</a> can be interpreted or analyzed. This may be described by other
+      documents.
+    </p>
+
+    <p>
+        As this specification is intended for authors of tools that operates and interacts with documents that use
+        the syntax described here, it sacrifies clarity for precision, and brevity for completeness. As such, this
+        document is not meant to be a tutorial, and more beginner-friendly documents should be used instead.
+      </p>
 
     <!-- Conventions -->
 
@@ -712,8 +765,8 @@ Code section</code></pre>
 
     <!-- Parse Node Diagrams -->
 
-    <div id="parse-node-diagrams">
-      <h3>2.6 Parse Tree Node Railroad Diagrams</h3>
+    <div id="node-definitions">
+      <h3>2.6 Parse Tree Node Definitions</h3>
     </div>
 
     <!-- Parsing Errors -->
@@ -725,10 +778,35 @@ Code section</code></pre>
   </div>
 
 
+<!-- Formal Syntax Definition -->
+
+  <div id="syntax">
+    <h2>3. Formal Syntax Definition</h2>
+
+    <p>
+      This section describes Lotus' syntax through <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">
+      EBNF</a> railroad diagrams. An informal and more human-readable definition of the syntax can be found
+      <a href="https://github.com/lotuslang/lotuslang/blob/master/Global/Lexical%20Structure.md">here</a>.
+    </p>
+
+    <!-- EBNF syntax definitions -->
+
+    <div id="EBNF-syntax">
+      <h3>3.1 Extended Backus-Naur Form syntax definitions</h3>
+    </div>
+
+    <!-- Syntax Diagrams -->
+
+    <div id="syntax-diagrams">
+      <h3>3.2 Railroad syntax diagrams</h3>
+    </div>
+  </div>
+
+
   <!-- Tokenization -->
 
   <div id="tokenization">
-    <h2>3. Tokenization</h2>
+    <h2>4. Tokenization</h2>
 
     <p><em>This section is informal</em></p>
 
@@ -786,11 +864,12 @@ Code section</code></pre>
           <p>Replace any U+0000 NULL <a href="#code-point-def">code point</a> with U+FFFD REPLACEMENT CHARACTER</p>
         </li>
         <li>
-          <p>Replace any U+000D CARRIAGE RETURN <a href="#code-point-def">code point</a>, U+000C FORM FEED [code
-            point](code
-            point), or pair of U+000D CARRIAGE RETURN U+000A LINE FEED <a href="#code-point-def">code points</a> by a
-            single
-            U+000A LINE FEED <a href="#code-point-def">code point</a>.</p>
+          <p>
+            Replace any U+000D CARRIAGE RETURN <a href="#code-point-def">code point</a>, U+000C FORM FEED
+            <a href="#code-point-def">code point</a>, or pair of U+000D CARRIAGE RETURN U+000A LINE FEED
+            <a href="#code-point-def">code points</a> by a single U+000A LINE FEED <a href="#code-point-def">code
+              point</a>.
+          </p>
         </li>
       </ul>
     </div>
@@ -798,7 +877,7 @@ Code section</code></pre>
     <!-- Consume a token -->
 
     <div id="consume-token">
-      <h3>3.2 Consume a token</h3>
+      <h3>4.2 Consume a token</h3>
 
       <p>
         This section describes <strong><em>how to consume a token</em></strong> from a stream of
@@ -806,7 +885,8 @@ Code section</code></pre>
       </p>
 
       <p>
-        <a href="#consume-next-def">Consume the next input code point</a> from the <a href="#input-stream-def">input stream</a>.
+        <a href="#consume-next-def">Consume the next input code point</a> from the <a href="#input-stream-def">input
+          stream</a>.
       </p>
 
       <dl>
@@ -815,7 +895,7 @@ Code section</code></pre>
         </dt>
         <dd>
           Consume as much <a href="#whitespace-def">whitespace</a> as possible and return a
-          <a href="#whitespace-token"><code class="inline">&lt;whitespace-token&gt;</code></a>.
+          <code class="inline"><a href="#whitespace-token">&lt;whitespace-token&gt;</a></code>.
         </dd>
 
         <dt>
@@ -823,8 +903,8 @@ Code section</code></pre>
         </dt>
         <dd>
           <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the
-          <a href="#current-token-def">current token</a>. Return the resulting <a href="#string-token">
-          <code class="inline">&lt;string-token&gt;</code></a>.
+          <a href="#current-token-def">current token</a>. Return the resulting <code class="inline">
+            <a href="#string-token">&lt;string-token&gt;</a></code>.
         </dd>
 
         <dt>
@@ -832,8 +912,8 @@ Code section</code></pre>
         </dt>
         <dd>
           <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the
-          <a href="#current-token-def">current token</a>. Return the resulting <a href="#string-token">
-          <code class="inline">&lt;string-token&gt;</code></a>.
+          <a href="#current-token-def">current token</a>. Return the resulting <code class="inline">
+            <a href="#string-token">&lt;string-token&gt;</a></code>.
         </dd>
       </dl>
     </div>
@@ -841,7 +921,7 @@ Code section</code></pre>
     <!-- Cnsume a string token -->
 
     <div id="consume-string">
-      <h3>3.3 Consume a string token</h3>
+      <h3>4.3 Consume a string token</h3>
 
       <p>
         This section describes <strong><em>how to consume a string token</em></strong> from a stream of
@@ -855,12 +935,12 @@ Code section</code></pre>
       </p>
 
       <p>
-        Create a <a href="#string-token"><code class="inline">&lt;string-token&gt;</code></a> with its value
+        Create a <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code> with its value
         set to an empty string, and its delimiter set to the <em>ending delimiter</em>.
       </p>
 
       <p>
-        Repeatedly <a href="#consume-next-code-point-def">consume the next code point</a> from the
+        Repeatedly <a href="#consume-next-def">consume the next code point</a> from the
         <a href="#input-stream-def">input stream</a>.
       </p>
 
@@ -901,43 +981,157 @@ Code section</code></pre>
     <!-- Consume a number token -->
 
     <div id="consume-number">
-      <h3>3.4 Consume a number token</h3>
+      <h3>4.4 Consume a number token</h3>
+
+      <p>
+        This section describes <strong><em>how to consume a number token</em></strong> from a stream of
+        <a href="#code-point-def">code points</a>.
+      </p>
+
+      <div class="note">
+        <p>
+          Note: This algorithm assumes that the three first <a href="#code-point-def">code points</a>
+          have been <a href="#check-start-of-number">checked to ensure that a valid number</a> can be obtained
+          from the <a href="#input-stream-def">input stream</a>.
+        </p>
+      </div>
+
+      <p>
+        Create a <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code> with it's reprensetation
+        set
+        to an empty string, and its numeric value unset.
+      </p>
+
+      <ol>
+
+        <li>
+          Let <em>representation</em> be an empty string.
+        </li>
+
+        <br/>
+
+        <li>
+          If the <a href="#next-code-point-def">next input code point</a> is U+002B PLUS SIGN (<code
+            class="inline">+</code>)
+          or U+002D HYPHEN MINUS (<code class="inline">-</code>), consume it and append it to <em>representation</em>.
+        </li>
+
+        <br/>
+
+        <li>
+          While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>,
+          consume it and append it to <em>representation</em>.
+        </li>
+
+        <br/>
+
+        <li>
+          If the <a href="#current-code-point-def">two next input code point</a> are a U+002E FULL STOP
+          (<code class="inline">.</code>) followed by a <a href="#digit-def">digit</a>.
+          <br/>
+          <ol>
+            <li>
+              Consume the two <a href="#next-code-point-def">next code points</a> and append them to <em>reprensentation</em>.
+            </li>
+
+            <br/>
+
+            <li>
+              While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>,
+              consume it and append it to <em>representation</em>.
+              <div class="note"><p>
+                  Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> <a href="#throw-invalid-number">throw an "Invalid number
+                  formatting" exception</a>.
+                </p></div>
+            </li>
+          </ol>
+        </li>
+
+        <li>
+          If the <a href="#next-code-point-def">next input code point</a> is U+0045 LATIN CAPITAL LETTER E
+          (<code class="inline">E</code>) or U+0065 LATIN SMALL LETTER E (<code class="inline">e</code>), consume
+          it and append it to <em>representation</em>, then:
+          <ol>
+            <li>
+              <a href="#check-start-of-number">Check if the three <a href="#next-code-point-def">next input code points</a></a> would start a number.
+            </li>
+
+            <br/>
+
+            <li>
+              If the check failed, then <a href="#throw-invalid-number">throw an "Invalid number formatting" exception</a> and exit.
+            </li>
+
+            <br/>
+
+            <li>
+              Otherwise (i.e. if the check succeeded), then, if the <a href="#next-code-point-def">next input code point</a> is U+002B PLUS
+              SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>), consume it and append it to <em>representation</em>.
+            </li>
+
+            <br/>
+
+            <li>
+              While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>, consume it and
+              append it to the <em> representation</em>.
+            </li>
+
+            <br/>
+
+            <li>
+              If the <a href="#next-code-point-def">next input code point</a> is U+002E FULL STOP (<code class="inline">.</code>),
+              consume it and append it to the <em>reprensentation</em>.
+            </li>
+
+            <br/>
+
+            <li>
+              While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>, consume it and append it
+              to the <em>representation</em>.
+              <div class="note"><p>
+                Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> <a href="#throw-invalid-number">throw an "Invalid number
+                formatting" exception</a>.
+              </p></div>
+            </li>
+          </ol>
+        </li>
+      </ol>
     </div>
 
     <!-- Consume an escaped code point -->
 
     <div id="consume-escape">
-      <h3>3.5 Consume an escaped code point</h3>
+      <h3>4.5 Consume an escaped code point</h3>
     </div>
 
     <!-- Consume a name -->
 
     <div id="consume-name">
-      <h3>3.6 Consume a name</h3>
+      <h3>4.6 Consume a name</h3>
     </div>
 
     <!-- Consume an identifier token -->
 
     <div id="consume-identifier">
-      <h3>3.7 Consume an identifier token</h3>
+      <h3>4.7 Consume an identifier token</h3>
     </div>
 
     <!-- Check start of an identifier -->
 
     <div id="check-start-of-identifier">
-      <h3>3.8 Check if a code point would start an identifier</h3>
+      <h3>4.8 Check if a code point would start an identifier</h3>
     </div>
 
     <!-- Check a valid escape -->
 
     <div id="check-valid-escape">
-      <h3>3.9 Check if two code points are a valid escape</h3>
+      <h3>4.9 Check if two code points are a valid escape</h3>
     </div>
 
     <!-- Check start of a number -->
 
     <div id="check-start-of-number">
-      <h3>3.10 Check if two code points would start a number</h3>
+      <h3>4.10 Check if three code points would start a number</h3>
     </div>
 
   </div>
@@ -946,120 +1140,120 @@ Code section</code></pre>
   <!-- Parsing -->
 
   <div id="parsing">
-    <h2>4. Parsing</h2>
+    <h2>5. Parsing</h2>
 
     <!-- Consume a statement -->
 
     <div id="consume-statement">
-      <h3>4.1 Consume a statement</h3>
+      <h3>5.1 Consume a statement</h3>
     </div>
 
     <!-- Consume a simple block -->
 
-    <div id="consume-statement">
-      <h3>4.2 Consume a simple block</h3>
+    <div id="consume-simple-block">
+      <h3>5.2 Consume a simple block</h3>
     </div>
 
     <!-- Consume an assignement -->
 
     <div id="consume-assignement">
-      <h3>4.3 Consume an assignement</h3>
+      <h3>5.3 Consume an assignement</h3>
     </div>
 
     <!-- Consume an operation -->
 
     <div id="consume-operation">
-      <h3>4.4 Consume an operation</h3>
+      <h3>5.4 Consume an operation</h3>
     </div>
 
     <!-- Consume a function call -->
 
     <div id="consume-function-call">
-      <h3>4.5 Consume a function call</h3>
+      <h3>5.5 Consume a function call</h3>
     </div>
 
     <!-- Consume a function declaration -->
 
-    <div id="consume-function">
-      <h3>4.6 Consume a function declaration</h3>
+    <div id="consume-function-def">
+      <h3>5.6 Consume a function declaration</h3>
     </div>
 
     <!-- Consume an if clause -->
 
     <div id="consume-if-clause">
-      <h3>4.7 Consume an if clause</h3>
+      <h3>5.7 Consume an if clause</h3>
     </div>
 
     <!-- Consume an else clause -->
 
     <div id="consume-else-clause">
-      <h3>4.8 Consume an else clause</h3>
+      <h3>5.8 Consume an else clause</h3>
     </div>
 
     <!-- Consume a for loop declaration -->
 
     <div id="consume-for-loop">
-      <h3>4.9 Consume a for loop declaration</h3>
+      <h3>5.9 Consume a for loop declaration</h3>
     </div>
 
     <!-- Consume a foreach loop declaration -->
 
     <div id="consume-foreach-loop">
-      <h3>4.10 Consume a foreach loop declaration</h3>
+      <h3>5.10 Consume a foreach loop declaration</h3>
     </div>
 
     <!-- Consume a while loop declaration -->
 
     <div id="consume-while-loop">
-      <h3>4.11 Consume a while loop declaration</h3>
+      <h3>5.11 Consume a while loop declaration</h3>
     </div>
 
     <!-- Consume a do-while loop declaration -->
 
     <div id="consume-do-while-loop">
-      <h3>4.12 Consume a do-while loop declaration</h3>
+      <h3>5.12 Consume a do-while loop declaration</h3>
     </div>
 
     <!-- Consume a class declaration -->
 
     <div id="consume-class">
-      <h3>4.13 Consume a class declaration</h3>
+      <h3>5.13 Consume a class declaration</h3>
     </div>
 
     <!-- Consume an interface declaration -->
 
     <div id="consume-interface">
-      <h3>4.14 Consume an interface declaration</h3>
+      <h3>5.14 Consume an interface declaration</h3>
     </div>
 
     <!-- Consume an enum declaration -->
 
     <div id="consume-enum">
-      <h3>4.15 Consume an enum declaration</h3>
+      <h3>5.15 Consume an enum declaration</h3>
     </div>
 
     <!-- Consume an import directive -->
 
     <div id="consume-import">
-      <h3>4.16 Consume an import directive</h3>
+      <h3>5.16 Consume an import directive</h3>
     </div>
 
     <!-- Consume a from directive -->
 
     <div id="consume-from">
-      <h3>4.17 Consume a from directive</h3>
+      <h3>5.17 Consume a from directive</h3>
     </div>
 
     <!-- Consume a namespace declaration -->
 
     <div id="consume-namespace">
-      <h3>4.18 Consume a namespace declaration</h3>
+      <h3>5.18 Consume a namespace declaration</h3>
     </div>
 
     <!-- Consume an extends directive -->
 
     <div id="consume-extends">
-      <h3>4.19 Consume an extends directive</h3>
+      <h3>5.19 Consume an extends directive</h3>
     </div>
 
   </div>
