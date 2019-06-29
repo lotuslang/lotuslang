@@ -723,8 +723,8 @@ Code section</code></pre>
           <code class="inline">&lt;number-token&gt;</code>
         </dt>
         <dd>
-          A token representing a <a href="#number-def">number</a>. It holds two value: the numeric value
-          stored as a sequence of <a href="#code-point-def">code points</a>, and the numeric value stored as a number.
+          A token representing a <a href="#number-def">number</a>. It holds one value: the numeric value
+          stored as a sequence of <a href="#code-point-def">code points</a>.
         </dd>
 
         <dt id="string-token">
@@ -915,6 +915,36 @@ Code section</code></pre>
           <a href="#current-token-def">current token</a>. Return the resulting <code class="inline">
             <a href="#string-token">&lt;string-token&gt;</a></code>.
         </dd>
+
+        <dt>
+          <a href="#digit-def">digit</a>
+        </dt>
+        <dd>
+          <a href="#consume-number-token">Consume a number token</a> and return the resulting
+          <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
+        </dd>
+
+        <dt>
+          U+002E FULL STOP (<code class="inline">.</code>)
+        </dt>
+        <dd>
+          <a href="#check-start-of-number">If the three next input code points would start a number</a>,
+          <a href="#consume-number-token">consume a number token</a> and return the resulting
+          <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
+          Otherwise, return a <a href="#delim-token">with its value set to the
+            <a href="#current-code-point-def">current input code point</a>.
+        </dd>
+
+        <dt>
+          U+002B PLUS SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>)
+        </dt>
+        <dd>
+          <a href="#check-start-of-number">If the three next input code points would start a number</a>,
+          <a href="#consume-number-token">consume a number token</a> and return the resulting
+          <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
+          Otherwise, return a <a href="#delim-token">with its value set to the
+            <a href="#current-code-point-def">current input code point</a>.
+        </dd>
       </dl>
     </div>
 
@@ -969,7 +999,7 @@ Code section</code></pre>
         </dd>
 
         <dt>
-          Anything else
+          anything else
         </dt>
         <dd>
           Append the <a href="#current-code-point-def">current input code point</a> to the
@@ -995,12 +1025,6 @@ Code section</code></pre>
           from the <a href="#input-stream-def">input stream</a>.
         </p>
       </div>
-
-      <p>
-        Create a <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code> with it's reprensetation
-        set
-        to an empty string, and its numeric value unset.
-      </p>
 
       <ol>
 
@@ -1096,6 +1120,10 @@ Code section</code></pre>
           </ol>
         </li>
       </ol>
+
+      <p>
+        Return a <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code> and let its value be <em>representation</em>.
+      </p>
     </div>
 
     <!-- Consume an escaped code point -->
@@ -1132,6 +1160,60 @@ Code section</code></pre>
 
     <div id="check-start-of-number">
       <h3>4.10 Check if three code points would start a number</h3>
+
+      <p>
+        This section describes <strong><em>how to check if three code points would start a number</em></strong>. This algorightm
+        can be called with three <a href="#code-point-def">code points</a>, or it from the <a href="#input-stream-def">input stream</a>.
+      </p>
+
+      <div class="note">
+        <p>
+          This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the
+          <a href="#input-stream-def">input stream</a>, it should push back onto the top of the stream any <a href="#code-point-def">code point</a>
+          consumed.
+        </p>
+      </div>
+
+      <p>
+        Look at the first <a href="#code-point-def">code point</a>.
+      </p>
+      <dl>
+        <dt>
+          U+002B PLUS SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>)
+        </dt>
+        <dd>
+          <p>
+            If the second <a href="#code-point-def">code point</a> is a <a href="#digit-def">digit</a>, return true.
+          </p>
+          <p>
+            Otherwise, if the second <a href="#code-point-def">code point</a> is U+002E FULL STOP (<code class="inline">.</code>), return true.
+          </p>
+          <p>
+            Otherwise, return false.
+          </p>
+        </dd>
+
+        <dt>
+          U+002E FULL STOP (<code class="inline">.</code>)
+        </dt>
+        <dd>
+          If the second <a href="#code-point-def">code point</a> is a <a href="#digit-def">digit</a>, return true. Otherwise, return false.
+        </dd>
+
+        <dt>
+          <a href="#digit-def">digit</a>
+        </dt>
+        <dd>
+          Return true.
+        </dd>
+
+        <dt>
+          anything else
+        </dt>
+        <dd>
+          Return false.
+        </dd>
+      </dl>
     </div>
 
   </div>
