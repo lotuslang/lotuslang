@@ -153,19 +153,11 @@
         </li>
 
         <li class="toc-item">
-          <a href="#consume-escaped-code-point">Consume an escaped code point</a>
-        </li>
-
-        <li class="toc-item">
           <a href="#consume-identifier">Consume an identifier token</a>
         </li>
 
         <li class="toc-item">
           <a href="#check-start-of-identifier">Check if a code point would start an identifier</a>
-        </li>
-
-        <li class="toc-item">
-          <a href="#check-valid-escape">Check if three code points are a valid escape</a>
         </li>
 
         <li class="toc-item">
@@ -357,7 +349,7 @@ Code section</code></pre>
         </dt>
         <dd>
           A <a href="http://unicode.org/glossary/#code_point">Unicode code point</a>. A Unicode character with a value
-          between 0 (hexadecimal) and 10FFFF (hexadecimal).
+          between 0 (hexadecimal) and FFFF (hexadecimal).
         </dd>
 
         <dt id="input-stream-def">
@@ -422,11 +414,8 @@ Code section</code></pre>
         </dt>
         <dd>
           A <a href="#digit-def">digit</a>, or a <a href="#code-point-def">code point</a> between U+0041 LATIN CAPITAL
-          LETTER A (A)
-          and U+0046 LATIN CAPITAL LETTER F (F), or a <a href="#code-point-def">code point</a> between U+0061 LATIN
-          SMALL
-          LETTER A (a)
-          and U+0066 LATIN SMALL LETTER F (f).
+          LETTER A (A) and U+0046 LATIN CAPITAL LETTER F (F), or a <a href="#code-point-def">code point</a> between U+0061 LATIN
+          SMALL LETTER A (a) and U+0066 LATIN SMALL LETTER F (f).
         </dd>
 
         <dt id="number-def">
@@ -434,11 +423,8 @@ Code section</code></pre>
         </dt>
         <dd>
           An optional sequence of <a href="#digit-def">digits</a>, optionally followed by a U+002E FULLSTOP (.) and a
-          sequence of
-          <a href="#digit-def">digits</a>, optionally followed by a U+0045 LATIN CAPITAL LETTER E (E) or U+0065 LATIN
-          SMALL
-          LETTER E (e), a U+002B PLUS SIGN (+) or a U+002D HYPHEN MINUS (-), and an optional sequence of <a
-            href="#digit-def">digits</a>,
+          sequence of <a href="#digit-def">digits</a>, optionally followed by a U+0045 LATIN CAPITAL LETTER E (E) or U+0065 LATIN
+          SMALL LETTER E (e), a U+002B PLUS SIGN (+) or a U+002D HYPHEN MINUS (-), and an optional sequence of <a href="#digit-def">digits</a>,
           optionally followed by a U+002E FULLSTOP (.) and a sequence of <a href="#digit-def">digits</a>.
         </dd>
 
@@ -479,9 +465,7 @@ Code section</code></pre>
         </dt>
         <dd>
           A <a href="#letter-def">letter</a>, a <a href="#digit-def">digit</a>, a <a href="#non-ascii-def">non-ASCII
-            code
-            point</a>,
-          a U+002D HYPHEN MINUS (-), or a U+005F LOW LINE (_).
+            code point</a>, a U+002D HYPHEN MINUS (-), or a U+005F LOW LINE (_).
         </dd>
 
         <dt id="newline">
@@ -489,9 +473,7 @@ Code section</code></pre>
         </dt>
         <dd>
           A <a href="#code-point-def">code point</a> with a value of U+000A LINE FEED (represented as the escape
-          sequence
-          '\n'
-          in most programming languages).
+          sequence '\n' in most programming languages).
         </dd>
 
         <dt id="whitespace">
@@ -505,7 +487,7 @@ Code section</code></pre>
           maximum allowed code point
         </dt>
         <dd>
-          The <a href="#code-point-def">code point</a> with the value U+10FFFF, maximum value defined by Unicode.
+          The <a href="#code-point-def">code point</a> with the value U+FFFF.
         </dd>
 
         <dt id="token-stream-def">
@@ -550,10 +532,9 @@ Code section</code></pre>
     <div id="tokens">
       <h3>2.2 Token types</h3>
 
-      <p>Implementations should use the algorithms described in <a href="#tokenization">section 4</a>, or act as they
-        use
-        them (i.e. the resulting token stream should be identical, no matter the underlying implementation). The <a
-          href="#tokenization">tokenization</a> phase should output a stream of zero or more of the following tokens.
+      <p>Implementations should use the algorithms described in <a href="#tokenization">section 4</a>, or act as they use
+        them (i.e. the resulting token stream should contain at least the same information, no matter the underlying implementation).
+        The <a href="#tokenization">tokenization</a> phase should output a stream of zero or more of the following tokens.
       </p>
 
       <dl>
@@ -778,7 +759,7 @@ Code section</code></pre>
 
     <p>
       This section describes Lotus' syntax through <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">
-      EBNF</a> railroad diagrams. An informal and more human-readable definition of the syntax can be found
+      EBNF</a> and railroad diagrams. An informal and more human-readable definition of the syntax can be found
       <a href="https://github.com/lotuslang/lotuslang/blob/master/Global/Lexical%20Structure.md">here</a>.
     </p>
 
@@ -825,8 +806,7 @@ Code section</code></pre>
       </p>
 
       <p>
-        The sequence of <a href="#code-point-def">code points</a> is its reprensetation, and the numeric value is its
-        metadata.
+        The sequence of <a href="#code-point-def">code points</a> is its representation
       </p>
     </div>
 
@@ -878,6 +858,10 @@ Code section</code></pre>
       </p>
 
       <p>
+        This algorithm returns a single <a href="#code-point-def">code point</a>.
+      </p>
+
+      <p>
         <a href="#consume-next-def">Consume the next input code point</a> from the <a href="#input-stream-def">input
           stream</a>.
       </p>
@@ -913,6 +897,7 @@ Code section</code></pre>
           <a href="#digit-def">digit</a>
         </dt>
         <dd>
+          <a href="#reconsume-code-point-def">Reconsume the current code point</a>.
           <a href="#consume-number-token">Consume a number token</a> and return the resulting
           <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
         </dd>
@@ -922,6 +907,7 @@ Code section</code></pre>
         </dt>
         <dd>
           <a href="#check-start-of-number">If the three next input code points would start a number</a>,
+          <a href="#reconsume-code-point-def">reconsume the current code point</a>,
           <a href="#consume-number-token">consume a number token</a> and return the resulting
           <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
           Otherwise, return a <a href="#delim-token">with its value set to the
@@ -933,6 +919,7 @@ Code section</code></pre>
         </dt>
         <dd>
           <a href="#check-start-of-number">If the three next input code points would start a number</a>,
+          <a href="#reconsume-code-point-def">reconsume the current code point</a>,
           <a href="#consume-number-token">consume a number token</a> and return the resulting
           <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
           Otherwise, return a <a href="#delim-token">with its value set to the
@@ -943,6 +930,7 @@ Code section</code></pre>
           U+005F LOW LINE (<code class="inline">_</code>)
         </dt>
         <dd>
+          <a href="#reconsume-code-point-def">Reconsume the current code point</a>.
           <a href="#consume-identifier">Consume an identifier</a> and return the resulting <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
         </dd>
 
@@ -950,12 +938,13 @@ Code section</code></pre>
           <a href="#letter-def">letter</a>
         </dt>
         <dd>
+          <a href="#reconsume-code-point-def">Reconsume the current code point</a>.
           <a href="#¢onsume-identifier">Consume an identifier</a> and return the resulting <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
         </dd>
       </dl>
     </div>
 
-    <!-- Cnsume a string token -->
+    <!-- Consume a string token -->
 
     <div id="consume-string">
       <h3>4.3 Consume a string token</h3>
@@ -969,6 +958,10 @@ Code section</code></pre>
         This algorithms should be called with an <em>ending delimiter</em>, which denotes the
         <a href="#code-point-def">code point</a> that ends the string. If no <em>ending delimiter</em>
         is specified, use the <a href="#current-code-point">current input code point</a> instead.
+      </p>
+
+      <p>
+        This algorithm returns a single <code class="inline"><a href="#ident-token">&lt;string-token&gt;</a></code>.
       </p>
 
       <p>
@@ -992,15 +985,8 @@ Code section</code></pre>
           <em>ending delimiter</em>
         </dt>
         <dd>
-          Return a <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code> and let its value be <em>representation</em>.
-        </dd>
-
-        <dt>
-          U+005C REVERSE SOLIDUS (<code class="inline">\</code>)
-        </dt>
-        <dd>
-          <a href="#check-valid-escape">If the three next input code points form a valid escape</a>,
-          <a href="#consume-escape">consume an escaped code point</a> and append its value to <em>representation</em>.
+          Return a <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code> and let its value be <em>representation</em>
+          and its ending delimiter be <em>ending delimiter</em>.
         </dd>
 
         <dt>
@@ -1020,6 +1006,10 @@ Code section</code></pre>
       <p>
         This section describes <strong><em>how to consume a number token</em></strong> from a stream of
         <a href="#code-point-def">code points</a>.
+      </p>
+
+      <p>
+        This algorithm returns a single <code class="inline"><a href="#ident-token">&lt;number-token&gt;</a></code>.
       </p>
 
       <div class="note">
@@ -1066,7 +1056,7 @@ Code section</code></pre>
               While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>,
               consume it and append it to <em>representation</em>.
               <div class="note"><p>
-                  Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> <a href="#throw-invalid-number">throw an "Invalid number
+                  Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> throw an <a href="#throw-invalid-number">"Invalid number
                   formatting" exception</a>.
                 </p></div>
             </li>
@@ -1085,7 +1075,7 @@ Code section</code></pre>
             <br/>
 
             <li>
-              If the check failed, then <a href="#throw-invalid-number">throw an "Invalid number formatting" exception</a> and exit.
+              If the check failed, then throw an <a href="#throw-invalid-number">"Invalid number formatting" exception</a> and exit.
             </li>
 
             <br/>
@@ -1115,7 +1105,7 @@ Code section</code></pre>
               While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>, consume it and append it
               to the <em>representation</em>.
               <div class="note"><p>
-                Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> <a href="#throw-invalid-number">throw an "Invalid number
+                Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> throw an <a href="#throw-invalid-number">"Invalid number
                 formatting" exception</a>.
               </p></div>
             </li>
@@ -1128,24 +1118,22 @@ Code section</code></pre>
       </p>
     </div>
 
-    <!-- Consume an escaped code point -->
-
-    <div id="consume-escape">
-      <h3>4.5 Consume an escaped code point</h3>
-    </div>
-
     <!-- Consume an identifier token -->
 
     <div id="consume-identifier">
-      <h3>4.6 Consume an identifier token</h3>
+      <h3>4.5 Consume an identifier token</h3>
 
       <p>
         This section describes <strong><em>how to consume an indentifier token</em></strong> from a stream of <a href="#code-point-def">code points</a>.
       </p>
 
+      <p>
+        This algorithm returns a single <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
+      </p>
+
       <div class="note">
         <p>
-          Note: This algorigthm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-identifier">start a valid identifier</a>.
+          Note: This algorithm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-identifier">start a valid identifier</a>.
         </p>
       </div>
 
@@ -1166,7 +1154,7 @@ Code section</code></pre>
     <!-- Check start of an identifier -->
 
     <div id="check-start-of-identifier">
-      <h3>4.7 Check if a code point would start an identifier</h3>
+      <h3>4.6 Check if a code point would start an identifier</h3>
 
       <p>
         This section desbribes <strong><em>how to check if a code point would start an identifier</em></strong>. This algorithm can be called
@@ -1215,62 +1203,13 @@ Code section</code></pre>
       </dl>
     </div>
 
-    <!-- Check a valid escape -->
-
-    <div id="check-valid-escape">
-      <h3>4.8 Check if three code points would start a valid escape</h3>
-
-      <p>
-        This section desbribes <strong><em>how to check if three code points would start a valid escape</em></strong>. This algorithm
-        can be called with three <a href="#code-point-def">code points</a>, or from the <a href="#input-stream-def">input stream</a>.
-      </p>
-
-      <div class="note">
-        <p>
-          Note: This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the
-          <a href="#input-stream-def">input stream</a>, it should push back onto the top of the stream any <a href="#code-point-def">code point</a>
-          consumed.
-        </p>
-      </div>
-
-      <p>
-        If the first code point is not U+005C REVERSE SOLIDUS (<code class="inline">\</code>), return false. Otherwise, look at the second
-        <a href="#code-point-def">code point</a>.
-      </p>
-
-      <dl>
-        <dt>
-          U+0055 LATIN CAPITAL LETTER U (<code class="inline">U</code>) or U+0075 LATIN SMALL LETTER U (<code class="inline">u</code>)
-        </dt>
-        <dd>
-          If the third <a href="#code-point-def">code point</a> is an <a href="#hex-digit-def">hex digit</a>, return true.
-          If not, then return false.
-        </dd>
-
-        <dt>
-          U+0078 LATIN SMALL LETTER X (<code class="inline">x</code>)
-        </dt>
-        <dd>
-          If the third <a href="#code-point-def">code point</a> is an <a href="#hex-digit-def">hex digit</a>, return true.
-          if not, then return false.
-        </dd>
-
-        <dt>
-          anything else
-        </dt>
-        <dd>
-          Return true.
-        </dd>
-      </dl>
-    </div>
-
     <!-- Check start of a number -->
 
     <div id="check-start-of-number">
-      <h3>4.9 Check if three code points would start a number</h3>
+      <h3>4.7 Check if three code points would start a number</h3>
 
       <p>
-        This section describes <strong><em>how to check if three code points would start a number</em></strong>. This algorightm
+        This section describes <strong><em>how to check if three code points would start a number</em></strong>. This algorithm
         can be called with three <a href="#code-point-def">code points</a>, or from the <a href="#input-stream-def">input stream</a>.
       </p>
 
