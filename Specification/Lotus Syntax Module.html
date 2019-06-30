@@ -173,7 +173,7 @@
         </li>
 
         <li class="toc-item">
-          <a href="#check-valid-escape">Check if two code points are a valid escape</a>
+          <a href="#check-valid-escape">Check if three code points are a valid escape</a>
         </li>
 
         <li class="toc-item">
@@ -565,6 +565,13 @@ Code section</code></pre>
       </p>
 
       <dl>
+        <dt id="delim-token">
+          <code class="inline">&lt;delim-token&gt;</code>
+        </dt>
+        <dd>
+          A token holding a single <a href="#code-point-def">code point</a> as its value.
+        </dd>
+
         <dt id="whitespace-token">
           <code class="inline">&lt;whitespace-token&gt;</code>
         </dt>
@@ -979,7 +986,7 @@ Code section</code></pre>
           <a href="#eof-def">EOF</a>
         </dt>
         <dd>
-          This is a <a href="#tokenization-errors">tokenization error</a>.
+          Throw an <a href="#unexpected-oef">"Unexpected end of file" exception</a>.
         </dd>
 
         <dt>
@@ -1153,7 +1160,50 @@ Code section</code></pre>
     <!-- Check a valid escape -->
 
     <div id="check-valid-escape">
-      <h3>4.9 Check if two code points are a valid escape</h3>
+      <h3>4.9 Check if three code points would start a valid escape</h3>
+
+      <p>
+        This section desbribes <strong><em>how to check if three code points would start a valid escape</em></strong>. This algorithm
+        can be called with three <a href="#code-point-def">code points</a>, or from the <a href="#input-stream-def">input stream</a>.
+      </p>
+
+      <div classs="note">
+        <p>
+          This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the
+          <a href="#input-stream-def">input stream</a>, it should push back onto the top of the stream any <a href="#code-point-def">code point</a>
+          consumed.
+        </p>
+      </div>
+
+      <p>
+        If the first code point is not U+005C REVERSE SOLIDUS (<code class="inline">\</code>), return false. Otherwise, look at the second
+        <a href="#code-point-def">code point</a>.
+      </p>
+
+      <dl>
+        <dt>
+          U+0055 LATIN CAPITAL LETTER U (<code class="inline">U</code>) or U+0075 LATIN SMALL LETTER U (<code class="inline">u</code>)
+        </dt>
+        <dd>
+          If the thrid <a href="#code-point-def">code point</a> is an <a href="#hex-digit-def">hex digit</a>, return true.
+          If not, then return false.
+        </dd>
+
+        <dt>
+          U+0078 LATIN SMALL LETTER X (<code class="inline">x</code>)
+        </dt>
+        <dd>
+          If the third <a href="#code-point-def">code point</a> is an <a href="#hex-digit-def">hex digit</a>, return true.
+          if not, then return false.
+        </dd>
+
+        <dt>
+          anything else
+        </dt>
+        <dd>
+          Return true.
+        </dd>
+      </dl>
     </div>
 
     <!-- Check start of a number -->
@@ -1163,7 +1213,7 @@ Code section</code></pre>
 
       <p>
         This section describes <strong><em>how to check if three code points would start a number</em></strong>. This algorightm
-        can be called with three <a href="#code-point-def">code points</a>, or it from the <a href="#input-stream-def">input stream</a>.
+        can be called with three <a href="#code-point-def">code points</a>, or from the <a href="#input-stream-def">input stream</a>.
       </p>
 
       <div class="note">
@@ -1177,6 +1227,7 @@ Code section</code></pre>
       <p>
         Look at the first <a href="#code-point-def">code point</a>.
       </p>
+
       <dl>
         <dt>
           U+002B PLUS SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>)
