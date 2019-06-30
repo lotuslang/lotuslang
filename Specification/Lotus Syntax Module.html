@@ -157,10 +157,6 @@
         </li>
 
         <li class="toc-item">
-          <a href="#consume-name">Consume a name</a>
-        </li>
-
-        <li class="toc-item">
           <a href="#consume-identifier">Consume an identifier token</a>
         </li>
 
@@ -990,7 +986,7 @@ Code section</code></pre>
           U+005C REVERSE SOLIDUS (<code class="inline">\</code>)
         </dt>
         <dd>
-          <a href="#check-valid-escape">If the two next input code points form a valid escape</a>,
+          <a href="#check-valid-escape">If the three next input code points form a valid escape</a>,
           <a href="#consume-escape">consume an escaped code point</a> and append its value to the
           <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code>'s value.
         </dd>
@@ -1129,28 +1125,22 @@ Code section</code></pre>
       <h3>4.5 Consume an escaped code point</h3>
     </div>
 
-    <!-- Consume a name -->
-
-    <div id="consume-name">
-      <h3>4.6 Consume a name</h3>
-    </div>
-
     <!-- Consume an identifier token -->
 
     <div id="consume-identifier">
-      <h3>4.7 Consume an identifier token</h3>
+      <h3>4.6 Consume an identifier token</h3>
     </div>
 
     <!-- Check start of an identifier -->
 
     <div id="check-start-of-identifier">
-      <h3>4.8 Check if a code point would start an identifier</h3>
+      <h3>4.7 Check if a code point would start an identifier</h3>
     </div>
 
     <!-- Check a valid escape -->
 
     <div id="check-valid-escape">
-      <h3>4.9 Check if three code points would start a valid escape</h3>
+      <h3>4.8 Check if three code points would start a valid escape</h3>
 
       <p>
         This section desbribes <strong><em>how to check if three code points would start a valid escape</em></strong>. This algorithm
@@ -1199,7 +1189,7 @@ Code section</code></pre>
     <!-- Check start of a number -->
 
     <div id="check-start-of-number">
-      <h3>4.10 Check if three code points would start a number</h3>
+      <h3>4.9 Check if three code points would start a number</h3>
 
       <p>
         This section describes <strong><em>how to check if three code points would start a number</em></strong>. This algorightm
