@@ -938,6 +938,20 @@ Code section</code></pre>
           Otherwise, return a <a href="#delim-token">with its value set to the
             <a href="#current-code-point-def">current input code point</a>.
         </dd>
+
+        <dt>
+          U+005F LOW LINE (<code class="inline">_</code>)
+        </dt>
+        <dd>
+          <a href="#consume-identifier">Consume an identifier</a> and return the resulting <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
+        </dd>
+
+        <dt>
+          <a href="#letter-def">letter</a>
+        </dt>
+        <dd>
+          <a href="#¢onsume-identifier">Consume an identifier</a> and return the resulting <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
+        </dd>
       </dl>
     </div>
 
@@ -1131,7 +1145,7 @@ Code section</code></pre>
 
       <div class="note">
         <p>
-          This algorigthm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-identifier">start a valid identifier</a>.
+          Note: This algorigthm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-identifier">start a valid identifier</a>.
         </p>
       </div>
 
@@ -1153,6 +1167,52 @@ Code section</code></pre>
 
     <div id="check-start-of-identifier">
       <h3>4.7 Check if a code point would start an identifier</h3>
+
+      <p>
+        This section desbribes <strong><em>how to check if a code point would start an identifier</em></strong>. This algorithm can be called
+        with a <a href="#code-point-def">code point</a> or from the <a href="#input-stream-def">input stream</a>.
+      </p>
+
+      <div class="note">
+        <p>
+          Note: This algorithm doesn't consume any code points. If it is called from the <a href="#input-stream-def">input stream</a>,
+          it should push back onto the top of the stream any <a href="#code-point-def">code point</a> consumed.
+        </p>
+      </div>
+
+      <p>
+        Look at the <a href="#code-point-def">code point</a>.
+      </p>
+
+      <dl>
+        <dt>
+          U+005F LOW LINE (<code class="inline">_</code>)
+        </dt>
+        <dd>
+          Return true.
+        </dd>
+
+        <dt>
+          <a href="#letter-def">letter</a>
+        </dt>
+        <dd>
+          Return true.
+        </dd>
+
+        <dt>
+          <a href="#digit-def">digit</a>
+        </dt>
+        <dd>
+          Return false.
+        </dd>
+
+        <dt>
+          anything else
+        </dt>
+        <dd>
+          Return false
+        </dd>
+      </dl>
     </div>
 
     <!-- Check a valid escape -->
@@ -1165,9 +1225,9 @@ Code section</code></pre>
         can be called with three <a href="#code-point-def">code points</a>, or from the <a href="#input-stream-def">input stream</a>.
       </p>
 
-      <div classs="note">
+      <div class="note">
         <p>
-          This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the
+          Note: This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the
           <a href="#input-stream-def">input stream</a>, it should push back onto the top of the stream any <a href="#code-point-def">code point</a>
           consumed.
         </p>
@@ -1216,7 +1276,7 @@ Code section</code></pre>
 
       <div class="note">
         <p>
-          This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the
+          Note: This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the
           <a href="#input-stream-def">input stream</a>, it should push back onto the top of the stream any <a href="#code-point-def">code point</a>
           consumed.
         </p>
