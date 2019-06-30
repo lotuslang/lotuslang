@@ -958,8 +958,7 @@ Code section</code></pre>
       </p>
 
       <p>
-        Create a <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code> with its value
-        set to an empty string, and its delimiter set to the <em>ending delimiter</em>.
+        Let <em>representation</em> be an empty string.
       </p>
 
       <p>
@@ -979,7 +978,7 @@ Code section</code></pre>
           <em>ending delimiter</em>
         </dt>
         <dd>
-          Return the <a href="#string-token">string token</a>.
+          Return a <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code> and let its value be <em>representation</em>.
         </dd>
 
         <dt>
@@ -987,16 +986,14 @@ Code section</code></pre>
         </dt>
         <dd>
           <a href="#check-valid-escape">If the three next input code points form a valid escape</a>,
-          <a href="#consume-escape">consume an escaped code point</a> and append its value to the
-          <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code>'s value.
+          <a href="#consume-escape">consume an escaped code point</a> and append its value to <em>representation</em>.
         </dd>
 
         <dt>
           anything else
         </dt>
         <dd>
-          Append the <a href="#current-code-point-def">current input code point</a> to the
-          <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code>'s value.
+          Append the <a href="#current-code-point-def">current input code point</a> to <em>representation</em>.
         </dd>
       </dl>
     </div>
@@ -1013,9 +1010,7 @@ Code section</code></pre>
 
       <div class="note">
         <p>
-          Note: This algorithm assumes that the three first <a href="#code-point-def">code points</a>
-          have been <a href="#check-start-of-number">checked to ensure that a valid number</a> can be obtained
-          from the <a href="#input-stream-def">input stream</a>.
+          Note: This algorithm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-number">start a valid number</a>.
         </p>
       </div>
 
@@ -1129,6 +1124,29 @@ Code section</code></pre>
 
     <div id="consume-identifier">
       <h3>4.6 Consume an identifier token</h3>
+
+      <p>
+        This section describes <strong><em>how to consume an indentifier token</em></strong> from a stream of <a href="#code-point-def">code points</a>.
+      </p>
+
+      <div class="note">
+        <p>
+          This algorigthm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-identifier">start a valid identifier</a>.
+        </p>
+      </div>
+
+      <p>
+        Let <em>representation</em> be an empty string.
+      </p>
+
+      <p>
+        While the <a href="#next-code-point-def">next input code point</a> is a <a href="#name-code-point-def">valid name code point</a>,
+        consume it andd append it to <em>representation</em>.
+      </p>
+
+      <p>
+        Return a <code clas="inline"><a href="#ident-token"></a>&lt;ident-token&gt;</code> and let its value be <em>representation</em>.
+      </p>
     </div>
 
     <!-- Check start of an identifier -->
@@ -1165,7 +1183,7 @@ Code section</code></pre>
           U+0055 LATIN CAPITAL LETTER U (<code class="inline">U</code>) or U+0075 LATIN SMALL LETTER U (<code class="inline">u</code>)
         </dt>
         <dd>
-          If the thrid <a href="#code-point-def">code point</a> is an <a href="#hex-digit-def">hex digit</a>, return true.
+          If the third <a href="#code-point-def">code point</a> is an <a href="#hex-digit-def">hex digit</a>, return true.
           If not, then return false.
         </dd>
 
