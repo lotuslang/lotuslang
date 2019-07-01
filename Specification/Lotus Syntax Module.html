@@ -43,7 +43,7 @@
 
   <!-- Header -->
   <h1 id="lotus-syntax-module">Lotus Syntax Module</h1>
-  <p>Last updated : <em>11th of June, 2019</em></p>
+  <p>Last updated : <em>1st of July, 2019</em></p>
   <p><strong>Editors :</strong></p>
   <ul>
     <li>Blokyk</li>
@@ -552,76 +552,6 @@ Code section</code></pre>
           A token representing one or more <a href="#whitespace-def">whitespace</a>.
         </dd>
 
-        <dt id="open-curly-token">
-          <code class="inline">&lt;{-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing an opening curly bracket (U+007B LEFT CURLY PARENTHESIS <code class="inline">{</code>).
-        </dd>
-
-        <dt id="closing-curly-token">
-          <code class="inline">&lt;}-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing a closing curly bracket (U+007D RIGHT CURLY BRACKET <code class="inline">}</code>).
-        </dd>
-
-        <dt id="open-paren-token">
-          <code class="inline">&lt;(-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing an opening parenthesis (U+0028 LEFT PARENTHESIS <code class="inline">(</code>
-        </dd>
-
-        <dt id="close-paren-token">
-          <code class="inline">&lt;)-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing a closing parenthesis (U+0029 RIGHT PARENTHESIS <code class="inline">)</code>).
-        </dd>
-
-        <dt id="open-square-token">
-          <code class="inline">&lt;[-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing an opening square bracket (U+005B LEFT SQUARE BRACKET <code class="inline">[</code>).
-        </dd>
-
-        <dt id="close-square-token">
-          <code class="inline">&lt;]-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing a closing square bracket (U+005D RIGHT SQUARE BRACKET <code class="inline">]</code>).
-        </dd>
-
-        <dt id="dot-token">
-          <code class="inline">&lt;dot-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing a dot (U+002E FULL STOP <code class="inline">.</code>).
-        </dd>
-
-        <dt id="comma-token">
-          <code class="inline">&lt;comma-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing a comma (U+002C COMMA <code class="inline">:</code>).
-        </dd>
-
-        <dt id="colon-token">
-          <code class="inline">&lt;colon-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing a colon (U+003A COLON <code class="inline">:</code>).
-        </dd>
-
-        <dt id="semicolon-token">
-          <code class="inline">&lt;semicolon-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing a semicolon (U+003B SEMICOLON <code class="inline">;</code>).
-        </dd>
-
         <dt id="logicial-or-token">
           <code class="inline">&lt;logical-or-token&gt;</code>
         </dt>
@@ -648,20 +578,6 @@ Code section</code></pre>
         </dt>
         <dd>
           A token representing an equality operator (U+003D EQUALS SIGN U+003D EQUALS SIGN <code class="inline">==</code>).
-        </dd>
-
-        <dt id="less-than-token">
-          <code class="inline">&lt;less-than-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing a less-than operator (U+003C LESS-THAN SIGN <code class="inline">&lt;</code>).
-        </dd>
-
-        <dt id="greater-than-token">
-          <code class="inline">&lt;greater-than-token&gt;</code>
-        </dt>
-        <dd>
-          A token representing a greater-than operator (U+003E GREATER-THAN SIGN <code class="inline">&gt;</code>).
         </dd>
 
         <dt id="less-equal-token">
@@ -697,6 +613,13 @@ Code section</code></pre>
         </dt>
         <dd>
           A token representing an increment operator (U+002B PLUS SIGN U+002B PLUS SIGN <code class="inline">++</code>).
+        </dd>
+
+        <dt id="arrow-token">
+          <code class="inline">&lt;arrow-token&gt;</code>
+        </dt>
+        <dd>
+          A token representing an arrow operator (U+003D EQUALS SIGN U+002B PLUS SIGN <code class="inline">=&gt;</code>)
         </dd>
 
         <dt id="number-token">
@@ -910,20 +833,42 @@ Code section</code></pre>
           <a href="#reconsume-code-point-def">reconsume the current code point</a>,
           <a href="#consume-number-token">consume a number token</a> and return the resulting
           <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
-          Otherwise, return a <a href="#delim-token">with its value set to the
-            <a href="#current-code-point-def">current input code point</a>.
+          Otherwise, return a <code class="inline"><a href="#delim-token">&lt;delim-token&gt;</a></code>
+          with its value set to the <a href="#current-code-point-def">current input code point</a>.
         </dd>
 
         <dt>
-          U+002B PLUS SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>)
+          U+002D HYPHEN MINUS (<code class="inline">-</code>)
         </dt>
         <dd>
+          <p>
+            If the <a href="#next-code-point-def">next input code point</a> is U+002D HYPHEN MINUS (<code class="inline">-</code>),
+            <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#decrement-token">&lt;decrement-token&gt;</a></code>
+          </p>
+
           <a href="#check-start-of-number">If the three next input code points would start a number</a>,
           <a href="#reconsume-code-point-def">reconsume the current code point</a>,
           <a href="#consume-number-token">consume a number token</a> and return the resulting
           <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
-          Otherwise, return a <a href="#delim-token">with its value set to the
-            <a href="#current-code-point-def">current input code point</a>.
+          Otherwise, return a <code class="inline"><a href="#delim-token">&lt;delim-token&gt;</a></code>
+          with its value set to the <a href="#current-code-point-def">current input code point</a>.
+        </dd>
+
+        <dt>
+          U+002B PLUS SIGN (<code class="inline">-</code>)
+        </dt>
+        <dd>
+          <p>
+            If the <a href="#next-code-point-def">next input code point</a> is U+002E PLUS SIGN (<code class="inline">+</code>),
+            <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#increment-token">&lt;increment-token&gt;</a></code>
+          </p>
+
+          <a href="#check-start-of-number">If the three next input code points would start a number</a>,
+          <a href="#reconsume-code-point-def">reconsume the current code point</a>,
+          <a href="#consume-number-token">consume a number token</a> and return the resulting
+          <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
+          Otherwise, return a <code class="inline"><a href="#delim-token">&lt;delim-token&gt;</a></code>
+          with its value set to the <a href="#current-code-point-def">current input code point</a>.
         </dd>
 
         <dt>
@@ -940,6 +885,86 @@ Code section</code></pre>
         <dd>
           <a href="#reconsume-code-point-def">Reconsume the current code point</a>.
           <a href="#¢onsume-identifier">Consume an identifier</a> and return the resulting <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
+        </dd>
+
+        <dt>
+          U+0023 NUMBER SIGN (<code class="inline">#</code>)
+        </dt>
+        <dd>
+          <p>
+            If the two <a href="#next-code-point-def">next input code points</a> are U+0023 NUMBER SIGN U+0023 NUMBER SIGN (<code class="inline">##</code>),
+            then, while the three <a href="#next-code-point-def">next input code points</a> are not U+0023 NUMBER SIGN U+0023 NUMBER SIGN U+0023 NUMBER SIGN
+            (<code class="inline">###</code>), <a href="#consume-next-def">consume the next input code point</a>. Then, return a
+            <code class="inline"><a href="#whitespace-token">&lt;whitespace-token&gt;</a></code>.
+          </p>
+          <p>
+            Otherwise, while the <a href="#next-code-point-def">next input code point</a> is not U+000A LINE FEED
+            (represented as the escape sequence '\n' in most programming languages), <a href="#consume-next-def">consume it</a>. Then, return a
+            <code class="inline"><a href="#whitespace-token">&lt;whitespace-token&gt;</a></code>.
+          </p>
+        </dd>
+
+        <dt>
+          U+007C VERTICAL LINE (<code class="inline">|</code>)
+        </dt>
+        <dd>
+          If the <a href="#next-code-point-def">next input code point</a> is U+007C VERTICAL LINE (<code class="inline">|</code>),
+          <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#logical-or-token">&lt;logical-or-token&gt;</a></code>.
+        </dd>
+
+        <dt>
+          U+0026 AMPERSAND (<code class="inline">&amp;</code>)
+        </dt>
+        <dd>
+          If the <a href="#next-code-point-def">next input code point</a> is U+0026 AMPERSAND (<code class="inline">&</code>),
+          <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#logical-and-token">&lt;logical-and-token&gt;</a></code>.
+        </dd>
+
+        <dt>
+          U+005E CIRCUMFLEX ACCENT (<code class="inline">^</code>)
+        </dt>
+        <dd>
+          If the <a href="#next-code-point-def">next input code point</a> is U+005E CIRCUMFLEX ACCENT (<code class="inline">^</code>),
+          <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#logical-xor-token">&lt;logical-xor-token&gt;</a></code>.
+        </dd>
+
+        <dt>
+          U+003D EQUALS SIGN (<code class="inline">=</code>)
+        </dt>
+        <dd>
+          <p>
+            If the <a href="#next-code-point-def">next input code point</a> is U+003D EQUALS SIGN (<code class="inline">=</code>),
+            <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#equality-token">&lt;equality-token&gt;</a></code>.
+          </p>
+
+          <p>
+            Otherwise, if the <a href="#next-code-point-def">next input code point</a> is U+003E GREATER-THAN SIGN (<code class="inline">&gt</code>),
+            <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#arrow-token">&lt;arrow-token&gt;</a></code>.
+          </p>
+        </dd>
+
+        <dt>
+          U+003C LESS-THAN SIGN (<code class="inline">&lt;</code>)
+        </dt>
+        <dd>
+          If the <a href="#next-code-point-def">next input code point</a> is U+003D EQUALS SIGN (<code class="inline">=</code>),
+          <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#less-equal-token">&lt;less-equal-token&gt;</a></code>.
+        </dd>
+
+        <dt>
+          U+003E GREATER-THAN SIGN (<code class="inline">&gt;</code>)
+        </dt>
+        <dd>
+          If the <a href="#next-code-point-def">next input code point</a> is U+003D EQUALS SIGN (<code class="inline">=</code>),
+          <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#greater-equal-token">&lt;greater-equal-token&gt;</a></code>.
+        </dd>
+
+        <dt>
+          U+0021 EXCLAMATION MARK (<code class="inline">&excl;</code>)
+        </dt>
+        <dd>
+          If the <a href="#next-code-point-def">next input code point</a> is U+003D EQUALS SIGN (<code class="inline">=</code>),
+          <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#not-equal-token">&lt;not-equal-token&gt;</a></code>.
         </dd>
       </dl>
     </div>
@@ -1029,14 +1054,14 @@ Code section</code></pre>
         <li>
           If the <a href="#next-code-point-def">next input code point</a> is U+002B PLUS SIGN (<code
             class="inline">+</code>)
-          or U+002D HYPHEN MINUS (<code class="inline">-</code>), consume it and append it to <em>representation</em>.
+          or U+002D HYPHEN MINUS (<code class="inline">-</code>), <a href="#consume-next-def">consume it</a> and append it to <em>representation</em>.
         </li>
 
         <br/>
 
         <li>
           While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>,
-          consume it and append it to <em>representation</em>.
+          <a href="#consume-next-def">consume it</a> and append it to <em>representation</em>.
         </li>
 
         <br/>
@@ -1047,14 +1072,14 @@ Code section</code></pre>
           <br/>
           <ol>
             <li>
-              Consume the two <a href="#next-code-point-def">next code points</a> and append them to <em>reprensentation</em>.
+              <a href="#consume-next-def">Consume the two next code points</a> and append them to <em>reprensentation</em>.
             </li>
 
             <br/>
 
             <li>
               While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>,
-              consume it and append it to <em>representation</em>.
+              <a href="#consume-next-def">consume it</a> and append it to <em>representation</em>.
               <div class="note"><p>
                   Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> throw an <a href="#throw-invalid-number">"Invalid number
                   formatting" exception</a>.
@@ -1065,8 +1090,8 @@ Code section</code></pre>
 
         <li>
           If the <a href="#next-code-point-def">next input code point</a> is U+0045 LATIN CAPITAL LETTER E
-          (<code class="inline">E</code>) or U+0065 LATIN SMALL LETTER E (<code class="inline">e</code>), consume
-          it and append it to <em>representation</em>, then:
+          (<code class="inline">E</code>) or U+0065 LATIN SMALL LETTER E (<code class="inline">e</code>), <a href="#consume-next-def">consume it</a>
+          and append it to <em>representation</em>, then:
           <ol>
             <li>
               <a href="#check-start-of-number">Check if the three <a href="#next-code-point-def">next input code points</a></a> would start a number.
@@ -1082,32 +1107,36 @@ Code section</code></pre>
 
             <li>
               Otherwise (i.e. if the check succeeded), then, if the <a href="#next-code-point-def">next input code point</a> is U+002B PLUS
-              SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>), consume it and append it to <em>representation</em>.
+              SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>), <a href="#consume-next-def">consume it</a>
+              and append it to <em>representation</em>.
             </li>
 
             <br/>
 
             <li>
-              While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>, consume it and
-              append it to the <em> representation</em>.
+              While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>, <a href="#consume-next-def">consume it</a>
+              and append it to the <em> representation</em>.
             </li>
 
             <br/>
 
             <li>
               If the <a href="#next-code-point-def">next input code point</a> is U+002E FULL STOP (<code class="inline">.</code>),
-              consume it and append it to the <em>reprensentation</em>.
+              <a href="#consume-next-def">consume it</a> and append it to the <em>reprensentation</em>.
             </li>
 
             <br/>
 
             <li>
-              While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>, consume it and append it
-              to the <em>representation</em>.
-              <div class="note"><p>
-                Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> throw an <a href="#throw-invalid-number">"Invalid number
-                formatting" exception</a>.
-              </p></div>
+              While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>, <a href="#consume-next-def">consume it</a>
+              and append it to the <em>representation</em>.
+
+              <div class="note">
+                <p>
+                  Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> throw an <a href="#throw-invalid-number">"Invalid number
+                  formatting" exception</a>.
+                </p>
+              </div>
             </li>
           </ol>
         </li>
@@ -1143,7 +1172,7 @@ Code section</code></pre>
 
       <p>
         While the <a href="#next-code-point-def">next input code point</a> is a <a href="#name-code-point-def">valid name code point</a>,
-        consume it andd append it to <em>representation</em>.
+        <a href="#consume-next-def">consume it</a> and append it to <em>representation</em>.
       </p>
 
       <p>
