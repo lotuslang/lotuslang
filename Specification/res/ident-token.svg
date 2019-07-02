@@ -1,0 +1,53 @@
+<svg width="378.5" height="101" class="railroad-diagram" viewBox="0 0 378.5 101">
+    <g transform="translate(.5 .5)">
+        <g>
+            <path d="M20 51v20m10 -20v20m-10 -10h20"/>
+        </g>
+        <g>
+            <path d="M40 61h0"/>
+            <path d="M151 61h0"/>
+            <path d="M40 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"/>
+            <g class="terminal">
+                <path d="M60 31h21.25"/>
+                <path d="M109.75 31h21.25"/>
+                <rect width="28.5" height="22" x="81.25" y="20" rx="10" ry="10"/>
+                <text x="95.5" y="35">
+                    _
+                </text>
+            </g>
+            <path d="M131 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"/>
+            <path d="M40 61h20"/>
+            <g class="non-terminal">
+                <path d="M60 61h0"/>
+                <path d="M131 61h0"/>
+                <rect width="71" height="22" x="60" y="50"/>
+                <text x="95.5" y="65">
+                    letter
+                </text>
+            </g>
+            <path d="M131 61h20"/>
+        </g>
+        <path d="M151 61h10"/>
+        <g>
+            <path d="M161 61h0"/>
+            <path d="M328.5 61h0"/>
+            <path d="M161 61h10"/>
+            <g class="non-terminal">
+                <path d="M171 61h0"/>
+                <path d="M318.5 61h0"/>
+                <rect width="147.5" height="22" x="171" y="50"/>
+                <text x="244.75" y="65">
+                    name code point
+                </text>
+            </g>
+            <path d="M318.5 61h10"/>
+            <path d="M171 61a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
+            <g>
+                <path d="M171 81h147.5"/>
+            </g>
+            <path d="M318.5 81a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
+        </g>
+        <path d="M328.5 61h10"/>
+        <path d="M 338.5 61 h 20 m -10 -10 v 20 m 10 -20 v 20"/>
+    </g>
+</svg>

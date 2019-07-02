@@ -1,0 +1,55 @@
+<svg width="409.5" height="130" class="railroad-diagram" viewBox="0 0 409.5 130">
+    <g transform="translate(.5 .5)">
+        <g>
+            <path d="M20 51v20m10 -20v20m-10 -10h20"/>
+        </g>
+        <path d="M40 61h10"/>
+        <g>
+            <path d="M50 61h0"/>
+            <path d="M359.5 61h0"/>
+            <path d="M50 61h10"/>
+            <g>
+                <path d="M60 61h0"/>
+                <path d="M349.5 61h0"/>
+                <path d="M60 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"/>
+                <g class="terminal">
+                    <path d="M80 31h0"/>
+                    <path d="M329.5 31h0"/>
+                    <rect width="249.5" height="22" x="80" y="20" rx="10" ry="10"/>
+                    <text x="204.75" y="35">
+                        U+0009 CHARACTER TABULATION
+                    </text>
+                </g>
+                <path d="M329.5 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"/>
+                <path d="M60 61h20"/>
+                <g class="terminal">
+                    <path d="M80 61h63.75"/>
+                    <path d="M265.75 61h63.75"/>
+                    <rect width="122" height="22" x="143.75" y="50" rx="10" ry="10"/>
+                    <text x="204.75" y="65">
+                        U+0020 SPACE
+                    </text>
+                </g>
+                <path d="M329.5 61h20"/>
+                <path d="M60 61a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"/>
+                <g class="terminal">
+                    <path d="M80 91h46.75"/>
+                    <path d="M282.75 91h46.75"/>
+                    <rect width="156" height="22" x="126.75" y="80" rx="10" ry="10"/>
+                    <text x="204.75" y="95">
+                        U+000A LINE FEED
+                    </text>
+                </g>
+                <path d="M329.5 91a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"/>
+            </g>
+            <path d="M349.5 61h10"/>
+            <path d="M60 61a10 10 0 0 0 -10 10v29a10 10 0 0 0 10 10"/>
+            <g>
+                <path d="M60 110h289.5"/>
+            </g>
+            <path d="M349.5 110a10 10 0 0 0 10 -10v-29a10 10 0 0 0 -10 -10"/>
+        </g>
+        <path d="M359.5 61h10"/>
+        <path d="M 369.5 61 h 20 m -10 -10 v 20 m 10 -20 v 20"/>
+    </g>
+</svg>

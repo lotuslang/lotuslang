@@ -1,0 +1,42 @@
+<svg width="922" height="122" class="railroad-diagram" viewBox="0 0 922 122">
+    <g transform="translate(.5 .5)">
+        <g>
+            <path d="M20 51v20m10 -20v20m-10 -10h20"/>
+        </g>
+        <g>
+            <path d="M40 61h0"/>
+            <path d="M882 61h0"/>
+            <path d="M40 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"/>
+            <g class="non-terminal">
+                <path d="M60 31h369.75"/>
+                <path d="M492.25 31h369.75"/>
+                <rect width="62.5" height="22" x="429.75" y="20"/>
+                <text x="461" y="35">
+                    digit
+                </text>
+            </g>
+            <path d="M862 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"/>
+            <path d="M40 61h20"/>
+            <g class="non-terminal">
+                <path d="M60 61h0"/>
+                <path d="M862 61h0"/>
+                <rect width="802" height="22" x="60" y="50"/>
+                <text x="461" y="65">
+                    a code point between U+0041 LATIN CAPITAL LETTER A (A) and U+0046 LATIN CAPITAL LETTER F (F)
+                </text>
+            </g>
+            <path d="M862 61h20"/>
+            <path d="M40 61a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"/>
+            <g class="non-terminal">
+                <path d="M60 91h17"/>
+                <path d="M845 91h17"/>
+                <rect width="768" height="22" x="77" y="80"/>
+                <text x="461" y="95">
+                    a code point between U+0061 LATIN SMALL LETTER A (a) and U+0066 LATIN SMALL LETTER F (f)
+                </text>
+            </g>
+            <path d="M862 91a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"/>
+        </g>
+        <path d="M 882 61 h 20 m -10 -10 v 20 m 10 -20 v 20"/>
+    </g>
+</svg>

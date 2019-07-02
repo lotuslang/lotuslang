@@ -1,0 +1,112 @@
+<svg width="148.5" height="332" class="railroad-diagram" viewBox="0 0 148.5 332">
+    <g transform="translate(.5 .5)">
+        <g>
+            <path d="M20 141v20m10 -20v20m-10 -10h20"/>
+        </g>
+        <g>
+            <path d="M40 151h0"/>
+            <path d="M108.5 151h0"/>
+            <path d="M40 151a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"/>
+            <g class="terminal">
+                <path d="M60 121h0"/>
+                <path d="M88.5 121h0"/>
+                <rect width="28.5" height="22" x="60" y="110" rx="10" ry="10"/>
+                <text x="74.25" y="125">
+                    3
+                </text>
+            </g>
+            <path d="M88.5 121a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"/>
+            <path d="M40 151a10 10 0 0 0 10 -10v-40a10 10 0 0 1 10 -10"/>
+            <g class="terminal">
+                <path d="M60 91h0"/>
+                <path d="M88.5 91h0"/>
+                <rect width="28.5" height="22" x="60" y="80" rx="10" ry="10"/>
+                <text x="74.25" y="95">
+                    2
+                </text>
+            </g>
+            <path d="M88.5 91a10 10 0 0 1 10 10v40a10 10 0 0 0 10 10"/>
+            <path d="M40 151a10 10 0 0 0 10 -10v-70a10 10 0 0 1 10 -10"/>
+            <g class="terminal">
+                <path d="M60 61h0"/>
+                <path d="M88.5 61h0"/>
+                <rect width="28.5" height="22" x="60" y="50" rx="10" ry="10"/>
+                <text x="74.25" y="65">
+                    1
+                </text>
+            </g>
+            <path d="M88.5 61a10 10 0 0 1 10 10v70a10 10 0 0 0 10 10"/>
+            <path d="M40 151a10 10 0 0 0 10 -10v-100a10 10 0 0 1 10 -10"/>
+            <g class="terminal">
+                <path d="M60 31h0"/>
+                <path d="M88.5 31h0"/>
+                <rect width="28.5" height="22" x="60" y="20" rx="10" ry="10"/>
+                <text x="74.25" y="35">
+                    0
+                </text>
+            </g>
+            <path d="M88.5 31a10 10 0 0 1 10 10v100a10 10 0 0 0 10 10"/>
+            <path d="M40 151h20"/>
+            <g class="terminal">
+                <path d="M60 151h0"/>
+                <path d="M88.5 151h0"/>
+                <rect width="28.5" height="22" x="60" y="140" rx="10" ry="10"/>
+                <text x="74.25" y="155">
+                    4
+                </text>
+            </g>
+            <path d="M88.5 151h20"/>
+            <path d="M40 151a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"/>
+            <g class="terminal">
+                <path d="M60 181h0"/>
+                <path d="M88.5 181h0"/>
+                <rect width="28.5" height="22" x="60" y="170" rx="10" ry="10"/>
+                <text x="74.25" y="185">
+                    5
+                </text>
+            </g>
+            <path d="M88.5 181a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"/>
+            <path d="M40 151a10 10 0 0 1 10 10v40a10 10 0 0 0 10 10"/>
+            <g class="terminal">
+                <path d="M60 211h0"/>
+                <path d="M88.5 211h0"/>
+                <rect width="28.5" height="22" x="60" y="200" rx="10" ry="10"/>
+                <text x="74.25" y="215">
+                    6
+                </text>
+            </g>
+            <path d="M88.5 211a10 10 0 0 0 10 -10v-40a10 10 0 0 1 10 -10"/>
+            <path d="M40 151a10 10 0 0 1 10 10v70a10 10 0 0 0 10 10"/>
+            <g class="terminal">
+                <path d="M60 241h0"/>
+                <path d="M88.5 241h0"/>
+                <rect width="28.5" height="22" x="60" y="230" rx="10" ry="10"/>
+                <text x="74.25" y="245">
+                    7
+                </text>
+            </g>
+            <path d="M88.5 241a10 10 0 0 0 10 -10v-70a10 10 0 0 1 10 -10"/>
+            <path d="M40 151a10 10 0 0 1 10 10v100a10 10 0 0 0 10 10"/>
+            <g class="terminal">
+                <path d="M60 271h0"/>
+                <path d="M88.5 271h0"/>
+                <rect width="28.5" height="22" x="60" y="260" rx="10" ry="10"/>
+                <text x="74.25" y="275">
+                    8
+                </text>
+            </g>
+            <path d="M88.5 271a10 10 0 0 0 10 -10v-100a10 10 0 0 1 10 -10"/>
+            <path d="M40 151a10 10 0 0 1 10 10v130a10 10 0 0 0 10 10"/>
+            <g class="terminal">
+                <path d="M60 301h0"/>
+                <path d="M88.5 301h0"/>
+                <rect width="28.5" height="22" x="60" y="290" rx="10" ry="10"/>
+                <text x="74.25" y="305">
+                    9
+                </text>
+            </g>
+            <path d="M88.5 301a10 10 0 0 0 10 -10v-130a10 10 0 0 1 10 -10"/>
+        </g>
+        <path d="M 108.5 151 h 20 m -10 -10 v 20 m 10 -20 v 20"/>
+    </g>
+</svg>
