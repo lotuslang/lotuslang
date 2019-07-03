@@ -14,9 +14,9 @@
 
   <!-- Header -->
   <h1 id="lotus-syntax-module">Lotus Syntax Module</h1>
-  <p>Last updated : <em>1st of July, 2019</em></p>
+  <p>Last updated : <em id="last-edit-date">3rd of July, 2019</em></p>
   <p><strong>Editors :</strong></p>
-  <ul>
+  <ul id="editors">
     <li>Blokyk</li>
   </ul>
   <hr>
@@ -24,12 +24,16 @@
   <!-- Abstract -->
 
   <h2 id="abstract">Abstract</h2>
-  <p>This document describes the basic structure and syntax of Lotus source code. It defines, in details, the
-    tokenizing, parsing, and translation of Lotus.</p>
+  <p>
+    This document describes the basic syntax of Lotus source code. It defines, in details, the
+    tokenizing and parsing of Lotus.
+  </p>
 
-  <p>Lotus is an open-source language created to facilitate the work of web designers and web developpers. This document
-    describes its syntax as well as the way it should be interpreted by a compiler to conform to the Lotus
-    specification.</p>
+  <p>
+    Lotus is an open-source language created to facilitate the work of web designers and web developpers. This document
+    describes its syntax as well as the way it should be parsed by a compiler to conform to the Lotus
+    specification. Its interpretation is, however, beyond the scope of this specification.
+  </p>
 
   <!-- Table of contents -->
 
@@ -60,7 +64,7 @@
         </li>
 
         <li class="toc-item">
-          <a href="#tokens">Token types</a>
+          <a href="#tokens">Token Types</a>
         </li>
 
         <li class="toc-item">
@@ -91,11 +95,15 @@
 
       <ul>
         <li class="toc-item">
-          <a href="#EBNF-syntax">Extended Backus-Naur Form syntax definition</a>
+          <a href="#EBNF-conventions">EBNF Conventions</a>
         </li>
 
         <li class="toc-item">
-          <a href="#syntax-diagrams">Railroad diagrams syntax definition</a>
+          <a href="#EBNF-notation">EBNF Notation</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#syntax-diagrams">Railroad Syntax Diagrams</a>
         </li>
       </ul>
 
@@ -229,15 +237,15 @@
     <p>This document describes the syntax of Lotus source code.</p>
 
     <p>
-      It also defines algorithms to convert text into a list of tokens, and then transform it into an abstract syntax
-      tree, that can be analysed, verified, and used for interpretation or translation purposes, for example to HTML,
-      CSS, and JavaScript as does <a href="https://github.com/lotuslang/lotusjs">LotusJS</a>.
+      It also defines algorithms to convert text (source code) into a stream of tokens, and then transform this stream into an <a href="#parse-tree-model">parse tree</a>,
+      that can be analysed, verified, and used for various puposes by implementers, such as interpretation or translation, for example to HTML,
+      CSS, and JavaScript as <a href="https://github.com/lotuslang/lotusjs">LotusJS</a> does.
     </p>
 
     <p>
       It doesn't, however, describes how the resulting <a href="#token-stream-def">token stream</a> or
-      <a href="#parse-tree-model">Parse Tree</a> can be interpreted or analyzed. This may be described by other
-      documents.
+      <a href="#parse-tree-model">parse tree</a> can be interpreted or analyzed. This may be described by other
+      documents editied by the <a href="https://github.com/lotuslang/">lotuslang working group</a>, as it is outside the scope of this specification.
     </p>
 
     <p>
@@ -251,50 +259,87 @@
     <div id="conventions">
       <h3 id="conventions">1.1 Visual and Writing Conventions</h3>
 
-      <p><strong>Notes:</strong> Notes and informative sections are presented as a quote block and starts with the word
-        "Note:".
-      </p>
+      <dl>
+        <dt>
+          Notes
+        </dt>
+        <dd>
+          <p>
+            Notes are used to bring attention to a detail or to clarify statements where necessary.Notes and informative sections are
+            presented as a quote block and have an <code clas="inline">&lt;h4&gt;</code> "NOTE" element.
+          </p>
 
-      <div class="note">
-        <p>Note: This is an example of an informative section</p>
-      </div>
+          <div class="note">
+            <h4>NOTE</h4>
+            <p>This is an example of an informative section</p>
+          </div>
+        </dd>
 
-      <p>
-        <strong>Examples:</strong> Examples in this document are presented as a quote block and starts with the
-        word "Example".
-      </p>
+        <dt>
+          Examples
+        </dt>
+        <dd>
+          <p>
+            Examples are informal and informative sections of text to clarify and give examples where necessary.
+            Examples in this document are presented as a quote block and have an <code clas="inline">&lt;h4&gt;</code> "EXAMPLE" element.
+          </p>
 
-      <div class="example">
-        <p>Example: This is an example of an example section</p>
-      </div>
+          <div class="example">
+            <h4>EXAMPLE</h4>
+            <p>This is an example of an example section</p>
+          </div>
+        </dd>
 
-      <p>
-        <strong>Short Code Segment :</strong> Short code segments, such as token names, are presented in
-        <code class="inline">&lt;code&gt;</code> tags.
-      </p>
+        <dt>
+          Short Code Segment (inline code)
+        </dt>
 
-      <p>
-        <code class="inline">This is a short code segment</code>
-      </p>
+        <dd>
+          <p>
+            Short code segments, such as token names, are presented in
+            <code class="inline">&lt;code&gt;</code> tags.
+          </p>
 
-      <p>
-        <strong>Multi-line Code Segment:</strong> Long/Multi-line code segments, such as informal code examples, are
-        presented in <code class="inline">&lt;pre&gt;</code> tags.
-      </p>
-      <pre><code>This is
+          <p>
+            <code class="inline">This is a short code segment</code>
+          </p>
+        </dd>
+
+        <dt>
+          Multi-line Code Segment
+        </dt>
+        <dd>
+          <p>
+            Long/Multi-line code segments, such as informal code examples, are presented in <code class="inline">&lt;pre&gt;</code> tags.
+          </p>
+
+          <pre><code
+>This is
 A multiline
 Code section</code></pre>
-      <p>
-        <strong>Informal section:</strong> Informal sections are preceded by the words "<em>This section is
-          informative</em>" written in <em>italics</em>. Informal sections are portions of text that are here only
-        to clarify, give information, or give context. At most, they should only be treated as recommendations, not as
-        requirements of any sorts.
-      </p>
-      <p>
-        <strong>Terms/Definition:</strong> Terms defined are enclosed in HTML <code class="inline">&lt;dt&gt;</code>
-        tags,
-        and their definition are enclosed in HTML <code class="inline">&lt;dd&gt;</code> tags.
-      </p>
+        </dd>
+
+        <dt>
+          Informal section
+        </dt>
+        <dd>
+            <p>
+              Informal sections are preceded by the words "<em>This section is
+              informative</em>" written in <em>italics</em>. Informal sections are portions of text that are here only
+              to clarify, give information, or give context. At most, they should only be treated as recommendations, not as
+              requirements of any sorts.
+            </p>
+        </dd>
+
+        <dt>
+          Term Definition
+        </dt>
+        <dd>
+          <p>
+            Terms are enclosed in <code class="inline">&lt;dt&gt;</code> tags, and their definition are enclosed in <code class="inline">&lt;dd&gt;</code> tags.
+          </p>
+        </dd>
+      </dl>
     </div>
   </div>
 
@@ -305,8 +350,8 @@ Code section</code></pre>
     <h2>2. Overview</h2>
 
     <p>
-      Compilers and interpreters must use the parsing rules described in this specification to generate an <em>Abstract
-        Syntax Tree</em> (AST) that can then be used to analyze, optimize or translate Lotus source code.
+      Tools implementing the Lotus syntax must use the parsing rules described in this specification to generate a <a href="#parse-tree-model">parse tree</a>
+      that can, for example, then be used to visualize, analyze, optimize or translate Lotus source code.
     </p>
 
     <!-- Definitions -->
@@ -327,23 +372,24 @@ Code section</code></pre>
           input stream
         </dt>
         <dd>
-          A Unicode stream (or list) of <a href="#code-point">code points</a>.
+          A stream of <a href="#code-point-def">code points</a>.
         </dd>
 
         <dt id="consume-next-def">
-          consume the next point
+          consume the next input code point
         </dt>
         <dd>
           Pop a <a href="#code-point-def">code point</a> from the <a href="#input-stream-def">input stream</a> and
-          return it.
+          return it. The <a href="#next-code-point-def">next input code point</a> is now consumed and has the status of
+          <a href="#current-code-point-def">current input code point</a>, and the value of the
+          <a href="#next-code-point-def">next input code point</a> needs to be updated accordingly.
         </dd>
 
         <dt id="next-code-point-def">
           next input code point
         </dt>
         <dd>
-          The first <a href="#code-point-def">code point</a> in the <a href="#input-stream-def">input stream</a> that
-          has
+          The first <a href="#code-point-def">code point</a> in the <a href="#input-stream-def">input stream</a> that has
           not been consumed yet.
         </dd>
 
@@ -351,17 +397,15 @@ Code section</code></pre>
           current input code point
         </dt>
         <dd>
-          The last <a href="#code-point">code point</a> to have been consumed.
+          The last <a href="#code-point-def">code point</a> to have been consumed.
         </dd>
 
         <dt id="reconsume-code-point-def">
           reconsume the current code point
         </dt>
         <dd>
-          Push the <a href="#current-code-point-def">current input code point</a> on top of the <a
-            href="#input-stream-def">input stream</a>,
-          so that the next time that you are instructed to consume the <a href="#next-code-point-def">next input code
-            point</a>, the
+          Push the <a href="#current-code-point-def">current input code point</a> on top of the <a href="#input-stream-def">input stream</a>,
+          so that the next time that you are instructed to <a href="#consume-next-def">consume the next input code point</a>, the
           <a href="#current-code-point-def">current input code point</a> will be consumed instead.
         </dd>
 
@@ -377,52 +421,52 @@ Code section</code></pre>
           digit
         </dt>
         <dd>
-          A <a href="#code-point-def">code point</a> between U+0030 DIGIT ZERO (0) and U+0039 DIGIT NINE (9).
+          A <a href="#code-point-def">code point</a> between U+0030 DIGIT ZERO (<code class="inline">0</code>) and U+0039 DIGIT NINE (<code class="inline">9</code>).
         </dd>
 
         <dt id="hex-digit-def">
           hex digit
         </dt>
         <dd>
-          A <a href="#digit-def">digit</a>, or a <a href="#code-point-def">code point</a> between U+0041 LATIN CAPITAL
-          LETTER A (A) and U+0046 LATIN CAPITAL LETTER F (F), or a <a href="#code-point-def">code point</a> between U+0061 LATIN
-          SMALL LETTER A (a) and U+0066 LATIN SMALL LETTER F (f).
+          A <a href="#digit-def">digit</a>, or a <a href="#code-point-def">code point</a> between U+0041 LATIN CAPITAL LETTER A (<code class="inline">A</code>)
+          and U+0046 LATIN CAPITAL LETTER F (<code class="inline">F</code>), or a <a href="#code-point-def">code point</a> between U+0061 LATIN SMALL LETTER A
+          (<code class="inline">a</code>) and U+0066 LATIN SMALL LETTER F (<code class="inline">f</code>).
         </dd>
 
         <dt id="number-def">
           number
         </dt>
         <dd>
-          Optionally either U+002B PLUS SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>),
-          optionallyfollowed by a sequence of <a href="#digit-def">digits</a>, optionally followed by a U+002E FULLSTOP
-          (<code class="inline">.</code>) and a sequence of <a href="#digit-def">digits</a>, optionally followed
-          by a U+0045 LATIN CAPITAL LETTER E (<code class="inline">E</code>) or U+0065 LATIN SMALL LETTER E
-          (<code class="inline">e</code>), optionally followed by either U+002B PLUS SIGN (+) or U+002D HYPHEN MINUS (-),
-          and an optional sequence of <a href="#digit-def">digits</a>, optionally followed by a U+002E FULLSTOP (.) and a
-          sequence of <a href="#digit-def">digits</a>.
+          A number can optionally start with U+002B PLUS SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>).<br>
+          A number then has a numeric part, comprised either of one or more <a href="#digit-def">digits</a> optionally followed by
+          U+002E FULL STOP (<code class="inline">.</code>) and one or more <a href="#digit-def">digits</a>; or of U+002E FULL STOP (<code class="inline">.</code>)
+          and one or more <a href="#digit-def">digits</a>.<br>
+          A number can optionally end with a "scientific notation" part, comprised of U+0045 LATIN CAPITAL LETTER E (<code class="inline">E</code>) or U+0065 LATIN
+          SMALL LETTER E (<code class="inline">e</code>), optionally followed by U+002B PLUS SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS
+          (<code class="inline">-</code>), followed by one or more <a href="#digit-def">digits</a>.
         </dd>
 
         <dt id="upper-letter-def">
           uppercase letter
         </dt>
         <dd>
-          A <a href="#code-point-def">code point</a> between U+0041 LATIN CAPITAL LETTER A (A) and U+005A LATIN CAPITAL
-          LETTER Z (Z).
+          A <a href="#code-point-def">code point</a> between U+0041 LATIN CAPITAL LETTER A (<code class="inline">A</code>) and U+005A LATIN CAPITAL
+          LETTER Z (<code class="inline">Z</code>).
         </dd>
 
         <dt id="lower-letter-def">
           lowercase letter
         </dt>
         <dd>
-          A <a href="#code-point-def">code point</a> between U+0061 LATIN SMALL LETTER A (a) and U+007A LATIN SMALL
-          LETTER Z (z).
+          A <a href="#code-point-def">code point</a> between U+0061 LATIN SMALL LETTER A (<code class="inline">a</code>) and U+007A LATIN SMALL
+          LETTER Z (<code class="inline">z</code>).
         </dd>
 
         <dt id="letter-def">
           letter
         </dt>
         <dd>
-          An <a href="#uper-letter-def">uppercase</a> or <a href="#lower-letter-def">lowercase</a> letter.
+          An <a href="#upper-letter-def">uppercase</a> or <a href="#lower-letter-def">lowercase</a> letter.
         </dd>
 
         <dt id="non-ascii-def">
@@ -437,22 +481,22 @@ Code section</code></pre>
         </dt>
         <dd>
           A <a href="#letter-def">letter</a>, a <a href="#digit-def">digit</a>, a <a href="#non-ascii-def">non-ASCII
-            code point</a>, or a U+005F LOW LINE (_).
+          code point</a>, or a U+005F LOW LINE (<code class="inline">_</code>).
         </dd>
 
-        <dt id="newline">
+        <dt id="newline-def">
           newline
         </dt>
         <dd>
-          A <a href="#code-point-def">code point</a> with a value of U+000A LINE FEED (represented as the escape
-          sequence '\n' in most programming languages).
+          A <a href="#code-point-def">code point</a> with a value of U+000A LINE FEED (represented as the escape sequence
+          <code class="inline">\n</code> in most programming languages).
         </dd>
 
-        <dt id="whitespace">
+        <dt id="whitespace-def">
           whitespace
         </dt>
         <dd>
-          A <a href="#newline">newline</a>, a U+0009 CHARACTER TABULATION, or a U+0020 SPACE.
+          A <a href="#newline-def">newline</a>, a U+0009 CHARACTER TABULATION, or a U+0020 SPACE.
         </dd>
 
         <dt id="max-code-point-def">
@@ -480,7 +524,7 @@ Code section</code></pre>
           next input token
         </dt>
         <dd>
-          The first token in the <a href="#token-stream">input token stream</a> that has not been consumed yet.
+          The first token in the <a href="#token-stream-def">input token stream</a> that has not been consumed yet.
         </dd>
 
         <dt id="eof-token-def">
@@ -494,7 +538,9 @@ Code section</code></pre>
           reconsume the current input token
         </dt>
         <dd>
-          Push the <a href="#current-token-def">current input token</a> will be consumed instead.
+          Push the <a href="#current-token-def">current input token</a> on top of the <a href="#token-stream-def">input token stream</a>,
+          so that next time you are instructed to consume the <a href="#next-token-def">next input token</a>, the
+          <a href="#current-token-def">current input token</a> will be consumed instead.
         </dd>
       </dl>
     </div>
@@ -504,7 +550,8 @@ Code section</code></pre>
     <div id="tokens">
       <h3>2.2 Token types</h3>
 
-      <p>Implementations should use the algorithms described in <a href="#tokenization">section 4</a>, or act as they use
+      <p>
+        Implementations should use the algorithms described in <a href="#tokenization">Section 4 Tokenization</a>, or act as if they use
         them (i.e. the resulting token stream should contain at least the same information, no matter the underlying implementation).
         The <a href="#tokenization">tokenization</a> phase should output a stream of zero or more of the following tokens.
       </p>
@@ -514,7 +561,7 @@ Code section</code></pre>
           <code class="inline">&lt;delim-token&gt;</code>
         </dt>
         <dd>
-          A token holding a single <a href="#code-point-def">code point</a> as its value.
+          A token holding a single <a href="#code-point-def">code point</a> as its value. It can represent any <a href="#code-point-def">code point</a>.
         </dd>
 
         <dt id="whitespace-token">
@@ -524,74 +571,74 @@ Code section</code></pre>
           A token representing one or more <a href="#whitespace-def">whitespace</a>.
         </dd>
 
-        <dt id="logicial-or-token">
+        <dt id="logical-or-token">
           <code class="inline">&lt;logical-or-token&gt;</code>
         </dt>
         <dd>
-          A token representing a logical OR operator (U+007C VERTICAL LINE U+007C VERTICAL LINE <code class="inline">||</code>).
+          A token representing a logical OR operator (U+007C VERTICAL LINE U+007C VERTICAL LINE (<code class="inline">||</code>)).
         </dd>
 
         <dt id="logical-and-token">
           <code class="inline">&lt;logical-and-token&gt;</code>
         </dt>
         <dd>
-          A token representing a logical AND operator (U+0026 AMPERSAND U+0026 AMPERSAND <code class="inline">&&</code>).
+          A token representing a logical AND operator (U+0026 AMPERSAND U+0026 AMPERSAND (<code class="inline">&&</code>)).
         </dd>
 
         <dt id="logical-xor-token">
           <code class="inline">&lt;logical-xor-token&gt;</code>
         </dt>
         <dd>
-          A token representing a logical XOR operator (U+005E CIRCUMFLEX ACCENT U+005E CIRCUMFLEX ACCENT <code class="inline">^^</code>).
+          A token representing a logical XOR operator (U+005E CIRCUMFLEX ACCENT U+005E CIRCUMFLEX ACCENT (<code class="inline">^^</code>)).
         </dd>
 
         <dt id="equality-token">
           <code class="inline">&lt;equality-token&gt;</code>
         </dt>
         <dd>
-          A token representing an equality operator (U+003D EQUALS SIGN U+003D EQUALS SIGN <code class="inline">==</code>).
+          A token representing an equality operator (U+003D EQUALS SIGN U+003D EQUALS SIGN (<code class="inline">==</code>)).
         </dd>
 
         <dt id="less-equal-token">
           <code class="inline">&lt;less-equal-token&gt;</code>
         </dt>
         <dd>
-          A token representing a less-or-equal operator (U+003C LESS-THAN SIGN U+003D EQUALS SIGN <code class="inline">&lt;=</code>).
+          A token representing a less-or-equal operator (U+003C LESS-THAN SIGN U+003D EQUALS SIGN (<code class="inline">&lt;=</code>)).
         </dd>
 
         <dt id="greater-equal-token">
           <code class="inline">&lt;greater-equal-token&gt;</code>
         </dt>
         <dd>
-          A token representing a greater-or-equal operator (U+003E GREATER-THAN SIGN U+003D EQUALS SIGN <code class="inline">&gt;=</code>).
+          A token representing a greater-or-equal operator (U+003E GREATER-THAN SIGN U+003D EQUALS SIGN (<code class="inline">&gt;=</code>)).
         </dd>
 
         <dt id="not-equal-token">
           <code class="inline">&lt;not-equal-token&gt;</code>
         </dt>
         <dd>
-          A token representing a not-equal operator (U+0021 EXCLAMATION MARK U+003D EQUALS SIGN <code class="inline">!=</code>).
+          A token representing a not-equal operator (U+0021 EXCLAMATION MARK U+003D EQUALS SIGN (<code class="inline">!=</code>)).
         </dd>
 
         <dt id="decrement-token">
           <code class="inline">&lt;decrement-token&gt;</code>
         </dt>
         <dd>
-          A token representing a decrement operator (U+002D HYPHEN MINUS U+002D HYPHEN MINUS <code class="inline">--</code>).
+          A token representing a decrement operator (U+002D HYPHEN MINUS U+002D HYPHEN MINUS (<code class="inline">--</code>)).
         </dd>
 
-        <dt id="incremement-token">
+        <dt id="increment-token">
           <code class="inline">&lt;increment-token&gt;</code>
         </dt>
         <dd>
-          A token representing an increment operator (U+002B PLUS SIGN U+002B PLUS SIGN <code class="inline">++</code>).
+          A token representing an increment operator (U+002B PLUS SIGN U+002B PLUS SIGN (<code class="inline">++</code>)).
         </dd>
 
         <dt id="arrow-token">
           <code class="inline">&lt;arrow-token&gt;</code>
         </dt>
         <dd>
-          A token representing an arrow operator (U+003D EQUALS SIGN U+002B PLUS SIGN <code class="inline">=&gt;</code>)
+          A token representing an arrow operator (U+003D EQUALS SIGN U+002B PLUS SIGN (<code class="inline">=&gt;</code>)).
         </dd>
 
         <dt id="number-token">
@@ -606,15 +653,15 @@ Code section</code></pre>
           <code class="inline">&lt;string-token&gt;</code>
         </dt>
         <dd>
-          A token representing a string. It holds two value: the content of the string, and the
-          <a href="#code-point-def">code point</a> delimiting the string.
+          A token representing a string. It holds two value: the content of the string as a sequence of <a href="#code-point-def">code points</a>,
+          and the <a href="#code-point-def">code point</a> delimiting the string.
         </dd>
 
         <dt id="ident-token">
           <code class="inline">&lt;ident-token&gt;</code>
         </dt>
         <dd>
-          A token representing an identifier. It holds one value : the value of the identifier, stored as a
+          A token representing an identifier. It holds one value : the name of the identifier, stored as a
           sequence of <a href="#code-point-def">code points</a>.
         </dd>
       </dl>
@@ -812,323 +859,230 @@ Code section</code></pre>
           number
         </dt>
         <dd>
-            <svg width="844" height="197" class="railroad-diagram" viewBox="0 0 844 197">
+            <svg width="653" height="158" class="railroad-diagram" viewBox="0 0 653 158">
                 <g transform="translate(.5 .5)">
                     <g>
-                        <path d="M20 49v20m10 -20v20m-10 -10h20"/>
+                        <path d="M20 69v20m10 -20v20m-10 -10h20"/>
                     </g>
                     <g>
-                        <path d="M40 59h0"/>
-                        <path d="M148.5 59h0"/>
-                        <path d="M40 59a10 10 0 0 0 10 -10v-19a10 10 0 0 1 10 -10"/>
-                        <g>
-                            <path d="M60 20h68.5"/>
-                        </g>
-                        <path d="M128.5 20a10 10 0 0 1 10 10v19a10 10 0 0 0 10 10"/>
-                        <path d="M40 59h20"/>
-                        <g>
+                        <path d="M40 79h0"/>
+                        <path d="M108.5 79h0"/>
+                        <path d="M40 79a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"/>
+                        <g class="terminal">
                             <path d="M60 59h0"/>
-                            <path d="M128.5 59h0"/>
-                            <path d="M60 59a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"/>
-                            <g class="terminal">
-                                <path d="M80 39h0"/>
-                                <path d="M108.5 39h0"/>
-                                <rect width="28.5" height="22" x="80" y="28" rx="10" ry="10"/>
-                                <text x="94.25" y="43">
-                                    +
-                                </text>
-                            </g>
-                            <path d="M108.5 39a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"/>
-                            <path d="M60 59h20"/>
-                            <g>
-                                <path d="M80 59h28.5"/>
-                            </g>
-                            <path d="M108.5 59h20"/>
-                            <path d="M60 59a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"/>
-                            <g class="terminal">
-                                <path d="M80 79h0"/>
-                                <path d="M108.5 79h0"/>
-                                <rect width="28.5" height="22" x="80" y="68" rx="10" ry="10"/>
-                                <text x="94.25" y="83">
-                                    -
-                                </text>
-                            </g>
-                            <path d="M108.5 79a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"/>
+                            <path d="M88.5 59h0"/>
+                            <rect width="28.5" height="22" x="60" y="48" rx="10" ry="10"/>
+                            <text x="74.25" y="63">
+                                +
+                            </text>
                         </g>
-                        <path d="M128.5 59h20"/>
+                        <path d="M88.5 59a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"/>
+                        <path d="M40 79h20"/>
+                        <g>
+                            <path d="M60 79h28.5"/>
+                        </g>
+                        <path d="M88.5 79h20"/>
+                        <path d="M40 79a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"/>
+                        <g class="terminal">
+                            <path d="M60 99h0"/>
+                            <path d="M88.5 99h0"/>
+                            <rect width="28.5" height="22" x="60" y="88" rx="10" ry="10"/>
+                            <text x="74.25" y="103">
+                                -
+                            </text>
+                        </g>
+                        <path d="M88.5 99a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"/>
                     </g>
                     <g>
-                        <path d="M148.5 59h0"/>
-                        <path d="M422 59h0"/>
-                        <path d="M148.5 59h20"/>
+                        <path d="M108.5 79h0"/>
+                        <path d="M412 79h0"/>
+                        <path d="M108.5 79a10 10 0 0 0 10 -10v-28a10 10 0 0 1 10 -10"/>
                         <g>
-                            <path d="M168.5 59h75.5"/>
-                            <path d="M326.5 59h75.5"/>
-                            <path d="M244 59h10"/>
+                            <path d="M128.5 31h90.5"/>
+                            <path d="M301.5 31h90.5"/>
+                            <path d="M219 31h10"/>
                             <g class="non-terminal">
-                                <path d="M254 59h0"/>
-                                <path d="M316.5 59h0"/>
-                                <rect width="62.5" height="22" x="254" y="48"/>
-                                <text x="285.25" y="63">
+                                <path d="M229 31h0"/>
+                                <path d="M291.5 31h0"/>
+                                <rect width="62.5" height="22" x="229" y="20"/>
+                                <text x="260.25" y="35">
                                     digit
                                 </text>
                             </g>
-                            <path d="M316.5 59h10"/>
-                            <path d="M254 59a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
+                            <path d="M291.5 31h10"/>
+                            <path d="M229 31a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
                             <g>
-                                <path d="M254 79h62.5"/>
+                                <path d="M229 51h62.5"/>
                             </g>
-                            <path d="M316.5 79a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
+                            <path d="M291.5 51a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
                         </g>
-                        <path d="M402 59h20"/>
-                        <path d="M148.5 59a10 10 0 0 1 10 10v19a10 10 0 0 0 10 10"/>
+                        <path d="M392 31a10 10 0 0 1 10 10v28a10 10 0 0 0 10 10"/>
+                        <path d="M108.5 79h20"/>
                         <g>
-                            <path d="M168.5 98h0"/>
-                            <path d="M402 98h0"/>
+                            <path d="M128.5 79h0"/>
+                            <path d="M392 79h0"/>
                             <g>
-                                <path d="M168.5 98h0"/>
-                                <path d="M251 98h0"/>
-                                <path d="M168.5 98h10"/>
+                                <path d="M128.5 79h0"/>
+                                <path d="M211 79h0"/>
+                                <path d="M128.5 79h10"/>
                                 <g class="non-terminal">
-                                    <path d="M178.5 98h0"/>
-                                    <path d="M241 98h0"/>
-                                    <rect width="62.5" height="22" x="178.5" y="87"/>
-                                    <text x="209.75" y="102">
+                                    <path d="M138.5 79h0"/>
+                                    <path d="M201 79h0"/>
+                                    <rect width="62.5" height="22" x="138.5" y="68"/>
+                                    <text x="169.75" y="83">
                                         digit
                                     </text>
                                 </g>
-                                <path d="M241 98h10"/>
-                                <path d="M178.5 98a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
+                                <path d="M201 79h10"/>
+                                <path d="M138.5 79a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
                                 <g>
-                                    <path d="M178.5 118h62.5"/>
+                                    <path d="M138.5 99h62.5"/>
                                 </g>
-                                <path d="M241 118a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
+                                <path d="M201 99a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
                             </g>
-                            <path d="M251 98h10"/>
-                            <path d="M261 98h10"/>
-                            <g class="non-terminal">
-                                <path d="M271 98h0"/>
-                                <path d="M299.5 98h0"/>
-                                <rect width="28.5" height="22" x="271" y="87"/>
-                                <text x="285.25" y="102">
+                            <path d="M211 79h10"/>
+                            <g>
+                                <path d="M221 79h0"/>
+                                <path d="M392 79h0"/>
+                                <path d="M221 79a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"/>
+                                <g>
+                                    <path d="M241 59h131"/>
+                                </g>
+                                <path d="M372 59a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"/>
+                                <path d="M221 79h20"/>
+                                <g>
+                                    <path d="M241 79h0"/>
+                                    <path d="M372 79h0"/>
+                                    <g class="terminal">
+                                        <path d="M241 79h0"/>
+                                        <path d="M269.5 79h0"/>
+                                        <rect width="28.5" height="22" x="241" y="68" rx="10" ry="10"/>
+                                        <text x="255.25" y="83">
+                                            .
+                                        </text>
+                                    </g>
+                                    <path d="M269.5 79h10"/>
+                                    <path d="M279.5 79h10"/>
+                                    <g>
+                                        <path d="M289.5 79h0"/>
+                                        <path d="M372 79h0"/>
+                                        <path d="M289.5 79h10"/>
+                                        <g class="non-terminal">
+                                            <path d="M299.5 79h0"/>
+                                            <path d="M362 79h0"/>
+                                            <rect width="62.5" height="22" x="299.5" y="68"/>
+                                            <text x="330.75" y="83">
+                                                digit
+                                            </text>
+                                        </g>
+                                        <path d="M362 79h10"/>
+                                        <path d="M299.5 79a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
+                                        <g>
+                                            <path d="M299.5 99h62.5"/>
+                                        </g>
+                                        <path d="M362 99a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
+                                    </g>
+                                </g>
+                                <path d="M372 79h20"/>
+                            </g>
+                        </g>
+                        <path d="M392 79h20"/>
+                        <path d="M108.5 79a10 10 0 0 1 10 10v19a10 10 0 0 0 10 10"/>
+                        <g>
+                            <path d="M128.5 118h66.25"/>
+                            <path d="M325.75 118h66.25"/>
+                            <g class="terminal">
+                                <path d="M194.75 118h0"/>
+                                <path d="M223.25 118h0"/>
+                                <rect width="28.5" height="22" x="194.75" y="107" rx="10" ry="10"/>
+                                <text x="209" y="122">
                                     .
                                 </text>
                             </g>
-                            <path d="M299.5 98h10"/>
-                            <path d="M309.5 98h10"/>
+                            <path d="M223.25 118h10"/>
+                            <path d="M233.25 118h10"/>
                             <g>
-                                <path d="M319.5 98h0"/>
-                                <path d="M402 98h0"/>
-                                <path d="M319.5 98h10"/>
+                                <path d="M243.25 118h0"/>
+                                <path d="M325.75 118h0"/>
+                                <path d="M243.25 118h10"/>
                                 <g class="non-terminal">
-                                    <path d="M329.5 98h0"/>
-                                    <path d="M392 98h0"/>
-                                    <rect width="62.5" height="22" x="329.5" y="87"/>
-                                    <text x="360.75" y="102">
+                                    <path d="M253.25 118h0"/>
+                                    <path d="M315.75 118h0"/>
+                                    <rect width="62.5" height="22" x="253.25" y="107"/>
+                                    <text x="284.5" y="122">
                                         digit
                                     </text>
                                 </g>
-                                <path d="M392 98h10"/>
-                                <path d="M329.5 98a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
+                                <path d="M315.75 118h10"/>
+                                <path d="M253.25 118a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
                                 <g>
-                                    <path d="M329.5 118h62.5"/>
+                                    <path d="M253.25 138h62.5"/>
                                 </g>
-                                <path d="M392 118a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
+                                <path d="M315.75 138a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
                             </g>
                         </g>
-                        <path d="M402 98a10 10 0 0 0 10 -10v-19a10 10 0 0 1 10 -10"/>
-                        <path d="M148.5 59a10 10 0 0 1 10 10v58a10 10 0 0 0 10 10"/>
-                        <g>
-                            <path d="M168.5 137h51.25"/>
-                            <path d="M350.75 137h51.25"/>
-                            <g class="non-terminal">
-                                <path d="M219.75 137h0"/>
-                                <path d="M248.25 137h0"/>
-                                <rect width="28.5" height="22" x="219.75" y="126"/>
-                                <text x="234" y="141">
-                                    .
-                                </text>
-                            </g>
-                            <path d="M248.25 137h10"/>
-                            <path d="M258.25 137h10"/>
-                            <g>
-                                <path d="M268.25 137h0"/>
-                                <path d="M350.75 137h0"/>
-                                <path d="M268.25 137h10"/>
-                                <g class="non-terminal">
-                                    <path d="M278.25 137h0"/>
-                                    <path d="M340.75 137h0"/>
-                                    <rect width="62.5" height="22" x="278.25" y="126"/>
-                                    <text x="309.5" y="141">
-                                        digit
-                                    </text>
-                                </g>
-                                <path d="M340.75 137h10"/>
-                                <path d="M278.25 137a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
-                                <g>
-                                    <path d="M278.25 157h62.5"/>
-                                </g>
-                                <path d="M340.75 157a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
-                            </g>
-                        </g>
-                        <path d="M402 137a10 10 0 0 0 10 -10v-58a10 10 0 0 1 10 -10"/>
+                        <path d="M392 118a10 10 0 0 0 10 -10v-19a10 10 0 0 1 10 -10"/>
                     </g>
                     <g>
-                        <path d="M422 59h0"/>
-                        <path d="M804 59h0"/>
-                        <path d="M422 59h20"/>
+                        <path d="M412 79h0"/>
+                        <path d="M613 79h0"/>
+                        <path d="M412 79a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"/>
                         <g>
-                            <path d="M442 59h342"/>
+                            <path d="M432 59h161"/>
                         </g>
-                        <path d="M784 59h20"/>
-                        <path d="M422 59a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"/>
+                        <path d="M593 59a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"/>
+                        <path d="M412 79h20"/>
                         <g>
-                            <path d="M442 79h0"/>
-                            <path d="M784 79h0"/>
+                            <path d="M432 79h0"/>
+                            <path d="M593 79h0"/>
                             <g>
-                                <path d="M442 79h0"/>
-                                <path d="M510.5 79h0"/>
-                                <path d="M442 79h20"/>
+                                <path d="M432 79h0"/>
+                                <path d="M500.5 79h0"/>
+                                <path d="M432 79h20"/>
                                 <g class="terminal">
-                                    <path d="M462 79h0"/>
-                                    <path d="M490.5 79h0"/>
-                                    <rect width="28.5" height="22" x="462" y="68" rx="10" ry="10"/>
-                                    <text x="476.25" y="83">
+                                    <path d="M452 79h0"/>
+                                    <path d="M480.5 79h0"/>
+                                    <rect width="28.5" height="22" x="452" y="68" rx="10" ry="10"/>
+                                    <text x="466.25" y="83">
                                         e
                                     </text>
                                 </g>
-                                <path d="M490.5 79h20"/>
-                                <path d="M442 79a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"/>
+                                <path d="M480.5 79h20"/>
+                                <path d="M432 79a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"/>
                                 <g class="terminal">
-                                    <path d="M462 109h0"/>
-                                    <path d="M490.5 109h0"/>
-                                    <rect width="28.5" height="22" x="462" y="98" rx="10" ry="10"/>
-                                    <text x="476.25" y="113">
+                                    <path d="M452 109h0"/>
+                                    <path d="M480.5 109h0"/>
+                                    <rect width="28.5" height="22" x="452" y="98" rx="10" ry="10"/>
+                                    <text x="466.25" y="113">
                                         E
                                     </text>
                                 </g>
-                                <path d="M490.5 109a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"/>
+                                <path d="M480.5 109a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"/>
                             </g>
+                            <path d="M500.5 79h10"/>
                             <g>
                                 <path d="M510.5 79h0"/>
-                                <path d="M784 79h0"/>
-                                <path d="M510.5 79h20"/>
-                                <g>
-                                    <path d="M530.5 79h75.5"/>
-                                    <path d="M688.5 79h75.5"/>
-                                    <path d="M606 79h10"/>
-                                    <g class="non-terminal">
-                                        <path d="M616 79h0"/>
-                                        <path d="M678.5 79h0"/>
-                                        <rect width="62.5" height="22" x="616" y="68"/>
-                                        <text x="647.25" y="83">
-                                            digit
-                                        </text>
-                                    </g>
-                                    <path d="M678.5 79h10"/>
-                                    <path d="M616 79a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
-                                    <g>
-                                        <path d="M616 99h62.5"/>
-                                    </g>
-                                    <path d="M678.5 99a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
+                                <path d="M593 79h0"/>
+                                <path d="M510.5 79h10"/>
+                                <g class="non-terminal">
+                                    <path d="M520.5 79h0"/>
+                                    <path d="M583 79h0"/>
+                                    <rect width="62.5" height="22" x="520.5" y="68"/>
+                                    <text x="551.75" y="83">
+                                        digit
+                                    </text>
                                 </g>
-                                <path d="M764 79h20"/>
-                                <path d="M510.5 79a10 10 0 0 1 10 10v19a10 10 0 0 0 10 10"/>
+                                <path d="M583 79h10"/>
+                                <path d="M520.5 79a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
                                 <g>
-                                    <path d="M530.5 118h0"/>
-                                    <path d="M764 118h0"/>
-                                    <g>
-                                        <path d="M530.5 118h0"/>
-                                        <path d="M613 118h0"/>
-                                        <path d="M530.5 118h10"/>
-                                        <g class="non-terminal">
-                                            <path d="M540.5 118h0"/>
-                                            <path d="M603 118h0"/>
-                                            <rect width="62.5" height="22" x="540.5" y="107"/>
-                                            <text x="571.75" y="122">
-                                                digit
-                                            </text>
-                                        </g>
-                                        <path d="M603 118h10"/>
-                                        <path d="M540.5 118a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
-                                        <g>
-                                            <path d="M540.5 138h62.5"/>
-                                        </g>
-                                        <path d="M603 138a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
-                                    </g>
-                                    <path d="M613 118h10"/>
-                                    <path d="M623 118h10"/>
-                                    <g class="non-terminal">
-                                        <path d="M633 118h0"/>
-                                        <path d="M661.5 118h0"/>
-                                        <rect width="28.5" height="22" x="633" y="107"/>
-                                        <text x="647.25" y="122">
-                                            .
-                                        </text>
-                                    </g>
-                                    <path d="M661.5 118h10"/>
-                                    <path d="M671.5 118h10"/>
-                                    <g>
-                                        <path d="M681.5 118h0"/>
-                                        <path d="M764 118h0"/>
-                                        <path d="M681.5 118h10"/>
-                                        <g class="non-terminal">
-                                            <path d="M691.5 118h0"/>
-                                            <path d="M754 118h0"/>
-                                            <rect width="62.5" height="22" x="691.5" y="107"/>
-                                            <text x="722.75" y="122">
-                                                digit
-                                            </text>
-                                        </g>
-                                        <path d="M754 118h10"/>
-                                        <path d="M691.5 118a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
-                                        <g>
-                                            <path d="M691.5 138h62.5"/>
-                                        </g>
-                                        <path d="M754 138a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
-                                    </g>
+                                    <path d="M520.5 99h62.5"/>
                                 </g>
-                                <path d="M764 118a10 10 0 0 0 10 -10v-19a10 10 0 0 1 10 -10"/>
-                                <path d="M510.5 79a10 10 0 0 1 10 10v58a10 10 0 0 0 10 10"/>
-                                <g>
-                                    <path d="M530.5 157h51.25"/>
-                                    <path d="M712.75 157h51.25"/>
-                                    <g class="non-terminal">
-                                        <path d="M581.75 157h0"/>
-                                        <path d="M610.25 157h0"/>
-                                        <rect width="28.5" height="22" x="581.75" y="146"/>
-                                        <text x="596" y="161">
-                                            .
-                                        </text>
-                                    </g>
-                                    <path d="M610.25 157h10"/>
-                                    <path d="M620.25 157h10"/>
-                                    <g>
-                                        <path d="M630.25 157h0"/>
-                                        <path d="M712.75 157h0"/>
-                                        <path d="M630.25 157h10"/>
-                                        <g class="non-terminal">
-                                            <path d="M640.25 157h0"/>
-                                            <path d="M702.75 157h0"/>
-                                            <rect width="62.5" height="22" x="640.25" y="146"/>
-                                            <text x="671.5" y="161">
-                                                digit
-                                            </text>
-                                        </g>
-                                        <path d="M702.75 157h10"/>
-                                        <path d="M640.25 157a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"/>
-                                        <g>
-                                            <path d="M640.25 177h62.5"/>
-                                        </g>
-                                        <path d="M702.75 177a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
-                                    </g>
-                                </g>
-                                <path d="M764 157a10 10 0 0 0 10 -10v-58a10 10 0 0 1 10 -10"/>
+                                <path d="M583 99a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"/>
                             </g>
                         </g>
-                        <path d="M784 79a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"/>
+                        <path d="M593 79h20"/>
                     </g>
-                    <path d="M 804 59 h 20 m -10 -10 v 20 m 10 -20 v 20"/>
+                    <path d="M 613 79 h 20 m -10 -10 v 20 m 10 -20 v 20"/>
                 </g>
             </svg>
         </dd>
@@ -1835,7 +1789,7 @@ Code section</code></pre>
     <!-- Parsing Errors -->
 
     <div id="parsing-errors">
-      <h3>2.7 Parsing Errors</h3>
+      <h3>2.6 Parsing Errors</h3>
     </div>
 
   </div>
@@ -1847,21 +1801,306 @@ Code section</code></pre>
     <h2>3. Formal Syntax Definition</h2>
 
     <p>
-      This section describes Lotus' syntax through <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">
+      This section formally describes Lotus' syntax through <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">
       EBNF</a> and railroad diagrams. An informal and more human-readable definition of the syntax can be found
       <a href="https://github.com/lotuslang/lotuslang/blob/master/Global/Lexical%20Structure.md">here</a>.
     </p>
 
-    <!-- EBNF syntax definitions -->
+    <div id="EBNF-conventions">
+      <h3>3.1 EBNF Conventions</h3>
 
-    <div id="EBNF-syntax">
-      <h3>3.1 Extended Backus-Naur Form syntax definitions</h3>
+      <p>
+        This specification uses a certain set of the EBNF syntax and extends it. Following is a definition of the expressions used in this section and
+        <a href="#EBNF-syntax">Section 3.2 Syntax Definition</a>.
+      </p>
+
+      <dl>
+        <dt>
+          &num;uN (where <code class="inline">N</code> is an hexadecimal integer)
+        </dt>
+        <dd>
+          matches the <a href="#code-point-def">code point</a> with a value of <code class="inline">N</code>.
+        </dd>
+
+        <dt>
+          <code class="inline">[&num;uN1-&num;uN2]</code> where N1 and N2 are two hexadecimal integer.
+        </dt>
+        <dd>
+          matches any <a href="#code-point-def">code point</a> with a value comprised in the range between <code class="inline">N1</code> and
+          <code class="inline">N2</code> (inclusive).
+        </dd>
+
+        <dt>
+            <code class="inline">[&num;uN1-&num;uN2&num;uN3-&num;uN4]</code> where <code class="inline">N1, N2, N3</code> and <code class="inline">N4</code> are four hexadecimal integer.
+        </dt>
+        <dd>
+          matches any <a href="#code-point-def">code point</a> with a value comprised in the ranges between <code class="inline">N1</code> and
+          <code class="inline">N2</code> (inclusive) or <code class="inline">N3</code> and <code class="inline">N4</code> (inclusive).
+        </dd>
+
+        <dt>
+          <code class="inline">[c1-c2]</code> where <code class="inline">c1</code> and <code class="inline">c2</code> are two <a href="#code-point-def">code points</a>
+        </dt>
+        <dd>
+          matches any <a href="#code-point-def">code point</a> beetween <code class="inline">c1</code> and <code class="inline">c2</code> (inclusive).
+        </dd>
+
+        <dt>
+          <code class="inline">[c1-c2c3-c4]</code> where <code class="inline">c1, c2, c3</code> and <code class="inline">c4</code> are four <a href="#code-point-def">code points</a>
+        </dt>
+        <dd>
+          matches any <a href="#code-point-def">code point</a> between <code class="inline">c1</code> and <code class="inline">c2</code> (inclusive) or
+          between <code class="inline">c3</code> and <code class="inline">c4</code> (inclusive).
+        </dd>
+
+        <dt>
+          <code class="inline">expression</code>
+        </dt>
+        <dd>
+          can be a non-terminal symbol, a list of non-terminal symbol, a list of expressions, or any of the expressions defined in this section.
+          It matches any text conforming to the symbol(s) or expression(s).
+        </dd>
+
+        <dt>
+          <code class="inline">^(expression)</code>
+        </dt>
+        <dd>
+          matches any expression that doesn't match <code class="inline">expression</code>.
+        </dd>
+
+        <dt>
+          <code class="inline">[expression]</code>
+        </dt>
+        <dd>
+          matches <code class="inline">expression</code> or nothing, i.e. <code class="inline">expression</code> is optional.
+        </dd>
+
+        <dt>
+          <code class="inline">{expression}</code>
+        </dt>
+        <dd>
+          matches zero or more occurences of <code class="inline">expression</code>.
+        </dd>
+
+        <dt>
+          <code class="inline">&lt;token(expression)&gt;</code>
+        </dt>
+        <dd>
+          matches a token with the name <code class="inline">token</code> with a value that matches <code class="inline">expression</code>
+        </dd>
+
+        <dt>
+          <code class="inline">"string"</code>
+        </dt>
+        <dd>
+          matches any sequence of <a href="#code-point-def">code points</a> matching the string given inside the double quotes.
+        </dd>
+
+        <dt>
+          <code class="inline">'string'</code>
+        </dt>
+        <dd>
+          matches any sequence of <a href="#code-point-def">code points</a> matching the string given inside the single quotes.
+        </dd>
+
+        <dt>
+          <code class="inline">expressionA expressionB</code>
+        </dt>
+        <dd>
+          matches <code class="inline">expressionA</code> followed by <code class="inline">expressionB</code>.
+        </dd>
+
+        <dt>
+          <code class="inline">expressionA | expressionB</code>
+        </dt>
+        <dd>
+          matches <code class="inline">expressionA</code> or <code class="inline">expressionB</code>
+        </dd>
+
+        <dt>
+          <code class="inline">N * expression</code> (where <code class="inline">N</code> is an integer)
+        </dt>
+        <dd>
+          matches <code class="inline">N</code> repetition of <code class="inline">expression</code>
+        </dd>
+
+        <div class="note">
+          <h4>NOTE</h4>
+          <p>
+            <code class="inline">/* ... */</code> is used for comments.
+          </p>
+        </div>
+
+        <div class="example">
+          <h4>EXAMPLE</h4>
+          <p>
+            Take the following grammar :
+          </p>
+
+          <pre><code
+>code_point = [&num;u0030-&num;uFFFF];
+string = "'" {code_point} "'";
+
+digit = [0-9];
+number = ["+" | "-"] (digit {digit} ["." digit {digit}] | "." digit {digit}) [("e" | "E") ["+" | "-"] digit {digit}];
+
+letter = [a-zA-Z];
+identifier = (letter | "_") {letter | digit | "_"};
+
+value = identifier | number | string;</code></pre>
+
+            <p>
+              This grammar defines a format for strings, for numbers, etc... Below is a table showcasing some example of
+              sequence that would match a production rule of that grammar. An explanation for some cases are written under the table.
+            </p>
+
+            <table>
+              <tr>
+                <th>Rule name</th>
+                <th>Example 1</th>
+                <th>Example 2</th>
+                <th>Example 3</th>
+                <th>Invalid case</th>
+              </tr>
+              <tr>
+                <td><code>code_point</code></td>
+                <td><code>h</code></td>
+                <td><code>+</code></td>
+                <td><code>Ø</code></td>
+                <td><code>𐀟 (U+1001F)</code><sup id="note-1-ebnf-ref"><a href="#note-1-ebnf">1</a></sup></td>
+              </tr>
+              <tr>
+                <td><code>string</code></td>
+                <td><code>'hello'</code></td>
+                <td><code>'' (empty string)</code><sup id="note-2-ebnf-ref"><a href="#note-2-ebnf">2</a></sup></td>
+                <td><code>'16€ is equal to $18,08 as of 2/07/19'</code></td>
+                <td><code>'world</code><sup id="note-3-ebnf-ref"><a href="#note-3-ebnf">3</a></sup></td>
+              </tr>
+              <tr>
+                <td><code>digit</code></td>
+                <td><code>0</code></td>
+                <td><code>8</code></td>
+                <td><code>5</code></td>
+                <td><code>f</code><sup id="note-4-ebnf-ref"><a href="#note-4-ebnf">4</a></sup></td>
+              </tr>
+              <tr>
+                <td><code>number</code></td>
+                <td><code>15.6e-3</code></td>
+                <td><code>-63</code></td>
+                <td><code>+.75E-8</code><sup id="note-5-ebnf-ref"><a href="#note-5-ebnf">5</a></sup></td>
+                <td><code>-.e+5.0</code><sup id="note-6-ebnf-ref"><a href="#note-6-ebnf">6</a></sup></td>
+              </tr>
+              <tr>
+                <td><code>letter</code></td>
+                <td><code>A</code></td>
+                <td><code>k</code></td>
+                <td><code>M</code></td>
+                <td><code>ø</code><sup id="note-7-ebnf-ref"><a href="#note-7-ebnf">7</a></sup></td>
+              </tr>
+              <tr>
+                <td><code>identifier</code></td>
+                <td><code>point_1</code></td>
+                <td><code>_m_arrayStart</code></td>
+                <td><code>SavedFile</code></td>
+                <td><code>6th_person</code><sup id="note-8-ebnf-ref"><a href="#note-8-ebnf">8</a></sup></td>
+              </tr>
+              <tr>
+                <td><code>value</code></td>
+                <td><code>60</code></td>
+                <td><code>'some text'</code></td>
+                <td><code>hello</code></td>
+                <td><code>+</code><sup id="note-9-ebnf-ref"><a href="#note-9-ebnf">9</a></sup></td>
+              </tr>
+            </table>
+
+            <p id="note-1-ebnf">
+              <a href="#note-1-ebnf-ref">Note 1</a>: The code point <code class="inline">𐀟</code> has a value of U+1001F. However, <code class="inline">code_point</code> is
+              defined as any code point between U+0030 and U+FFFF, and U+1001F is greater than U+FFFF.
+            </p>
+
+            <p id="note-2-ebnf">
+              <a href="#note-2-ebnf-ref">Note 2</a>: Even though there isn't any <code class="inline">code_point</code> between the two delimiters (<code class="inline">'</code>),
+              it is still valid, since the grammar allows empty string : it matches <strong><em>zero or more</em></strong> occurence of
+              <code class="inline">code_point</code> between the delimiters (<code class="inline">'</code>). Therefore, <code class="inline">''</code> is a valid string.
+            </p>
+
+            <p id="note-3-ebnf">
+              <a href="#note-3-ebnf-ref">Note 3</a>: This case is invalid since the <code class="inline">string</code> rule requires that it must end with the delimiter
+              (<code class="inline">'</code>), which is not the case here.
+            </p>
+
+            <p id="note-4-ebnf">
+              <a href="#note-4-ebnf-ref">Note 4</a>: <code class="inline">f</code> is not in the range [0-9], since this range translate to [&num;u0030-&num;u0039], which matches
+              any <a href="#code-point">code point</a> with a value in the range U+0030 and U+0039, and <code class="inline">f</code> has a value of U+0066.
+            </p>
+
+            <div>
+              <p id="note-5-ebnf">
+                <a href="#note-5-ebnf-ref">Note 5</a>: This one may seem weird, but it is a valid number (<code>0.0000000075</code> in fact). So, lets take our rule :
+              </p>
+
+              <pre><code
+>number = ["+" | "-"] (digit {digit} ["." digit {digit}] | "." digit {digit}) [("e" | "E") ["+" | "-"] digit {digit}]</code></pre>
+
+              <p>
+                The first part of this rule (<code class="inline">["+" | "-"]</code>) means that a <code class="inline">number</code> can optionally start with either "+" or "-".
+                In our case, our number starts with a "+". Next, we have :
+              </p>
+
+              <pre><code
+>(digit {digit} ["." digit {digit}] | "." digit {digit})</code></pre>
+
+              <p>
+                This means that a number must have either one or more <code class="inline">digits</code>, optionally followed by "." and one or more <code class="inline">digit</code>;
+                or "." followed by one or more <code class="inline">digits</code>. In our case, our number match the second possibility ("." followed by digits), and so it is valid.
+                We then have :
+              </p>
+
+              <pre><code
+>[("e" | "E") ["+" | "-"] digit {digit}]</code></pre>
+
+              <p>
+                This part is optional, as indicated by the square brackets (<code class="inline">[...]</code>). It indicates that a number can end with "e" or "E", optionally followed
+                by "+" or "-", followed by one or more <code class="inline">digits</code>. Here we have "E" followed by <code class="inline">-</code> and the number "8"
+              </p>
+
+              <p>
+                We just disected our number : <code class="inline">"+"</code> - <code class="inline">".75"</code> - <code class="inline">"E-8"</code> !
+              </p>
+            </div>
+
+            <p id="note-6-ebnf">
+              <a href="#note-6-ebnf-ref">Note 6</a>: By applying the same steps as above, we can see that we have a problem with the second and third parts.
+              The second part doesn't have a digit after the ".", and the third part has a decimal part (the ".0" at the end), which doesn't match our rule.
+            </p>
+
+            <p id="note-7-ebnf">
+              <a href="#note-7-ebnf-ref">Note 7</a>: The code point U+00F8 (<code class="inline">ø</code>) is outside of the range <code class="inline">[a-zA-Z]</code>.
+            </p>
+
+            <p id="note-8-ebnf">
+              <a href="#note-8-ebnf-ref">Note 8</a>: In this case, the input starts with a digit, which doesn't match the rule for <code class="inline">identifier</code>, since
+              it says it needs to start wiht either a <code class="inline">letter</code> or "_".
+            </p>
+
+            <p id="note-9-ebnf">
+              <a href="#note-9-ebnf-ref">Note 9</a>: <code class="inline">+</code> is not a value, because it is neither an <code class="inline">identifier,</code>
+              <code class="inline">number,</code> nor a <code class="inline">string</code>.
+            </p>
+        </div>
+      </dl>
+    </div>
+
+    <!-- EBNF Notation-->
+
+    <div id="EBNF-notation">
+      <h3>3.2 EBNF Notation</h3>
     </div>
 
     <!-- Syntax Diagrams -->
 
     <div id="syntax-diagrams">
-      <h3>3.2 Railroad syntax diagrams</h3>
+      <h3>3.3 Railroad Syntax Diagrams</h3>
     </div>
   </div>
 
@@ -1882,18 +2121,19 @@ Code section</code></pre>
     </p>
 
     <div class="example">
+      <h4>EXAMPLE</h4>
       <p>
-        Example: A <a href="#number-token"><code class="inline">&lt;number-token&gt;</code></a> represents a
+        A <a href="#number-token"><code class="inline">&lt;number-token&gt;</code></a> represents a
         <a href="#number-def">number</a>.
       </p>
 
       <p>
-        It holds a sequence of <a href="#code-point-def">code points</a>, as well as the numeric value of this
-        sequence.
+        It holds a sequence of <a href="#code-point-def">code points</a>. This sequence is the token's
+        "metadata", or "value"
       </p>
 
       <p>
-        The sequence of <a href="#code-point-def">code points</a> is its representation
+        The sequence of <a href="#code-point-def">code points</a> is its representation.
       </p>
     </div>
 
@@ -1904,18 +2144,19 @@ Code section</code></pre>
     </p>
 
     <p>
-      Implementations should act as if they used those algorithms (i.e. the resulting token stream should be contain
-      at lest the same information as if it implemented the following algorithms. See <a href="">the Lotus tokenizer
-        reference implementation</a> for more information).
+      Implementations should act as if they used those algorithms, i.e. the resulting token stream should contain
+      at least the same information as if it implemented the following algorithms. See <a href="">the Lotus tokenizer
+      reference implementation</a> for more information, and see the <a href="">test suite</a> to test the conformance
+      of your implementation.
     </p>
 
     <!-- Preprocessing the input stream -->
 
     <div id="preprocessing">
-      <h3>3.1 Preprocessing the input stream</h3>
+      <h3>4.1 Preprocessing the input stream</h3>
 
       <p>
-        Before sending the <a href="#input-stream-def">input stream</a> to the tokenizer, it needs to be processed as
+        Before feeding the <a href="#input-stream-def">input stream</a> into the tokenizer, it needs to be processed as
         following :
       </p>
 
@@ -1925,10 +2166,10 @@ Code section</code></pre>
         </li>
         <li>
           <p>
-            Replace any U+000D CARRIAGE RETURN <a href="#code-point-def">code point</a>, U+000C FORM FEED
-            <a href="#code-point-def">code point</a>, or pair of U+000D CARRIAGE RETURN U+000A LINE FEED
-            <a href="#code-point-def">code points</a> by a single U+000A LINE FEED <a href="#code-point-def">code
-              point</a>.
+            Replace any U+000D CARRIAGE RETURN <a href="#code-point-def">code point</a> (<code class="inline">\r</code>),
+            U+000C FORM FEED <a href="#code-point-def">code point</a> (<code class="inline">\f</code>), or pair of U+000D
+            CARRIAGE RETURN U+000A LINE FEED <a href="#code-point-def">code points</a> (<code class="inline">\r\n</code>)
+            by a single U+000A LINE FEED <a href="#code-point-def">code point</a> (<code class="inline">\n</code>).
           </p>
         </li>
       </ul>
@@ -1963,21 +2204,12 @@ Code section</code></pre>
         </dd>
 
         <dt>
-          U+0022 QUOTATION MARK (<code class="inline">"</code>)
+          U+0022 QUOTATION MARK (<code class="inline">"</code>) or U+0027 APOSTROPHE (<code class="inline">'</code>)
         </dt>
         <dd>
           <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the
-          <a href="#current-token-def">current token</a>. Return the resulting <code class="inline">
-            <a href="#string-token">&lt;string-token&gt;</a></code>.
-        </dd>
-
-        <dt>
-          U+0027 APOSTROPHE (<code class="inline">'</code>)
-        </dt>
-        <dd>
-          <a href="#consume-string">Consume a string token</a> with the ending delimiter set to the
-          <a href="#current-token-def">current token</a>. Return the resulting <code class="inline">
-            <a href="#string-token">&lt;string-token&gt;</a></code>.
+          <a href="#current-code-point-def">current input code point</a>. Return the resulting
+          <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code>.
         </dd>
 
         <dt>
@@ -1985,7 +2217,7 @@ Code section</code></pre>
         </dt>
         <dd>
           <a href="#reconsume-code-point-def">Reconsume the current code point</a>.
-          <a href="#consume-number-token">Consume a number token</a> and return the resulting
+          <a href="#consume-number">Consume a number token</a> and return the resulting
           <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
         </dd>
 
@@ -1993,9 +2225,9 @@ Code section</code></pre>
           U+002E FULL STOP (<code class="inline">.</code>)
         </dt>
         <dd>
-          <a href="#check-start-of-number">If the three next input code points would start a number</a>,
+          <a href="#check-start-of-number">Check if the input stream would start a number</a>, If yes,
           <a href="#reconsume-code-point-def">reconsume the current code point</a>,
-          <a href="#consume-number-token">consume a number token</a> and return the resulting
+          <a href="#consume-number">consume a number token</a> and return the resulting
           <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
           Otherwise, return a <code class="inline"><a href="#delim-token">&lt;delim-token&gt;</a></code>
           with its value set to the <a href="#current-code-point-def">current input code point</a>.
@@ -2010,9 +2242,9 @@ Code section</code></pre>
             <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#decrement-token">&lt;decrement-token&gt;</a></code>
           </p>
 
-          <a href="#check-start-of-number">If the three next input code points would start a number</a>,
+          <a href="#check-start-of-number">Check if the input stream would start a number</a>. If yes,
           <a href="#reconsume-code-point-def">reconsume the current code point</a>,
-          <a href="#consume-number-token">consume a number token</a> and return the resulting
+          <a href="#consume-number">consume a number token</a> and return the resulting
           <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
           Otherwise, return a <code class="inline"><a href="#delim-token">&lt;delim-token&gt;</a></code>
           with its value set to the <a href="#current-code-point-def">current input code point</a>.
@@ -2027,9 +2259,9 @@ Code section</code></pre>
             <a href="#consume-next-def">consume it</a> and return a <code class="inline"><a href="#increment-token">&lt;increment-token&gt;</a></code>
           </p>
 
-          <a href="#check-start-of-number">If the three next input code points would start a number</a>,
+          <a href="#check-start-of-number">Check if the input stream would start a number</a>. If yes,
           <a href="#reconsume-code-point-def">reconsume the current code point</a>,
-          <a href="#consume-number-token">consume a number token</a> and return the resulting
+          <a href="#consume-number">consume a number token</a> and return the resulting
           <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
           Otherwise, return a <code class="inline"><a href="#delim-token">&lt;delim-token&gt;</a></code>
           with its value set to the <a href="#current-code-point-def">current input code point</a>.
@@ -2040,7 +2272,7 @@ Code section</code></pre>
         </dt>
         <dd>
           <a href="#reconsume-code-point-def">Reconsume the current code point</a>.
-          <a href="#consume-identifier">Consume an identifier</a> and return the resulting <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
+          <a href="#consume-identifier">Consume an identifier token</a> and return the resulting <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
         </dd>
 
         <dt>
@@ -2048,7 +2280,7 @@ Code section</code></pre>
         </dt>
         <dd>
           <a href="#reconsume-code-point-def">Reconsume the current code point</a>.
-          <a href="#¢onsume-identifier">Consume an identifier</a> and return the resulting <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
+          <a href="#¢onsume-identifier">Consume an identifier token</a> and return the resulting <code class="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code>.
         </dd>
 
         <dt>
@@ -2056,16 +2288,108 @@ Code section</code></pre>
         </dt>
         <dd>
           <p>
-            If the two <a href="#next-code-point-def">next input code points</a> are U+0023 NUMBER SIGN U+0023 NUMBER SIGN (<code class="inline">##</code>),
-            then, while the three <a href="#next-code-point-def">next input code points</a> are not U+0023 NUMBER SIGN U+0023 NUMBER SIGN U+0023 NUMBER SIGN
-            (<code class="inline">###</code>), <a href="#consume-next-def">consume the next input code point</a>. Then, return a
-            <code class="inline"><a href="#whitespace-token">&lt;whitespace-token&gt;</a></code>.
+            If the two <a href="#next-code-point-def">next input code points</a> are U+0023 NUMBER SIGN U+0023 NUMBER SIGN (<code class="inline">##</code>)
           </p>
+
+          <ol>
+            <li>
+              Consume them.
+            </li>
+
+            <li>
+              While the three <a href="#next-code-point-def">next input code points</a> are not U+0023 NUMBER SIGN U+0023 NUMBER SIGN U+0023 NUMBER SIGN
+              (<code class="inline">###</code>), <a href="#consume-next-def">consume the next input code point</a>.
+            </li>
+
+            <li>
+                <a href="#consume-next-def">Consume the three next input code point</a> (which should be "###").
+            </li>
+
+            <li>
+              Return a <code class="inline"><a href="#whitespace-token">&lt;whitespace-token&gt;</a></code>.
+            </li>
+          </ol>
+
           <p>
-            Otherwise, while the <a href="#next-code-point-def">next input code point</a> is not U+000A LINE FEED
-            (represented as the escape sequence '\n' in most programming languages), <a href="#consume-next-def">consume it</a>. Then, return a
-            <code class="inline"><a href="#whitespace-token">&lt;whitespace-token&gt;</a></code>.
+            Otherwise,
           </p>
+
+          <ol>
+            <li>
+              While the <a href="#next-code-point-def">next input code point</a> is not a <a href="#newline-def">newline</a>, <a href="#consume-next-def">consume it</a>.
+            </li>
+
+            <li>
+              <a href="#consume-next-def">Consume the next input code point</a>.
+            </li>
+
+            <li>
+              Return a <code class="inline"><a href="#whitespace-token">&lt;whitespace-token&gt;</a></code>.
+            </li>
+          </ol>
+
+
+          <div class="note">
+            <h4>NOTE</h4>
+
+            <p>
+              This specification allows implementations can choose to preserve comments and still be compliant. To do so, implementations can introduce a
+              <code class="inline">&lt;comment-token&gt;</code> that holds two value : the sequence of <a href="#code-point-def">code points</a> that constitues the comment
+              (<em>content</em>), and the delimiter (<em>delimiter</em>) as a sequence of one or more <a href="#code-point-def">code points</a>.
+            </p>
+
+            <p>
+              Then, the algorithm becomes :
+            </p>
+
+            <p>
+              Let <em>representation</em> be an empty string.
+            </p>
+
+            <p>
+              If the two <a href="#next-code-point-def">next input code points</a> are U+0023 NUMBER SIGN U+0023 NUMBER SIGN (<code class="inline">##</code>)
+            </p>
+
+            <ol>
+              <li>
+                Consume them.
+              </li>
+
+              <li>
+                While the three <a href="#next-code-point-def">next input code points</a> are not U+0023 NUMBER SIGN U+0023 NUMBER SIGN U+0023 NUMBER SIGN
+                (<code class="inline">###</code>), <a href="#consume-next-def">consume the next input code point</a> and append it to <em>representation</em>.
+              </li>
+
+              <li>
+                  <a href="#consume-next-def">Consume the three next input code point</a> (which should be "###").
+              </li>
+
+              <li>
+                Return a <code class="inline">&lt;comment-token&gt;</code> with <em>content</em> set to <em>representation</em> and <em>delimiter</em> set to "###".
+              </li>
+            </ol>
+
+            <p>
+              Otherwise,
+            </p>
+
+            <ol>
+              <li>
+                While the <a href="#next-code-point-def">next input code point</a> is not a <a href="#newline-def">newline</a>, <a href="#consume-next-def">consume it</a>
+                and append it to <em>representation</em>.
+              </li>
+
+              <li>
+                <a href="#consume-next-def">Consume the next input code point</a>.
+              </li>
+
+              <li>
+                Return a <code class="inline">&lt;comment-token&gt;</code> with <em>content</em> set to <em>representation</em> and <em>delimiter</em> set to "#".
+              </li>
+            </ol>
+
+            <br>
+          </div>
         </dd>
 
         <dt>
@@ -2161,11 +2485,11 @@ Code section</code></pre>
       <p>
         This algorithms should be called with an <em>ending delimiter</em>, which denotes the
         <a href="#code-point-def">code point</a> that ends the string. If no <em>ending delimiter</em>
-        is specified, use the <a href="#current-code-point">current input code point</a> instead.
+        is specified, use the <a href="#current-code-point-def">current input code point</a> instead.
       </p>
 
       <p>
-        This algorithm returns a single <code class="inline"><a href="#ident-token">&lt;string-token&gt;</a></code>.
+        This algorithm returns a single <code class="inline"><a href="#string-token">&lt;string-token&gt;</a></code>.
       </p>
 
       <p>
@@ -2213,12 +2537,13 @@ Code section</code></pre>
       </p>
 
       <p>
-        This algorithm returns a single <code class="inline"><a href="#ident-token">&lt;number-token&gt;</a></code>.
+        This algorithm returns a single <code class="inline"><a href="#number-token">&lt;number-token&gt;</a></code>.
       </p>
 
       <div class="note">
+        <h4>NOTE</h4>
         <p>
-          Note: This algorithm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-number">start a valid number</a>.
+          This algorithm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-number">start a valid number</a>.
         </p>
       </div>
 
@@ -2246,7 +2571,7 @@ Code section</code></pre>
         <br/>
 
         <li>
-          If the <a href="#current-code-point-def">two next input code point</a> are a U+002E FULL STOP
+          If the two <a href="#next-code-point-def">next input code point</a> are a single U+002E FULL STOP
           (<code class="inline">.</code>) followed by a <a href="#digit-def">digit</a>.
           <br/>
           <ol>
@@ -2259,10 +2584,13 @@ Code section</code></pre>
             <li>
               While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>,
               <a href="#consume-next-def">consume it</a> and append it to <em>representation</em>.
-              <div class="note"><p>
-                  Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> throw an <a href="#throw-invalid-number">"Invalid number
+              <div class="note">
+                <h4>NOTE</h4>
+                <p>
+                  If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> throw an <a href="#throw-invalid-number">"Invalid number
                   formatting" exception</a>.
-                </p></div>
+                </p>
+              </div>
             </li>
           </ol>
         </li>
@@ -2273,7 +2601,7 @@ Code section</code></pre>
           and append it to <em>representation</em>, then:
           <ol>
             <li>
-              <a href="#check-start-of-number">Check if the three <a href="#next-code-point-def">next input code points</a></a> would start a number.
+              <a href="#check-start-of-number">Check if the three next input code point would start a number</a>.
             </li>
 
             <br/>
@@ -2285,7 +2613,7 @@ Code section</code></pre>
             <br/>
 
             <li>
-              Otherwise (i.e. if the check succeeded), then, if the <a href="#next-code-point-def">next input code point</a> is U+002B PLUS
+              Otherwise (i.e. if the check succeeded), if the <a href="#next-code-point-def">next input code point</a> is U+002B PLUS
               SIGN (<code class="inline">+</code>) or U+002D HYPHEN MINUS (<code class="inline">-</code>), <a href="#consume-next-def">consume it</a>
               and append it to <em>representation</em>.
             </li>
@@ -2295,27 +2623,6 @@ Code section</code></pre>
             <li>
               While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>, <a href="#consume-next-def">consume it</a>
               and append it to the <em> representation</em>.
-            </li>
-
-            <br/>
-
-            <li>
-              If the <a href="#next-code-point-def">next input code point</a> is U+002E FULL STOP (<code class="inline">.</code>),
-              <a href="#consume-next-def">consume it</a> and append it to the <em>reprensentation</em>.
-            </li>
-
-            <br/>
-
-            <li>
-              While the <a href="#next-code-point-def">next input code point</a> is a <a href="#digit-def">digit</a>, <a href="#consume-next-def">consume it</a>
-              and append it to the <em>representation</em>.
-
-              <div class="note">
-                <p>
-                  Note: If the U+002E FULL STOP was not followed by a <a href="#digit-def">digit</a> throw an <a href="#throw-invalid-number">"Invalid number
-                  formatting" exception</a>.
-                </p>
-              </div>
             </li>
           </ol>
         </li>
@@ -2340,8 +2647,9 @@ Code section</code></pre>
       </p>
 
       <div class="note">
+        <h4>NOTE</h4>
         <p>
-          Note: This algorithm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-identifier">start a valid identifier</a>.
+          This algorithm assumes that the <a href="#input-stream-def">input stream</a> can <a href="#check-start-of-identifier">start a valid identifier</a>.
         </p>
       </div>
 
@@ -2355,7 +2663,7 @@ Code section</code></pre>
       </p>
 
       <p>
-        Return a <code clas="inline"><a href="#ident-token"></a>&lt;ident-token&gt;</code> and let its value be <em>representation</em>.
+        Return an <code clas="inline"><a href="#ident-token">&lt;ident-token&gt;</a></code> and let its value be <em>representation</em>.
       </p>
     </div>
 
@@ -2366,12 +2674,13 @@ Code section</code></pre>
 
       <p>
         This section desbribes <strong><em>how to check if a code point would start an identifier</em></strong>. This algorithm can be called
-        with a <a href="#code-point-def">code point</a> or from the <a href="#input-stream-def">input stream</a>.
+        with a <a href="#code-point-def">code point</a>, or from the <a href="#input-stream-def">input stream</a>.
       </p>
 
       <div class="note">
+        <h4>NOTE</h4>
         <p>
-          Note: This algorithm doesn't consume any code points. If it is called from the <a href="#input-stream-def">input stream</a>,
+          This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the <a href="#input-stream-def">input stream</a>,
           it should push back onto the top of the stream any <a href="#code-point-def">code point</a> consumed.
         </p>
       </div>
@@ -2430,8 +2739,9 @@ Code section</code></pre>
       </p>
 
       <div class="note">
+        <h4>NOTE</h4>
         <p>
-          Note: This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the
+          This algorithm doesn't consume any <a href="#code-point-def">code point</a>. If it is called from the
           <a href="#input-stream-def">input stream</a>, it should push back onto the top of the stream any <a href="#code-point-def">code point</a>
           consumed.
         </p>
@@ -2451,7 +2761,7 @@ Code section</code></pre>
           </p>
           <p>
             Otherwise, if the second <a href="#code-point-def">code point</a> is U+002E FULL STOP (<code class="inline">.</code>) and the third
-            <a href="#code-point-def">code point</a> is a <a href="#digit-def">digits</a>, return true.
+            <a href="#code-point-def">code point</a> is a <a href="#digit-def">digit</a>, return true.
           </p>
           <p>
             Otherwise, return false.
