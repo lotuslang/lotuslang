@@ -13,8 +13,8 @@
 <body>
 
   <!-- Header -->
-  <h1 id="lotus-syntax-module">Lotus Syntax Module</h1>
-  <p>Last updated : <em id="last-edit-date">3rd of July, 2019</em></p>
+  <h1 id="lotus-syntax-module">Module de Syntaxe Lotus</h1>
+  <p>Dernière mise à jour : <em id="last-edit-date">17 juillet 2019</em></p>
   <p><strong>Editors :</strong></p>
   <ul id="editors">
     <li>Blokyk</li>
@@ -25,14 +25,13 @@
 
   <h2 id="abstract">Abstract</h2>
   <p>
-    This document describes the basic syntax of Lotus source code. It defines, in details, the
-    tokenizing and parsing of Lotus.
+    Ce document décrit la syntaxe basique du langage Lotus. Il décrit, en détails, la tokenisation et l'analyse syntaxique de Lotus.
   </p>
 
   <p>
-    Lotus is an open-source language created to facilitate the work of web designers and web developpers. This document
-    describes its syntax as well as the way it should be parsed by a compiler to conform to the Lotus
-    specification. Its interpretation is, however, beyond the scope of this specification.
+    Lotus est un langage open-source créée pour faciliter le travail des développeurs web et designers web. Ce document décrit
+    sa syntaxe ainsi que la façon donc il devrait être analyser par un compilateur conforme à la spécification Lotus (donc ce module
+    fait partie). L'interprétation de Lotus n'est, cependant, pas l'objet de ce document.
   </p>
 
   <!-- Table of contents -->
@@ -45,8 +44,7 @@
 
       <p class="toc-title"><strong><a href="#intro">Introduction</a></strong></p>
       <ul>
-        <li class="toc-item"><a href="#conventions">Visual and
-            Writing Conventions</a></li>
+        <li class="toc-item"><a href="#conventions">Conventions visuelles et d'écriture</a></li>
       </ul>
     </li> <!-- End of Introduction -->
 
@@ -55,32 +53,32 @@
       <!-- Overview -->
 
       <p class="toc-title">
-        <strong><a href="#overview">Overview</a></strong>
+        <strong><a href="#overview">Vue d'ensemble</a></strong>
       </p>
 
       <ul>
         <li class="toc-item">
-          <a href="#general-defs">Definitions</a>
+          <a href="#general-defs">Définitions</a>
         </li>
 
         <li class="toc-item">
-          <a href="#tokens">Token Types</a>
+          <a href="#tokens">Types de Tokens</a>
         </li>
 
         <li class="toc-item">
-          <a href="#tokens-diagrams">Tokens Railroad Diagrams</a>
+          <a href="#tokens-diagrams">Schéma de Tokens</a>
         </li>
 
         <li class="toc-item">
-          <a href="#tokenization-errors">Tokenization Errors</a>
+          <a href="#tokenization-errors">Erreurs de Tokenisation</a>
         </li>
 
         <li class="toc-item">
-          <a href="#parse-tree-model">Parse Tree Model</a>
+          <a href="#parse-tree-model">Modèle de l'arbre syntaxique</a>
         </li>
 
         <li class="toc-item">
-          <a href="#parsing-errors">Parsing Errors</a>
+          <a href="#parsing-errors">Erreurs d'analyse syntaxique</a>
         </li>
       </ul>
     </li> <!-- End of Overview -->
@@ -90,20 +88,20 @@
       <!-- Formal Syntax Definition -->
 
       <p class="toc-title">
-        <strong><a href="#syntax">Formal Syntax Definition</a></strong>
+        <strong><a href="#syntax">Definition Formelle de la Syntaxe</a></strong>
       </p>
 
       <ul>
         <li class="toc-item">
-          <a href="#EBNF-conventions">EBNF Conventions</a>
+          <a href="#EBNF-conventions">Conventions EBNF</a>
         </li>
 
         <li class="toc-item">
-          <a href="#EBNF-notation">EBNF Notation</a>
+          <a href="#EBNF-notation">Notation EBNF</a>
         </li>
 
         <li class="toc-item">
-          <a href="#syntax-diagrams">Railroad Syntax Diagrams</a>
+          <a href="#syntax-diagrams">Schéma de syntaxe</a>
         </li>
       </ul>
 
@@ -113,34 +111,34 @@
 
       <!-- Tokenization -->
 
-      <p class="toc-title"><strong><a href="#tokenization">Tokenization</a></strong></p>
+      <p class="toc-title"><strong><a href="#tokenization">Tokenisation</a></strong></p>
       <ul>
         <li class="toc-item">
-          <a href="#preprocessing">Preprocessing the input stream</a>
+          <a href="#preprocessing">Prétraitement du stream d'entrée</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-token">Consume a token</a>
+          <a href="#consume-token">Consommer un token</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-string">Consume a string token</a>
+          <a href="#consume-string">Consommer un token de chaîne de caractères</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-number">Consume a number token</a>
+          <a href="#consume-number">Consommer un token de nombre</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-identifier">Consume an identifier token</a>
+          <a href="#consume-identifier">Consommer un token d'identificateur</a>
         </li>
 
         <li class="toc-item">
-          <a href="#check-start-of-identifier">Check if a code point would start an identifier</a>
+          <a href="#check-start-of-identifier">Vérifier si un caractère pourrait commencer un identificateur</a>
         </li>
 
         <li class="toc-item">
-          <a href="#check-start-of-number">Check if two code points would start a number</a>
+          <a href="#check-start-of-number">Vérifier si deux caractère pourrait commencer un nombre</a>
         </li>
       </ul>
     </li> <!-- End of Tokenization -->
@@ -149,81 +147,81 @@
 
       <!-- Parsing -->
 
-      <p class="toc-title"><strong><a href="#parsing">Parsing</a></strong></p>
+      <p class="toc-title"><strong><a href="#parsing">Analyse syntaxique</a></strong></p>
       <ul>
         <li class="toc-item">
-          <a href="#consume-statement">Consume a statement</a>
+          <a href="#consume-statement">Consommer une expression</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-simple-block">Consume a simple block</a>
+          <a href="#consume-simple-block">Consommer un bloc simple</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-assignement">Consume an assignement</a>
+          <a href="#consume-assignement">Consommer une attribution</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-value">Consume a value</a>
+          <a href="#consume-value">Consommer une valeur</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-function-call">Consume a function call</a>
+          <a href="#consume-function-call">Consommer un appel de fonction</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-function-def">Consume a function declaration</a>
+          <a href="#consume-function-def">Consommer une déclaration de fonction</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-if-clause">Consume an if clause</a>
+          <a href="#consume-if-clause">Consommer une clause 'if'</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-else-clause">Consume an else clause</a>
+          <a href="#consume-else-clause">Consommer une clause 'else'</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-for-loop">Consume a for loop declaration</a>
+          <a href="#consume-for-loop">Consommer une boucle 'for'</a>
         </li>
         <li class="toc-item">
-          <a href="#consume-foreach-loop">Consume a foreach loop declaration</a>
-        </li>
-
-        <li class="toc-item">
-          <a href="#consume-while-loop">Consume a while loop declaration</a>
+          <a href="#consume-foreach-loop">Consommer une boucle 'foreach'</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-do-while-loop">Consume a do-while loop declaration</a>
+          <a href="#consume-while-loop">Consommer une boucle 'while'</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-class">Consume a class declaration</a>
+          <a href="#consume-do-while-loop">Consommer une boucle 'do-while'</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-interface">Consume an interface declaration</a>
+          <a href="#consume-class">Consommer une déclaration de classe</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-enum">Consume an enum declaration</a>
+          <a href="#consume-interface">Consommer une déclaration d'interface</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-import">Consume an import directive</a>
+          <a href="#consume-enum">Consommer une déclaration d'énumérateur</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-from">Consume a from directive</a>
+          <a href="#consume-import">Consommer une directive 'import'</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-namespace">Consume a namespace declaration</a>
+          <a href="#consume-from">Consommer une directive 'from'</a>
         </li>
 
         <li class="toc-item">
-          <a href="#consume-extends">Consume an extends directive</a>
+          <a href="#consume-namespace">Consommer une déclaration de namespace</a>
+        </li>
+
+        <li class="toc-item">
+          <a href="#consume-extends">Consommer une directive 'extends'</a>
         </li>
       </ul>
     </li> <!-- End of Parsing -->
@@ -234,30 +232,28 @@
 
   <div id="intro">
     <h2>1. Introduction</h2>
-    <p>This document describes the syntax of Lotus source code.</p>
+    <p>ce document décrit la syntaxe du langage Lotus</p>
 
     <p>
-      It also defines algorithms to convert text (source code) into a stream of tokens, and then transform this stream into an <a href="#parse-tree-model">parse tree</a>,
-      that can be analysed, verified, and used for various puposes by implementers, such as interpretation or translation, for example to HTML,
-      CSS, and JavaScript as <a href="https://github.com/lotuslang/lotusjs">LotusJS</a> does.
+      Il définit aussi des algorithmes pour convertir du text (code source) en un stream de tokens, et ensuite transformer ce stream en <a href="#parse-tree-model">arbre syntaxique</a>,
+      qui peut ensuite être analysé, vérifié, et utilisé pour différents buts par les implémenteurs, comme l'interprétation ou la traduction de code source Lotus, par exemple en HTML,
+      CSS, et JavaScript, telle que <a href="https://github.com/lotuslang/lotusjs">LotusJS</a> le fait.
     </p>
 
     <p>
-      It doesn't, however, describes how the resulting <a href="#token-stream-def">token stream</a> or
-      <a href="#parse-tree-model">parse tree</a> can be interpreted or analyzed. This may be described by other
-      documents editied by the <a href="https://github.com/lotuslang/">lotuslang working group</a>, as it is outside the scope of this specification.
+      Cependant, il ne décrit pas comment le <a href="#token-stream-def">stream de token</a> ou <a href="#parse-tree-model">l'arbre syntaxique</a> peut être interprété ou analysé.
+      Ceci peut-être décrit par d'autres documents édités par le <a href="https://github.com/lotuslang/">groupe de travail lotuslang</a>, car ce sujet n'est pas l'objet de ce document.
     </p>
 
     <p>
-        As this specification is intended for authors of tools that operates and interacts with documents that use
-        the syntax described here, it sacrifies clarity for precision, and brevity for completeness. As such, this
-        document is not meant to be a tutorial, and more beginner-friendly documents should be used instead.
-      </p>
+      Étant donné que cette spécification est orienté pour les auteurs d'outils qui opèrent et intéragissent avec des documents qui utilisent la syntaxe décrite ici, celle-ci sacrifie
+      la clarté pour la précision. Ainsi, ce document n'est pas censé être un tutoriel, et des documents plus adapté aux débutants devraient être utilisés à la place.
+    </p>
 
     <!-- Conventions -->
 
     <div id="conventions">
-      <h3 id="conventions">1.1 Visual and Writing Conventions</h3>
+      <h3 id="conventions">1.1 Conventions visuelles et d'écriture</h3>
 
       <dl>
         <dt>
@@ -265,8 +261,8 @@
         </dt>
         <dd>
           <p>
-            Notes are used to bring attention to a detail or to clarify statements where necessary.Notes and informative sections are
-            presented as a quote block and have an <code clas="inline">&lt;h4&gt;</code> "NOTE" element.
+            Les notes sont utilisées pour porter attention a un détail ou pour clarifier une déclaration, là où c'est nécessaire. Les notes et les sections informatives sont
+            présentées sous forme de d'élément d'élément de classe <code class="inline">note</code> on un titre de type <code class="inline">&lt;h4&gt;</code> "NOTE".
           </p>
 
           <div class="note">
