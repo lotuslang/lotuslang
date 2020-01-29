@@ -365,8 +365,8 @@ foreach name in names p { "Hello " + name } # Compact form
 
 <div>
 <b>Output</b>
-<p>John</p>
-<p>Clara</p>
+<p>Hello John</p>
+<p>Hello Clara</p>
 </div>
 
 ### break and continue keyword
